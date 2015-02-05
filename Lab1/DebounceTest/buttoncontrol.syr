@@ -1,0 +1,403 @@
+Release 14.7 - xst P.20131013 (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+--> Parameter TMPDIR set to xst/projnav.tmp
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.32 secs
+ 
+--> Parameter xsthdpdir set to xst
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.33 secs
+ 
+--> Reading design: buttoncontrol.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Compilation
+  3) Design Hierarchy Analysis
+  4) HDL Analysis
+  5) HDL Synthesis
+     5.1) HDL Synthesis Report
+  6) Advanced HDL Synthesis
+     6.1) Advanced HDL Synthesis Report
+  7) Low Level Synthesis
+  8) Partition Report
+  9) Final Report
+	9.1) Device utilization summary
+	9.2) Partition Resource Summary
+	9.3) TIMING REPORT
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "buttoncontrol.prj"
+Input Format                       : mixed
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "buttoncontrol"
+Output Format                      : NGC
+Target Device                      : xc3s500e-4-fg320
+
+---- Source Options
+Top Module Name                    : buttoncontrol
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+Safe Implementation                : No
+FSM Style                          : LUT
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Mux Style                          : Auto
+Decoder Extraction                 : YES
+Priority Encoder Extraction        : Yes
+Shift Register Extraction          : YES
+Logical Shifter Extraction         : YES
+XOR Collapsing                     : YES
+ROM Style                          : Auto
+Mux Extraction                     : Yes
+Resource Sharing                   : YES
+Asynchronous To Synchronous        : NO
+Multiplier Style                   : Auto
+Automatic Register Balancing       : No
+
+---- Target Options
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 500
+Add Generic Clock Buffer(BUFG)     : 24
+Register Duplication               : YES
+Slice Packing                      : YES
+Optimize Instantiated Primitives   : NO
+Use Clock Enable                   : Yes
+Use Synchronous Set                : Yes
+Use Synchronous Reset              : Yes
+Pack IO Registers into IOBs        : Auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Keep Hierarchy                     : No
+Netlist Hierarchy                  : As_Optimized
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Read Cores                         : YES
+Write Timing Constraints           : NO
+Cross Clock Analysis               : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : Maintain
+Slice Utilization Ratio            : 100
+BRAM Utilization Ratio             : 100
+Verilog 2001                       : YES
+Auto BRAM Packing                  : NO
+Slice Utilization Ratio Delta      : 5
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Compilation                              *
+=========================================================================
+Compiling vhdl file "C:/Users/Josh/Documents/College/Junior/Spring/DebounceTest/debounce.vhd" in Library work.
+Entity <debounce> compiled.
+Entity <debounce> (Architecture <Logic>) compiled.
+Compiling vhdl file "C:/Users/Josh/Documents/College/Junior/Spring/DebounceTest/button_controller.vhd" in Library work.
+Entity <buttoncontrol> compiled.
+Entity <buttoncontrol> (Architecture <Structural>) compiled.
+
+=========================================================================
+*                     Design Hierarchy Analysis                         *
+=========================================================================
+Analyzing hierarchy for entity <buttoncontrol> in library <work> (architecture <Structural>).
+
+Analyzing hierarchy for entity <debounce> in library <work> (architecture <Logic>) with generics.
+	wait_time = 20
+
+
+=========================================================================
+*                            HDL Analysis                               *
+=========================================================================
+Analyzing Entity <buttoncontrol> in library <work> (Architecture <Structural>).
+Entity <buttoncontrol> analyzed. Unit <buttoncontrol> generated.
+
+Analyzing generic Entity <debounce> in library <work> (Architecture <Logic>).
+	wait_time = 20
+Entity <debounce> analyzed. Unit <debounce> generated.
+
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Performing bidirectional port resolution...
+
+Synthesizing Unit <debounce>.
+    Related source file is "C:/Users/Josh/Documents/College/Junior/Spring/DebounceTest/debounce.vhd".
+    Found 1-bit register for signal <OUTPUT>.
+    Found 21-bit up counter for signal <Count>.
+    Found 1-bit xor2 for signal <D_SET>.
+    Found 2-bit register for signal <D_STATE>.
+    Summary:
+	inferred   1 Counter(s).
+	inferred   3 D-type flip-flop(s).
+Unit <debounce> synthesized.
+
+
+Synthesizing Unit <buttoncontrol>.
+    Related source file is "C:/Users/Josh/Documents/College/Junior/Spring/DebounceTest/button_controller.vhd".
+Unit <buttoncontrol> synthesized.
+
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# Counters                                             : 4
+ 21-bit up counter                                     : 4
+# Registers                                            : 12
+ 1-bit register                                        : 12
+# Xors                                                 : 4
+ 1-bit xor2                                            : 4
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# Counters                                             : 4
+ 21-bit up counter                                     : 4
+# Registers                                            : 12
+ Flip-Flops                                            : 12
+# Xors                                                 : 4
+ 1-bit xor2                                            : 4
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+
+Optimizing unit <buttoncontrol> ...
+
+Optimizing unit <debounce> ...
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 5) on block buttoncontrol, actual ratio is 1.
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 96
+ Flip-Flops                                            : 96
+
+=========================================================================
+
+=========================================================================
+*                           Partition Report                            *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Final Report                               *
+=========================================================================
+Final Results
+RTL Top Level Output File Name     : buttoncontrol.ngr
+Top Level Output File Name         : buttoncontrol
+Output Format                      : NGC
+Optimization Goal                  : Speed
+Keep Hierarchy                     : No
+
+Design Statistics
+# IOs                              : 10
+
+Cell Usage :
+# BELS                             : 262
+#      GND                         : 1
+#      INV                         : 4
+#      LUT1                        : 80
+#      LUT2                        : 4
+#      LUT3                        : 4
+#      LUT4                        : 4
+#      MUXCY                       : 80
+#      VCC                         : 1
+#      XORCY                       : 84
+# FlipFlops/Latches                : 96
+#      FDE                         : 12
+#      FDRE                        : 84
+# Clock Buffers                    : 1
+#      BUFGP                       : 1
+# IO Buffers                       : 9
+#      IBUF                        : 5
+#      OBUF                        : 4
+=========================================================================
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 3s500efg320-4 
+
+ Number of Slices:                       51  out of   4656     1%  
+ Number of Slice Flip Flops:             96  out of   9312     1%  
+ Number of 4 input LUTs:                 96  out of   9312     1%  
+ Number of IOs:                          10
+ Number of bonded IOBs:                  10  out of    232     4%  
+ Number of GCLKs:                         1  out of     24     4%  
+
+---------------------------
+Partition Resource Summary:
+---------------------------
+
+  No Partitions were found in this design.
+
+---------------------------
+
+
+=========================================================================
+TIMING REPORT
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+CLK                                | BUFGP                  | 96    |
+-----------------------------------+------------------------+-------+
+
+Asynchronous Control Signals Information:
+----------------------------------------
+No asynchronous control signals found in this design
+
+Timing Summary:
+---------------
+Speed Grade: -4
+
+   Minimum period: 4.528ns (Maximum Frequency: 220.848MHz)
+   Minimum input arrival time before clock: 5.238ns
+   Maximum output required time after clock: 4.283ns
+   Maximum combinational path delay: No path found
+
+Timing Detail:
+--------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'CLK'
+  Clock period: 4.528ns (frequency: 220.848MHz)
+  Total number of paths / destination ports: 1196 / 264
+-------------------------------------------------------------------------
+Delay:               4.528ns (Levels of Logic = 21)
+  Source:            BTN_3/Count_1 (FF)
+  Destination:       BTN_3/Count_20 (FF)
+  Source Clock:      CLK rising
+  Destination Clock: CLK rising
+
+  Data Path: BTN_3/Count_1 to BTN_3/Count_20
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDRE:C->Q             1   0.591   0.595  BTN_3/Count_1 (BTN_3/Count_1)
+     LUT1:I0->O            1   0.704   0.000  BTN_3/Mcount_Count_cy<1>_rt (BTN_3/Mcount_Count_cy<1>_rt)
+     MUXCY:S->O            1   0.464   0.000  BTN_3/Mcount_Count_cy<1> (BTN_3/Mcount_Count_cy<1>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<2> (BTN_3/Mcount_Count_cy<2>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<3> (BTN_3/Mcount_Count_cy<3>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<4> (BTN_3/Mcount_Count_cy<4>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<5> (BTN_3/Mcount_Count_cy<5>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<6> (BTN_3/Mcount_Count_cy<6>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<7> (BTN_3/Mcount_Count_cy<7>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<8> (BTN_3/Mcount_Count_cy<8>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<9> (BTN_3/Mcount_Count_cy<9>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<10> (BTN_3/Mcount_Count_cy<10>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<11> (BTN_3/Mcount_Count_cy<11>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<12> (BTN_3/Mcount_Count_cy<12>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<13> (BTN_3/Mcount_Count_cy<13>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<14> (BTN_3/Mcount_Count_cy<14>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<15> (BTN_3/Mcount_Count_cy<15>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<16> (BTN_3/Mcount_Count_cy<16>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<17> (BTN_3/Mcount_Count_cy<17>)
+     MUXCY:CI->O           1   0.059   0.000  BTN_3/Mcount_Count_cy<18> (BTN_3/Mcount_Count_cy<18>)
+     MUXCY:CI->O           0   0.059   0.000  BTN_3/Mcount_Count_cy<19> (BTN_3/Mcount_Count_cy<19>)
+     XORCY:CI->O           1   0.804   0.000  BTN_3/Mcount_Count_xor<20> (BTN_3/Result<20>)
+     FDRE:D                    0.308          BTN_3/Count_20
+    ----------------------------------------
+    Total                      4.528ns (3.933ns logic, 0.595ns route)
+                                       (86.9% logic, 13.1% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'CLK'
+  Total number of paths / destination ports: 184 / 184
+-------------------------------------------------------------------------
+Offset:              5.238ns (Levels of Logic = 2)
+  Source:            SW (PAD)
+  Destination:       BTN_3/Count_20 (FF)
+  Destination Clock: CLK rising
+
+  Data Path: SW to BTN_3/Count_20
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O            20   1.218   1.277  SW_IBUF (SW_IBUF)
+     LUT3:I0->O           21   0.704   1.128  BTN_3/Count_and00001 (BTN_3/Count_and0000)
+     FDRE:R                    0.911          BTN_3/Count_0
+    ----------------------------------------
+    Total                      5.238ns (2.833ns logic, 2.405ns route)
+                                       (54.1% logic, 45.9% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'CLK'
+  Total number of paths / destination ports: 4 / 4
+-------------------------------------------------------------------------
+Offset:              4.283ns (Levels of Logic = 1)
+  Source:            BTN_3/OUTPUT (FF)
+  Destination:       LED<3> (PAD)
+  Source Clock:      CLK rising
+
+  Data Path: BTN_3/OUTPUT to LED<3>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDE:C->Q              1   0.591   0.420  BTN_3/OUTPUT (BTN_3/OUTPUT)
+     OBUF:I->O                 3.272          LED_3_OBUF (LED<3>)
+    ----------------------------------------
+    Total                      4.283ns (3.863ns logic, 0.420ns route)
+                                       (90.2% logic, 9.8% route)
+
+=========================================================================
+
+
+Total REAL time to Xst completion: 18.00 secs
+Total CPU time to Xst completion: 18.48 secs
+ 
+--> 
+
+Total memory usage is 261916 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :    0 (   0 filtered)
+Number of infos    :    0 (   0 filtered)
+

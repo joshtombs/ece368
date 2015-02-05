@@ -1,0 +1,6 @@
+xst -intstyle ise -ifn "C:/Users/Josh/Documents/College/Junior/Spring/DebounceTest/buttoncontrol.xst" -ofn "C:/Users/Josh/Documents/College/Junior/Spring/DebounceTest/buttoncontrol.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc button_controller.ucf -p xc3s500e-fg320-4 buttoncontrol.ngc buttoncontrol.ngd  
+map -intstyle ise -p xc3s500e-fg320-4 -cm area -ir off -pr off -c 100 -o buttoncontrol_map.ncd buttoncontrol.ngd buttoncontrol.pcf 
+par -w -intstyle ise -ol high -t 1 buttoncontrol_map.ncd buttoncontrol.ncd buttoncontrol.pcf 
+trce -intstyle ise -v 3 -s 4 -n 3 -fastpaths -xml buttoncontrol.twx buttoncontrol.ncd -o buttoncontrol.twr buttoncontrol.pcf -ucf button_controller.ucf 
+bitgen -intstyle ise -f buttoncontrol.ut buttoncontrol.ncd 
