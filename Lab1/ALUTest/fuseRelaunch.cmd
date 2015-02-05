@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -o "C:/Users/Josh/Documents/College/Junior/Spring/ALUTest/ALU_tb_vhd_isim_beh.exe" -prj "C:/Users/Josh/Documents/College/Junior/Spring/ALUTest/ALU_tb_vhd_beh.prj" "work.ALU_tb_vhd" 

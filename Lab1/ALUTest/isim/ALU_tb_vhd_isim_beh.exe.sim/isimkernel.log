@@ -1,0 +1,10 @@
+Command line:
+   ALU_tb_vhd_isim_beh.exe
+     -simmode  gui
+     -simrunnum  0
+     -socket  49913
+
+Wed Feb 04 13:38:19 2015
+
+
+ Elaboration Time: 0.483603 sec
