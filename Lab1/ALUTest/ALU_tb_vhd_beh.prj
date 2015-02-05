@@ -1,0 +1,7 @@
+vhdl work "load_store_unit.vhd"
+vhdl work "alu_shift_unit.vhd"
+vhdl work "alu_mux.vhd"
+vhdl work "alu_logic_unit.vhd"
+vhdl work "alu_arithmetic_unit.vhd"
+vhdl work "alu_toplevel.vhd"
+vhdl work "alu_tb.vhd"

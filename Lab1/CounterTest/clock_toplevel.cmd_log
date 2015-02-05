@@ -1,0 +1,15 @@
+xst -intstyle ise -ifn "C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/clock_toplevel.xst" -ofn "C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/clock_toplevel.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc counter_toplevel.ucf -p xc3s500e-fg320-4 clock_toplevel.ngc clock_toplevel.ngd  
+map -intstyle ise -p xc3s500e-fg320-4 -cm area -ir off -pr off -c 100 -o clock_toplevel_map.ncd clock_toplevel.ngd clock_toplevel.pcf 
+map -intstyle ise -p xc3s500e-fg320-4 -cm area -ir off -pr off -c 100 -o clock_toplevel_map.ncd clock_toplevel.ngd clock_toplevel.pcf 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc counter_toplevel.ucf -p xc3s500e-fg320-4 clock_toplevel.ngc clock_toplevel.ngd  
+map -intstyle ise -p xc3s500e-fg320-4 -cm area -ir off -pr off -c 100 -o clock_toplevel_map.ncd clock_toplevel.ngd clock_toplevel.pcf 
+par -w -intstyle ise -ol high -t 1 clock_toplevel_map.ncd clock_toplevel.ncd clock_toplevel.pcf 
+trce -intstyle ise -v 3 -s 4 -n 3 -fastpaths -xml clock_toplevel.twx clock_toplevel.ncd -o clock_toplevel.twr clock_toplevel.pcf -ucf counter_toplevel.ucf 
+bitgen -intstyle ise -f clock_toplevel.ut clock_toplevel.ncd 
+xst -intstyle ise -ifn "C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/clock_toplevel.xst" -ofn "C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/clock_toplevel.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc counter_toplevel.ucf -p xc3s500e-fg320-4 clock_toplevel.ngc clock_toplevel.ngd  
+map -intstyle ise -p xc3s500e-fg320-4 -cm area -ir off -pr off -c 100 -o clock_toplevel_map.ncd clock_toplevel.ngd clock_toplevel.pcf 
+par -w -intstyle ise -ol high -t 1 clock_toplevel_map.ncd clock_toplevel.ncd clock_toplevel.pcf 
+trce -intstyle ise -v 3 -s 4 -n 3 -fastpaths -xml clock_toplevel.twx clock_toplevel.ncd -o clock_toplevel.twr clock_toplevel.pcf -ucf counter_toplevel.ucf 
+bitgen -intstyle ise -f clock_toplevel.ut clock_toplevel.ncd 

@@ -1,0 +1,15 @@
+V3 8
+FL C:/Users/Josh/Documents/College/Junior/Spring/DebounceTest/button_controller.vhd 2015/02/04.00:55:52 P.20131013
+EN work/buttoncontrol 1423071229 \
+      FL C:/Users/Josh/Documents/College/Junior/Spring/DebounceTest/button_controller.vhd \
+      PB ieee/std_logic_1164 1381692176 LB work
+AR work/buttoncontrol/Structural 1423071230 \
+      FL C:/Users/Josh/Documents/College/Junior/Spring/DebounceTest/button_controller.vhd \
+      EN work/buttoncontrol 1423071229 CP work/debounce
+FL C:/Users/Josh/Documents/College/Junior/Spring/DebounceTest/debounce.vhd 2015/02/04.00:55:52 P.20131013
+EN work/debounce 1423071227 \
+      FL C:/Users/Josh/Documents/College/Junior/Spring/DebounceTest/debounce.vhd \
+      PB ieee/std_logic_1164 1381692176 PB ieee/STD_LOGIC_UNSIGNED 1381692179
+AR work/debounce/Logic 1423071228 \
+      FL C:/Users/Josh/Documents/College/Junior/Spring/DebounceTest/debounce.vhd \
+      EN work/debounce 1423071227

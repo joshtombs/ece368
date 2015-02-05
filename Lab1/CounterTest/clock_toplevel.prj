@@ -1,0 +1,5 @@
+vhdl work "mux_2to1.vhd"
+vhdl work "counter.vhd"
+vhdl work "clk4Hz.vhd"
+vhdl work "clk2Hz.vhd"
+vhdl work "counter_toplevel.vhd"

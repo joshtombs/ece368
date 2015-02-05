@@ -1,0 +1,2 @@
+vhdl work "SevenSeg.vhd"
+vhdl work "SevenSeg_toplevel.vhd"

@@ -1,0 +1,5 @@
+vhdl work "C:\Users\Josh\Documents\College\Junior\Spring\CounterTest\mux_2to1.vhd"
+vhdl work "C:\Users\Josh\Documents\College\Junior\Spring\CounterTest\counter.vhd"
+vhdl work "C:\Users\Josh\Documents\College\Junior\Spring\CounterTest\clk4Hz.vhd"
+vhdl work "C:\Users\Josh\Documents\College\Junior\Spring\CounterTest\clk2Hz.vhd"
+vhdl work "C:\Users\Josh\Documents\College\Junior\Spring\CounterTest\counter_toplevel.vhd"
