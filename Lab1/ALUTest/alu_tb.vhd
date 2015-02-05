@@ -107,7 +107,7 @@ BEGIN
         
         OPCODE <= "0000";  wait for period;
         assert (ALU_OUT = 150)  report "Failed ADD 2. ALU_OUT=" & integer'image(to_integer(unsigned(ALU_OUT))) severity ERROR;
-        assert (CCR = "1010")  report "Failed ADD 2 - CCR. CCR=" & integer'image(to_integer(unsigned(CCR))) severity ERROR;
+        assert (CCR = "0000")  report "Failed ADD 2 - CCR. CCR=" & integer'image(to_integer(unsigned(CCR))) severity ERROR;
         OPCODE <= "0001";  wait for period;
         assert (ALU_OUT = 50)  report "Failed SUB 2. ALU_OUT=" & integer'image(to_integer(unsigned(ALU_OUT))) severity ERROR;
         assert (CCR = "0000")  report "Failed SUB 2 - CCR. CCR=" & integer'image(to_integer(unsigned(CCR))) severity ERROR;
