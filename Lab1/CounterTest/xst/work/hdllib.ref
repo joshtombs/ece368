@@ -1,0 +1,10 @@
+AR clk4hz behavioral C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/clk4Hz.vhd sub00/vhpl03 1423070738
+AR counter behavioral C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/counter.vhd sub00/vhpl07 1423070742
+EN clk4hz NULL C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/clk4Hz.vhd sub00/vhpl02 1423070737
+AR clock_toplevel structural C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/counter_toplevel.vhd sub00/vhpl09 1423070744
+EN counter NULL C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/counter.vhd sub00/vhpl06 1423070741
+EN clock_toplevel NULL C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/counter_toplevel.vhd sub00/vhpl08 1423070743
+AR clk2hz behavioral C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/clk2Hz.vhd sub00/vhpl01 1423070736
+AR mux_2to1 behavioral C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/mux_2to1.vhd sub00/vhpl05 1423070740
+EN mux_2to1 NULL C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/mux_2to1.vhd sub00/vhpl04 1423070739
+EN clk2hz NULL C:/Users/Josh/Documents/College/Junior/Spring/CounterTest/clk2Hz.vhd sub00/vhpl00 1423070735
