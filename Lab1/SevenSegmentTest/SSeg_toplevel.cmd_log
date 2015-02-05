@@ -1,0 +1,24 @@
+xst -intstyle ise -ifn "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SSeg_toplevel.xst" -ofn "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SSeg_toplevel.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc SevenSeg_toplevel.ucf -p xc3s500e-fg320-4 SSeg_toplevel.ngc SSeg_toplevel.ngd  
+map -intstyle ise -p xc3s500e-fg320-4 -cm area -ir off -pr off -c 100 -o SSeg_toplevel_map.ncd SSeg_toplevel.ngd SSeg_toplevel.pcf 
+par -w -intstyle ise -ol high -t 1 SSeg_toplevel_map.ncd SSeg_toplevel.ncd SSeg_toplevel.pcf 
+trce -intstyle ise -v 3 -s 4 -n 3 -fastpaths -xml SSeg_toplevel.twx SSeg_toplevel.ncd -o SSeg_toplevel.twr SSeg_toplevel.pcf -ucf SevenSeg_toplevel.ucf 
+bitgen -intstyle ise -f SSeg_toplevel.ut SSeg_toplevel.ncd 
+xst -intstyle ise -ifn "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SSeg_toplevel.xst" -ofn "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SSeg_toplevel.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc SevenSeg_toplevel.ucf -p xc3s500e-fg320-4 SSeg_toplevel.ngc SSeg_toplevel.ngd  
+map -intstyle ise -p xc3s500e-fg320-4 -cm area -ir off -pr off -c 100 -o SSeg_toplevel_map.ncd SSeg_toplevel.ngd SSeg_toplevel.pcf 
+par -w -intstyle ise -ol high -t 1 SSeg_toplevel_map.ncd SSeg_toplevel.ncd SSeg_toplevel.pcf 
+trce -intstyle ise -v 3 -s 4 -n 3 -fastpaths -xml SSeg_toplevel.twx SSeg_toplevel.ncd -o SSeg_toplevel.twr SSeg_toplevel.pcf -ucf SevenSeg_toplevel.ucf 
+bitgen -intstyle ise -f SSeg_toplevel.ut SSeg_toplevel.ncd 
+xst -intstyle ise -ifn "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SSeg_toplevel.xst" -ofn "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SSeg_toplevel.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc SevenSeg_toplevel.ucf -p xc3s500e-fg320-4 SSeg_toplevel.ngc SSeg_toplevel.ngd  
+map -intstyle ise -p xc3s500e-fg320-4 -cm area -ir off -pr off -c 100 -o SSeg_toplevel_map.ncd SSeg_toplevel.ngd SSeg_toplevel.pcf 
+par -w -intstyle ise -ol high -t 1 SSeg_toplevel_map.ncd SSeg_toplevel.ncd SSeg_toplevel.pcf 
+trce -intstyle ise -v 3 -s 4 -n 3 -fastpaths -xml SSeg_toplevel.twx SSeg_toplevel.ncd -o SSeg_toplevel.twr SSeg_toplevel.pcf -ucf SevenSeg_toplevel.ucf 
+bitgen -intstyle ise -f SSeg_toplevel.ut SSeg_toplevel.ncd 
+xst -intstyle ise -ifn "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SSeg_toplevel.xst" -ofn "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SSeg_toplevel.syr" 
+ngdbuild -intstyle ise -dd _ngo -nt timestamp -uc SevenSeg_toplevel.ucf -p xc3s500e-fg320-4 SSeg_toplevel.ngc SSeg_toplevel.ngd  
+map -intstyle ise -p xc3s500e-fg320-4 -cm area -ir off -pr off -c 100 -o SSeg_toplevel_map.ncd SSeg_toplevel.ngd SSeg_toplevel.pcf 
+par -w -intstyle ise -ol high -t 1 SSeg_toplevel_map.ncd SSeg_toplevel.ncd SSeg_toplevel.pcf 
+trce -intstyle ise -v 3 -s 4 -n 3 -fastpaths -xml SSeg_toplevel.twx SSeg_toplevel.ncd -o SSeg_toplevel.twr SSeg_toplevel.pcf -ucf SevenSeg_toplevel.ucf 
+bitgen -intstyle ise -f SSeg_toplevel.ut SSeg_toplevel.ncd 

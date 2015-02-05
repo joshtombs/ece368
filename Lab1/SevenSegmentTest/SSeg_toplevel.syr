@@ -1,0 +1,454 @@
+Release 14.7 - xst P.20131013 (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+--> Parameter TMPDIR set to xst/projnav.tmp
+
+
+Total REAL time to Xst completion: 1.00 secs
+Total CPU time to Xst completion: 0.33 secs
+ 
+--> Parameter xsthdpdir set to xst
+
+
+Total REAL time to Xst completion: 1.00 secs
+Total CPU time to Xst completion: 0.33 secs
+ 
+--> Reading design: SSeg_toplevel.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Compilation
+  3) Design Hierarchy Analysis
+  4) HDL Analysis
+  5) HDL Synthesis
+     5.1) HDL Synthesis Report
+  6) Advanced HDL Synthesis
+     6.1) Advanced HDL Synthesis Report
+  7) Low Level Synthesis
+  8) Partition Report
+  9) Final Report
+	9.1) Device utilization summary
+	9.2) Partition Resource Summary
+	9.3) TIMING REPORT
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "SSeg_toplevel.prj"
+Input Format                       : mixed
+Ignore Synthesis Constraint File   : NO
+
+---- Target Parameters
+Output File Name                   : "SSeg_toplevel"
+Output Format                      : NGC
+Target Device                      : xc3s500e-4-fg320
+
+---- Source Options
+Top Module Name                    : SSeg_toplevel
+Automatic FSM Extraction           : YES
+FSM Encoding Algorithm             : Auto
+Safe Implementation                : No
+FSM Style                          : LUT
+RAM Extraction                     : Yes
+RAM Style                          : Auto
+ROM Extraction                     : Yes
+Mux Style                          : Auto
+Decoder Extraction                 : YES
+Priority Encoder Extraction        : Yes
+Shift Register Extraction          : YES
+Logical Shifter Extraction         : YES
+XOR Collapsing                     : YES
+ROM Style                          : Auto
+Mux Extraction                     : Yes
+Resource Sharing                   : YES
+Asynchronous To Synchronous        : NO
+Multiplier Style                   : Auto
+Automatic Register Balancing       : No
+
+---- Target Options
+Add IO Buffers                     : YES
+Global Maximum Fanout              : 500
+Add Generic Clock Buffer(BUFG)     : 24
+Register Duplication               : YES
+Slice Packing                      : YES
+Optimize Instantiated Primitives   : NO
+Use Clock Enable                   : Yes
+Use Synchronous Set                : Yes
+Use Synchronous Reset              : Yes
+Pack IO Registers into IOBs        : Auto
+Equivalent register Removal        : YES
+
+---- General Options
+Optimization Goal                  : Speed
+Optimization Effort                : 1
+Keep Hierarchy                     : No
+Netlist Hierarchy                  : As_Optimized
+RTL Output                         : Yes
+Global Optimization                : AllClockNets
+Read Cores                         : YES
+Write Timing Constraints           : NO
+Cross Clock Analysis               : NO
+Hierarchy Separator                : /
+Bus Delimiter                      : <>
+Case Specifier                     : Maintain
+Slice Utilization Ratio            : 100
+BRAM Utilization Ratio             : 100
+Verilog 2001                       : YES
+Auto BRAM Packing                  : NO
+Slice Utilization Ratio Delta      : 5
+
+=========================================================================
+
+
+=========================================================================
+*                          HDL Compilation                              *
+=========================================================================
+Compiling vhdl file "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SevenSeg.vhd" in Library work.
+Architecture behavioral of Entity ssegdriver is up to date.
+Compiling vhdl file "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SevenSeg_toplevel.vhd" in Library work.
+Entity <sseg_toplevel> compiled.
+Entity <sseg_toplevel> (Architecture <structural>) compiled.
+
+=========================================================================
+*                     Design Hierarchy Analysis                         *
+=========================================================================
+Analyzing hierarchy for entity <SSeg_toplevel> in library <work> (architecture <structural>).
+
+Analyzing hierarchy for entity <SSegDriver> in library <work> (architecture <Behavioral>).
+
+
+=========================================================================
+*                            HDL Analysis                               *
+=========================================================================
+Analyzing Entity <SSeg_toplevel> in library <work> (Architecture <structural>).
+Entity <SSeg_toplevel> analyzed. Unit <SSeg_toplevel> generated.
+
+Analyzing Entity <SSegDriver> in library <work> (Architecture <Behavioral>).
+WARNING:Xst:819 - "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SevenSeg.vhd" line 98: One or more signals are missing in the process sensitivity list. To enable synthesis of FPGA/CPLD hardware, XST will assume that all necessary signals are present in the sensitivity list. Please note that the result of the synthesis may differ from the initial design specification. The missing signals are:
+   <clk240hz>
+INFO:Xst:1561 - "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SevenSeg.vhd" line 120: Mux is complete : default of case is discarded
+Entity <SSegDriver> analyzed. Unit <SSegDriver> generated.
+
+
+=========================================================================
+*                           HDL Synthesis                               *
+=========================================================================
+
+Performing bidirectional port resolution...
+
+Synthesizing Unit <SSegDriver>.
+    Related source file is "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SevenSeg.vhd".
+WARNING:Xst:647 - Input <COL_EN> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
+    Found 16x7-bit ROM for signal <segnum>.
+    Found 4x4-bit ROM for signal <AN_OUT$mux0001> created at line 104.
+    Found 4-bit register for signal <AN_OUT>.
+    Found 1-bit register for signal <DP_OUT>.
+    Found 1-bit register for signal <clk240hz>.
+    Found 17-bit up counter for signal <count240hz>.
+    Found 1-bit 4-to-1 multiplexer for signal <DP_OUT$mux0001> created at line 104.
+    Found 4-bit register for signal <hexnum>.
+    Found 4-bit 4-to-1 multiplexer for signal <hexnum$mux0001> created at line 104.
+    Found 2-bit up counter for signal <pos>.
+    Summary:
+	inferred   2 ROM(s).
+	inferred   2 Counter(s).
+	inferred  10 D-type flip-flop(s).
+	inferred   5 Multiplexer(s).
+Unit <SSegDriver> synthesized.
+
+
+Synthesizing Unit <SSeg_toplevel>.
+    Related source file is "C:/Users/Josh/Documents/College/Junior/Spring/SevenSegmentTest/SevenSeg_toplevel.vhd".
+WARNING:Xst:653 - Signal <s3> is used but never assigned. This sourceless signal will be automatically connected to value 1110.
+WARNING:Xst:653 - Signal <s2> is used but never assigned. This sourceless signal will be automatically connected to value 1100.
+WARNING:Xst:653 - Signal <enl> is used but never assigned. This sourceless signal will be automatically connected to value 1.
+WARNING:Xst:653 - Signal <dpc> is used but never assigned. This sourceless signal will be automatically connected to value 1111.
+WARNING:Xst:653 - Signal <cen> is used but never assigned. This sourceless signal will be automatically connected to value 0.
+Unit <SSeg_toplevel> synthesized.
+
+
+=========================================================================
+HDL Synthesis Report
+
+Macro Statistics
+# ROMs                                                 : 2
+ 16x7-bit ROM                                          : 1
+ 4x4-bit ROM                                           : 1
+# Counters                                             : 2
+ 17-bit up counter                                     : 1
+ 2-bit up counter                                      : 1
+# Registers                                            : 4
+ 1-bit register                                        : 2
+ 4-bit register                                        : 2
+# Multiplexers                                         : 2
+ 1-bit 4-to-1 multiplexer                              : 1
+ 4-bit 4-to-1 multiplexer                              : 1
+
+=========================================================================
+
+=========================================================================
+*                       Advanced HDL Synthesis                          *
+=========================================================================
+
+
+=========================================================================
+Advanced HDL Synthesis Report
+
+Macro Statistics
+# ROMs                                                 : 2
+ 16x7-bit ROM                                          : 1
+ 4x4-bit ROM                                           : 1
+# Counters                                             : 2
+ 17-bit up counter                                     : 1
+ 2-bit up counter                                      : 1
+# Registers                                            : 10
+ Flip-Flops                                            : 10
+# Multiplexers                                         : 2
+ 1-bit 4-to-1 multiplexer                              : 1
+ 4-bit 4-to-1 multiplexer                              : 1
+
+=========================================================================
+
+=========================================================================
+*                         Low Level Synthesis                           *
+=========================================================================
+WARNING:Xst:1710 - FF/Latch <DP_OUT> (without init value) has a constant value of 1 in block <SSegDriver>. This FF/Latch will be trimmed during the optimization process.
+
+Optimizing unit <SSeg_toplevel> ...
+
+Optimizing unit <SSegDriver> ...
+
+Mapping all equations...
+Building and optimizing final netlist ...
+Found area constraint ratio of 100 (+ 5) on block SSeg_toplevel, actual ratio is 0.
+
+Final Macro Processing ...
+
+=========================================================================
+Final Register Report
+
+Macro Statistics
+# Registers                                            : 28
+ Flip-Flops                                            : 28
+
+=========================================================================
+
+=========================================================================
+*                           Partition Report                            *
+=========================================================================
+
+Partition Implementation Status
+-------------------------------
+
+  No Partitions were found in this design.
+
+-------------------------------
+
+=========================================================================
+*                            Final Report                               *
+=========================================================================
+Final Results
+RTL Top Level Output File Name     : SSeg_toplevel.ngr
+Top Level Output File Name         : SSeg_toplevel
+Output Format                      : NGC
+Optimization Goal                  : Speed
+Keep Hierarchy                     : No
+
+Design Statistics
+# IOs                              : 22
+
+Cell Usage :
+# BELS                             : 97
+#      GND                         : 1
+#      INV                         : 4
+#      LUT1                        : 16
+#      LUT2                        : 22
+#      LUT4                        : 15
+#      MUXCY                       : 21
+#      VCC                         : 1
+#      XORCY                       : 17
+# FlipFlops/Latches                : 28
+#      FDC                         : 10
+#      FDCE                        : 18
+# Clock Buffers                    : 1
+#      BUFGP                       : 1
+# IO Buffers                       : 21
+#      IBUF                        : 9
+#      OBUF                        : 12
+=========================================================================
+
+Device utilization summary:
+---------------------------
+
+Selected Device : 3s500efg320-4 
+
+ Number of Slices:                       31  out of   4656     0%  
+ Number of Slice Flip Flops:             28  out of   9312     0%  
+ Number of 4 input LUTs:                 57  out of   9312     0%  
+ Number of IOs:                          22
+ Number of bonded IOBs:                  22  out of    232     9%  
+ Number of GCLKs:                         1  out of     24     4%  
+
+---------------------------
+Partition Resource Summary:
+---------------------------
+
+  No Partitions were found in this design.
+
+---------------------------
+
+
+=========================================================================
+TIMING REPORT
+
+NOTE: THESE TIMING NUMBERS ARE ONLY A SYNTHESIS ESTIMATE.
+      FOR ACCURATE TIMING INFORMATION PLEASE REFER TO THE TRACE REPORT
+      GENERATED AFTER PLACE-and-ROUTE.
+
+Clock Information:
+------------------
+-----------------------------------+------------------------+-------+
+Clock Signal                       | Clock buffer(FF name)  | Load  |
+-----------------------------------+------------------------+-------+
+SSeg/clk240hz                      | NONE(SSeg/pos_1)       | 10    |
+CLK                                | BUFGP                  | 18    |
+-----------------------------------+------------------------+-------+
+INFO:Xst:2169 - HDL ADVISOR - Some clock signals were not automatically buffered by XST with BUFG/BUFR resources. Please use the buffer_type constraint in order to insert these buffers to the clock signals to help prevent skew problems.
+
+Asynchronous Control Signals Information:
+----------------------------------------
+-----------------------------------+------------------------+-------+
+Control Signal                     | Buffer(FF name)        | Load  |
+-----------------------------------+------------------------+-------+
+BTN                                | IBUF                   | 28    |
+-----------------------------------+------------------------+-------+
+
+Timing Summary:
+---------------
+Speed Grade: -4
+
+   Minimum period: 5.522ns (Maximum Frequency: 181.094MHz)
+   Minimum input arrival time before clock: 2.729ns
+   Maximum output required time after clock: 5.870ns
+   Maximum combinational path delay: No path found
+
+Timing Detail:
+--------------
+All values displayed in nanoseconds (ns)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'SSeg/clk240hz'
+  Clock period: 2.905ns (frequency: 344.234MHz)
+  Total number of paths / destination ports: 19 / 10
+-------------------------------------------------------------------------
+Delay:               2.905ns (Levels of Logic = 1)
+  Source:            SSeg/pos_0 (FF)
+  Destination:       SSeg/pos_0 (FF)
+  Source Clock:      SSeg/clk240hz rising
+  Destination Clock: SSeg/clk240hz rising
+
+  Data Path: SSeg/pos_0 to SSeg/pos_0
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDC:C->Q             10   0.591   0.882  SSeg/pos_0 (SSeg/pos_0)
+     INV:I->O              1   0.704   0.420  SSeg/Mcount_pos_xor<0>11_INV_0 (SSeg/Mcount_pos)
+     FDC:D                     0.308          SSeg/pos_0
+    ----------------------------------------
+    Total                      2.905ns (1.603ns logic, 1.302ns route)
+                                       (55.2% logic, 44.8% route)
+
+=========================================================================
+Timing constraint: Default period analysis for Clock 'CLK'
+  Clock period: 5.522ns (frequency: 181.094MHz)
+  Total number of paths / destination ports: 460 / 19
+-------------------------------------------------------------------------
+Delay:               5.522ns (Levels of Logic = 18)
+  Source:            SSeg/count240hz_1 (FF)
+  Destination:       SSeg/count240hz_16 (FF)
+  Source Clock:      CLK rising
+  Destination Clock: CLK rising
+
+  Data Path: SSeg/count240hz_1 to SSeg/count240hz_16
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDCE:C->Q             2   0.591   0.622  SSeg/count240hz_1 (SSeg/count240hz_1)
+     LUT1:I0->O            1   0.704   0.000  SSeg/Mcount_count240hz_cy<1>_rt (SSeg/Mcount_count240hz_cy<1>_rt)
+     MUXCY:S->O            1   0.464   0.000  SSeg/Mcount_count240hz_cy<1> (SSeg/Mcount_count240hz_cy<1>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<2> (SSeg/Mcount_count240hz_cy<2>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<3> (SSeg/Mcount_count240hz_cy<3>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<4> (SSeg/Mcount_count240hz_cy<4>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<5> (SSeg/Mcount_count240hz_cy<5>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<6> (SSeg/Mcount_count240hz_cy<6>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<7> (SSeg/Mcount_count240hz_cy<7>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<8> (SSeg/Mcount_count240hz_cy<8>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<9> (SSeg/Mcount_count240hz_cy<9>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<10> (SSeg/Mcount_count240hz_cy<10>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<11> (SSeg/Mcount_count240hz_cy<11>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<12> (SSeg/Mcount_count240hz_cy<12>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<13> (SSeg/Mcount_count240hz_cy<13>)
+     MUXCY:CI->O           1   0.059   0.000  SSeg/Mcount_count240hz_cy<14> (SSeg/Mcount_count240hz_cy<14>)
+     MUXCY:CI->O           0   0.059   0.000  SSeg/Mcount_count240hz_cy<15> (SSeg/Mcount_count240hz_cy<15>)
+     XORCY:CI->O           1   0.804   0.499  SSeg/Mcount_count240hz_xor<16> (SSeg/Result<16>)
+     LUT2:I1->O            1   0.704   0.000  SSeg/Mcount_count240hz_eqn_161 (SSeg/Mcount_count240hz_eqn_16)
+     FDCE:D                    0.308          SSeg/count240hz_16
+    ----------------------------------------
+    Total                      5.522ns (4.401ns logic, 1.121ns route)
+                                       (79.7% logic, 20.3% route)
+
+=========================================================================
+Timing constraint: Default OFFSET IN BEFORE for Clock 'SSeg/clk240hz'
+  Total number of paths / destination ports: 8 / 4
+-------------------------------------------------------------------------
+Offset:              2.729ns (Levels of Logic = 2)
+  Source:            SW<3> (PAD)
+  Destination:       SSeg/hexnum_3 (FF)
+  Destination Clock: SSeg/clk240hz rising
+
+  Data Path: SW<3> to SSeg/hexnum_3
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     IBUF:I->O             1   1.218   0.499  SW_3_IBUF (SW_3_IBUF)
+     LUT4:I1->O            1   0.704   0.000  SSeg/Mmux_hexnum_mux000181 (SSeg/hexnum_mux0001<3>)
+     FDC:D                     0.308          SSeg/hexnum_3
+    ----------------------------------------
+    Total                      2.729ns (2.230ns logic, 0.499ns route)
+                                       (81.7% logic, 18.3% route)
+
+=========================================================================
+Timing constraint: Default OFFSET OUT AFTER for Clock 'SSeg/clk240hz'
+  Total number of paths / destination ports: 32 / 11
+-------------------------------------------------------------------------
+Offset:              5.870ns (Levels of Logic = 2)
+  Source:            SSeg/hexnum_1 (FF)
+  Destination:       SEG<6> (PAD)
+  Source Clock:      SSeg/clk240hz rising
+
+  Data Path: SSeg/hexnum_1 to SEG<6>
+                                Gate     Net
+    Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
+    ----------------------------------------  ------------
+     FDC:C->Q              7   0.591   0.883  SSeg/hexnum_1 (SSeg/hexnum_1)
+     LUT4:I0->O            1   0.704   0.420  SSeg/Mrom_segnum21 (SEG_2_OBUF)
+     OBUF:I->O                 3.272          SEG_2_OBUF (SEG<2>)
+    ----------------------------------------
+    Total                      5.870ns (4.567ns logic, 1.303ns route)
+                                       (77.8% logic, 22.2% route)
+
+=========================================================================
+
+
+Total REAL time to Xst completion: 20.00 secs
+Total CPU time to Xst completion: 19.18 secs
+ 
+--> 
+
+Total memory usage is 261788 kilobytes
+
+Number of errors   :    0 (   0 filtered)
+Number of warnings :    8 (   0 filtered)
+Number of infos    :    2 (   0 filtered)
+
