@@ -140,10 +140,10 @@ begin
 			x"42" when x"32",	-- B
 			x"43" when x"21",	-- C
 			x"44" when x"23",	-- D
-			x"48" when x"24",	-- E
+			x"45" when x"24",	-- E
 			x"46" when x"2B",	-- F
 			x"47" when x"34",	-- G
-			x"45" when x"33",	-- H
+			x"48" when x"33",	-- H
 			x"49" when x"43",	-- I
 			x"4A" when x"3B",	-- J
 			x"4B" when x"42",	-- K
@@ -154,8 +154,8 @@ begin
 			x"50" when x"4D",	-- P
 			x"51" when x"15",	-- Q
 			x"52" when x"2D",	-- R
-			x"54" when x"1B",	-- S
-			x"53" when x"2C",	-- T
+			x"53" when x"1B",	-- S
+			x"54" when x"2C",	-- T
 			x"55" when x"3C",	-- U
 			x"56" when x"2A",	-- V
 			x"57" when x"1D",	-- W
