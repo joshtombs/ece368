@@ -52,26 +52,26 @@ begin
 			x"63" when x"21",	-- c
 			x"64" when x"23",	-- d
 			x"65" when x"24",	-- e
-			x"6C" when x"2B",	-- f
+			x"66" when x"2B",	-- f
 			x"67" when x"34",	-- g
 			x"68" when x"33",	-- h
 			x"69" when x"43",	-- i
 			x"6A" when x"3B",	-- j
 			x"6B" when x"42",	-- k
-			x"66" when x"4B",	-- l
+			x"6C" when x"4B",	-- l
 			x"6D" when x"3A",	-- m
 			x"6E" when x"31",	-- n
 			x"6F" when x"44",	-- o
 			x"70" when x"4D",	-- p
 			x"71" when x"15",	-- q
-			x"74" when x"2D",	-- r
+			x"72" when x"2D",	-- r
 			x"73" when x"1B",	-- s
-			x"72" when x"2C",	-- t
-			x"79" when x"3C",	-- u
+			x"74" when x"2C",	-- t
+			x"75" when x"3C",	-- u
 			x"76" when x"2A",	-- v
 			x"77" when x"1D",	-- w
 			x"78" when x"22",	-- x
-			x"75" when x"35",	-- y
+			x"79" when x"35",	-- y
 			x"7A" when x"1A",	-- z
 
 			--Top Row
