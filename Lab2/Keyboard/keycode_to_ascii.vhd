@@ -220,7 +220,7 @@ begin
 							state <= idle;
 						end if;
 						-- Shift Key was press (on)
-						if (keycode=x"12" or keycode=x"54") then
+						if (keycode=x"12" or keycode=x"59") then
 							Shift_Key := true;
 						end if;
 					end if;
@@ -247,9 +247,9 @@ begin
 				when READ_KEYCODE =>
 				if VALID_SIGNAL= '1' then
 						-- Shift Key was released (off)
-						if (keycode=x"12" or keycode=x"54") then
+						if (keycode=x"12" or keycode=x"59") then
 							Shift_Key := false;
-						elsif (keycode=x"46") then
+						elsif (keycode=x"58") then
 							if (Caps_Lock = false) then
 								Caps_Lock := true;
 							else
