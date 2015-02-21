@@ -19,7 +19,7 @@ use work.all;
 entity buttoncontrol is
     Port ( CLK     : in  STD_LOGIC;
            BTN     : in  STD_LOGIC_VECTOR (3 downto 0);
-			  OUTPUT : out STD_LOGIC_VECTOR (3 downto 0));
+           OUTPUT : out STD_LOGIC_VECTOR (3 downto 0));
 end buttoncontrol;
 
 architecture Structural of buttoncontrol is
@@ -30,22 +30,22 @@ begin
     BTN_0: entity work.debounce
     port map( CLK    => CLK,
               INPUT  => BTN(0),
-				  OUTPUT => OUTPUT(0));
+              OUTPUT => OUTPUT(0));
 
     BTN_1: entity work.debounce
     port map( CLK    => CLK,
               INPUT  => BTN(1),
-				  OUTPUT => OUTPUT(1));
+              OUTPUT => OUTPUT(1));
 
     BTN_2: entity work.debounce
     port map( CLK    => CLK,
               INPUT  => BTN(2),
-				  OUTPUT => OUTPUT(2));
+              OUTPUT => OUTPUT(2));
 
     BTN_3: entity work.debounce
     port map( CLK    => CLK,
               INPUT  => BTN(3),
-				  OUTPUT => OUTPUT(3));
+              OUTPUT => OUTPUT(3));
 
     
     ----- End Structural Components -----

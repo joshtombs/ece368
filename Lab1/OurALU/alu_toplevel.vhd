@@ -20,8 +20,8 @@ entity ALU is
     Port ( CLK      : in  STD_LOGIC;
            RA       : in  STD_LOGIC_VECTOR (7 downto 0);
            RB       : in  STD_LOGIC_VECTOR (7 downto 0);
-			  OPCODE   : in  STD_LOGIC_VECTOR (3 downto 0);
-			  CCR      : out STD_LOGIC_VECTOR (3 downto 0);
+           OPCODE   : in  STD_LOGIC_VECTOR (3 downto 0);
+           CCR      : out STD_LOGIC_VECTOR (3 downto 0);
            ALU_OUT  : out STD_LOGIC_VECTOR (7 downto 0);
            LDST_OUT : out STD_LOGIC_VECTOR (7 downto 0));
 end ALU;
