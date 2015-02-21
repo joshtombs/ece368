@@ -31,14 +31,14 @@ entity debounce is
 
     Port ( CLK    : in  STD_LOGIC;
            INPUT  : in  STD_LOGIC;
-			  OUTPUT : out STD_LOGIC);
+           OUTPUT : out STD_LOGIC);
 end debounce;
 
 architecture Logic of debounce is
 
-    signal D_STATE 	: STD_LOGIC_VECTOR (1 downto 0);
-    signal D_SET   	: STD_LOGIC;
-    signal Count   	: STD_LOGIC_VECTOR( wait_time downto 0) := (others => '0');
+    signal D_STATE     : STD_LOGIC_VECTOR (1 downto 0);
+    signal D_SET       : STD_LOGIC;
+    signal Count       : STD_LOGIC_VECTOR( wait_time downto 0) := (others => '0');
 
 begin
 
@@ -52,11 +52,11 @@ begin
             D_STATE(0) <= INPUT;
             D_STATE(1) <= D_STATE(0);
             if(D_SET = '1') then
-					Count <= (others => '0');
+                Count <= (others => '0');
             elsif(Count(wait_time) = '0') then
                 Count <= Count + 1;
-				else
-					OUTPUT <= D_STATE(1);
+            else
+                OUTPUT <= D_STATE(1);
             end if;
         end if;
     end process;

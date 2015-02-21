@@ -14,7 +14,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity flip_flop is
-	Port ( CLK     : in  STD_LOGIC;
+    Port ( CLK     : in  STD_LOGIC;
           D_IN    : in  STD_LOGIC_VECTOR (7 downto 0);
           D_OUT   : out STD_LOGIC_VECTOR (7 downto 0));
 end flip_flop;
@@ -22,11 +22,11 @@ end flip_flop;
 architecture Behavioral of flip_flop is
 
 begin
-	Process(CLK)
-	begin
-		if(CLK'event and CLK='1') then
-			D_OUT <= D_IN;
-		end if;
-	end Process;
+    Process(CLK)
+    begin
+        if(CLK'event and CLK='1') then
+            D_OUT <= D_IN;
+        end if;
+    end Process;
 end Behavioral;
 
