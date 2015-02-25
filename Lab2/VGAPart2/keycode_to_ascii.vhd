@@ -257,7 +257,9 @@ begin
 							end if;
 							--state <= SEND_CAPS;
 						else 
-							if (Shift_Key = true or Caps_Lock = true) then
+							if (Shift_Key = true) then		
+								ascii <= ASCII_UPPER;
+							elsif(Caps_Lock = true and keycode > x"60" and keycode < x"7B") then	
 								ascii <= ASCII_UPPER;
 							else
 								ascii <= ASCII_LOWER;
