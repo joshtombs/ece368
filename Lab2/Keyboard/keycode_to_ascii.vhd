@@ -257,13 +257,19 @@ begin
 							end if;
 							--state <= SEND_CAPS;
 						else 
-							if (Shift_Key = true or Caps_Lock = true) then
+							if (Shift_Key = true) then
+							    ascii <= ASCII_UPPER;
+							elsif(Caps_Lock = true and ASCII_UPPER > x"40" and ASCII_UPPER < x"5B") then
 								ascii <= ASCII_UPPER;
 							else
 								ascii <= ASCII_LOWER;
 							end if;
 						end if;
-						state <= SEND_COMPLETE;
+						if(keycode=x"12" or keycode=x"59" or keycode=x"58") then
+						    state <= idle;
+						else
+						    state <= SEND_COMPLETE;
+						end if
 					end if;
 
 				when SEND_COMPLETE =>
