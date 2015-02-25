@@ -259,13 +259,17 @@ begin
 						else 
 							if (Shift_Key = true) then		
 								ascii <= ASCII_UPPER;
-							elsif(Caps_Lock = true and keycode > x"60" and keycode < x"7B") then	
+							elsif(Caps_Lock = true and ASCII_UPPER > x"40" and ASCII_UPPER < x"5B") then	
 								ascii <= ASCII_UPPER;
 							else
 								ascii <= ASCII_LOWER;
 							end if;
 						end if;
+						if(keycode=x"12" or keycode=x"59" or keycode=x"58")then
+						state <= idle;
+						else
 						state <= SEND_COMPLETE;
+						end if;
 					end if;
 
 				when SEND_COMPLETE =>
