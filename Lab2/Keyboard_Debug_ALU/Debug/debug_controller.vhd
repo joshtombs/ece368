@@ -60,6 +60,7 @@ begin
             x"0" when OTHERS; --unknown input
 
     PROCESS (CLK)
+        variable instruction : STD_LOGIC_VECTOR(15 downto 0) := x"0000";
     begin
         if( CLK'event and CLK = '1') then
             case STATE is
@@ -73,7 +74,6 @@ begin
                     STATE <= idle;
                 
                 when idle =>
-                    DATA_OUT <= instruction;
                     if( RD = '1' and W_ENB = '1') then
                         STATE <= normal_key;
                     elsif (RD= '1' and W_ENB = '0') then
@@ -95,7 +95,7 @@ begin
                     STATE <= idle;
                 
                 when flush =>
-                    instruction <= (((ram(0) & ram(1)) & ram(2)) & ram(3));
+                    instruction := (((ram(0) & ram(1)) & ram(2)) & ram(3));
                     ram_addr <= 0;
                         STATE <= idle;
                 
@@ -110,6 +110,7 @@ begin
                     STATE <= idle;
                     
             end case;
+				DATA_OUT <= instruction;
         end if;
     end PROCESS;
 end Behavioral;
