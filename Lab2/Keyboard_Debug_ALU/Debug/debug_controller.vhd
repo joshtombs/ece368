@@ -65,7 +65,6 @@ begin
         if( CLK'event and CLK = '1') then
             case STATE is
                 when init =>
-                    DATA_OUT <= (OTHERS => '0');
                     ram_addr <= 0;
                     ram(0) <= (OTHERS => '0');
                     ram(1) <= (OTHERS => '0');
@@ -91,16 +90,17 @@ begin
                 
                 when normal_key =>
                     ram(ram_addr) <= HEX_CHAR;
+                    if(ram_addr < 3) then
                         ram_addr <= ram_addr + 1;
+                    end if;
                     STATE <= idle;
                 
                 when flush =>
                     instruction := (((ram(0) & ram(1)) & ram(2)) & ram(3));
-                    ram_addr <= 0;
-                        STATE <= idle;
+                        STATE <= init;
                 
                 when delete =>
-                    if(ram_addr > 0) then
+                    if(ram_addr > 0 and ram_addr < 3) then
                         ram_addr <= ram_addr - 1;
                     end if;
                     ram(ram_addr) <= x"0";

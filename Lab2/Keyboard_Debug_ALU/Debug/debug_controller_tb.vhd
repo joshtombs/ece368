@@ -117,7 +117,16 @@ BEGIN
         
         wait for 100 ns;
         
-        -- 1 pressed
+        -- BKSP pressed
+        DATA_IN <= x"08";
+        ASCII_WE <= '0';
+        wait for D_CLK_PERIOD;
+        ASCII_RD <= '1';
+        wait for D_CLK_PERIOD;
+        ASCII_RD <= '0';
+        wait for D_CLK_PERIOD;
+		  
+		  -- 1 pressed
         DATA_IN <= x"31";
         ASCII_WE <= '1';
         wait for D_CLK_PERIOD;
@@ -164,6 +173,24 @@ BEGIN
         
         -- 0 pressed
         DATA_IN <= x"30";
+        ASCII_WE <= '1';
+        wait for D_CLK_PERIOD;
+        ASCII_RD <= '1';
+        wait for D_CLK_PERIOD;
+        ASCII_RD <= '0';
+        wait for D_CLK_PERIOD;
+		  
+		  -- BKSP pressed
+        DATA_IN <= x"08";
+        ASCII_WE <= '0';
+        wait for D_CLK_PERIOD;
+        ASCII_RD <= '1';
+        wait for D_CLK_PERIOD;
+        ASCII_RD <= '0';
+        wait for D_CLK_PERIOD;
+		  
+		  -- 1 pressed
+        DATA_IN <= x"31";
         ASCII_WE <= '1';
         wait for D_CLK_PERIOD;
         ASCII_RD <= '1';
