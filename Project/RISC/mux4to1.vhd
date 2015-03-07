@@ -17,11 +17,11 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity MUX4to1 is
     Port( SEL    : in  STD_LOGIC_VECTOR (1 downto 0);
-          IN0    : in  STD_LOGIC_VECTOR (15 downto 0);
-          IN1    : in  STD_LOGIC_VECTOR (15 downto 0);
-          IN2    : in  STD_LOGIC_VECTOR (15 downto 0);
-          IN3    : in  STD_LOGIC_VECTOR (15 downto 0);
-          OUTPUT : out  STD_LOGIC_VECTOR(15 downto 0));
+          IN0    : in  STD_LOGIC_VECTOR (DATA_WIDTH - 1 downto 0);
+          IN1    : in  STD_LOGIC_VECTOR (DATA_WIDTH - 1 downto 0);
+          IN2    : in  STD_LOGIC_VECTOR (DATA_WIDTH - 1 downto 0);
+          IN3    : in  STD_LOGIC_VECTOR (DATA_WIDTH - 1 downto 0);
+          OUTPUT : out  STD_LOGIC_VECTOR(DATA_WIDTH - 1 downto 0));
 end MUX4to1;
 
 architecture Behavioral of MUX4to1 is
