@@ -15,6 +15,7 @@
 ---------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use work.ui_components.all;
 use work.all;
 
 entity user_interface is
@@ -42,7 +43,7 @@ architecture Structural of user_interface is
     signal dpc : STD_LOGIC_VECTOR (3 downto 0) := "1111";
     signal cen : STD_LOGIC := '0';
 begin
-    U1: entity work.keyboard_controller
+    U1: keyboard_controller
     port map( CLK      => CLK,
               RST      => RST,
               PS2_CLK  => PS2_C,
@@ -51,7 +52,7 @@ begin
               ASCII_RD => ascii_rd,
               ASCII_WE => ascii_we);
     
-    U2: entity work.debug_controller
+    U2: debug_controller
     port map( DATA_IN => ascii,
               CLK => CLK,
               RD => ascii_rd,
@@ -60,7 +61,7 @@ begin
     
     I_OUT <= instruction;
                  
-    U3: entity work.vga_toplevel
+    U3: vga_toplevel
     port map( CLK      => CLK,
               RST      => RST,
 --            SW       => ,
@@ -73,7 +74,7 @@ begin
               VGAGRN   => VGAGRN,
               VGABLU   => VGABLU);
          
-    U4: entity work.SSegDriver
+    U4: seven_seg
     port map( CLK     => CLK,
               RST     => RST,
               EN      => enl,
