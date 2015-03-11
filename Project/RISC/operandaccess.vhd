@@ -31,6 +31,7 @@ architecture Structural of operandaccess is
     signal REGA_OUT, REGB_OUT, OP1_MUX_OUT, OP2_MUX_OUT
                        : STD_LOGIC_VECTOR(15 downto 0);
     signal LOW : STD_LOGIC_VECTOR(15 downto 0) := x"0000";
+    signal HIGH: STD_LOGIC := '1';
 begin
     BANK: entity work.register_bank
     PORT MAP( CLK     => CLK,
@@ -51,19 +52,31 @@ begin
               IN3 => LOW,
               OUTPUT => OP1_MUX_OUT);
                  
-    OP1 <= OP1_MUX_OUT;
+    REG1 : entity work.reg16
+    PORT MAP( CLK   => CLK,
+              D     => OP1_MUX_OUT,
+              ENB   => HIGH,
+              Q     => OP1);
 
     OP2_MUX: entity work.MUX4to1
-    PORT MAP( SEL => OP2_MUX_SEL,
-              IN0 => REGB_OUT,
-              IN1 => DATA_IN(31 downto 16),
-              IN2 => LOW,
-              IN3 => LOW,
+    PORT MAP( SEL    => OP2_MUX_SEL,
+              IN0    => REGB_OUT,
+              IN1    => DATA_IN(31 downto 16),
+              IN2    => LOW,
+              IN3    => LOW,
               OUTPUT => OP2_MUX_OUT);
 
-    OP2 <= OP2_MUX_OUT;
-    
-    OPCODE <= DATA_IN(43 downto 40);
+    REG2 : entity work.reg16
+     PORT MAP( CLK   => CLK,
+               D     => OP2_MUX_OUT,
+               ENB   => HIGH,
+               Q     => OP2);
+
+     REG3 : entity work.reg4
+     PORT MAP( CLK   => CLK,
+               D     => DATA_IN(43 downto 40),
+               ENB   => HIGH,
+               Q     => OPCODE);
 
 end Structural;
 
