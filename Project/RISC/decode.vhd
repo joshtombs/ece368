@@ -14,7 +14,8 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity decode is
-    Port( INST_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+    Port( CLK     : in  STD_LOGIC;
+          INST_IN : in  STD_LOGIC_VECTOR (15 downto 0);
           DATA_OUT: out STD_LOGIC_VECTOR (43 downto 0));
 end decode;
 
