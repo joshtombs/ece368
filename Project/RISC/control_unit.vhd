@@ -15,6 +15,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity control_unit is
     Port( CLK              : in  STD_LOGIC;
+          OPCODE           : in  STD_LOGIC_VECTOR(3 downto 0);
           PC_MUX_SEL       : out STD_LOGIC_VECTOR(1 downto 0);
           OP1_MUX_SEL      : out STD_LOGIC_VECTOR(1 downto 0);
           OP2_MUX_SEL      : out STD_LOGIC_VECTOR(1 downto 0);
@@ -44,7 +45,21 @@ begin
     OPA: PROCESS(CLK)
     begin
         if(CLK'EVENT and CLK = '1') then
-        
+            OP1_MUX_SEL <= "00" ;    
+            case OPCODE is
+                when "0000" => OP2_MUX_SEL <= "00";
+                when "0001" => OP2_MUX_SEL <= "00";
+                when "0010" => OP2_MUX_SEL <= "00";
+                when "0011" => OP2_MUX_SEL <= "00";
+                when "0100" => OP2_MUX_SEL <= "00";
+                when "0101" => OP2_MUX_SEL <= "01";
+                when "0110" => OP2_MUX_SEL <= "01";
+                when "0111" => OP2_MUX_SEL <= "10";
+                when "1000" => OP2_MUX_SEL <= "10";
+                when "1001" => OP2_MUX_SEL <= "01";
+                when "1010" => OP2_MUX_SEL <= "01";
+                when others => OP2_MUX_SEL <= "01";
+            end case;        
         end if;
     end PROCESS;
     
