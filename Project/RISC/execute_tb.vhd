@@ -38,7 +38,7 @@ ARCHITECTURE behavior OF execute_tb IS
    signal OP2_IN : std_logic_vector(15 downto 0) := (others => '0');
    signal OPCODE : std_logic_vector(3 downto 0) := (others => '0');
 
- 	--Outputs
+   --Outputs
    signal CCR_OUT : std_logic_vector(3 downto 0);
    signal D_OUT : std_logic_vector(15 downto 0);
 
@@ -47,7 +47,7 @@ ARCHITECTURE behavior OF execute_tb IS
  
 BEGIN
  
-	-- Instantiate the Unit Under Test (UUT)
+   -- Instantiate the Unit Under Test (UUT)
    uut: execute PORT MAP (
           CLK => CLK,
           OP1_IN => OP1_IN,
@@ -60,35 +60,35 @@ BEGIN
    -- Clock process definitions
    CLK_process :process
    begin
-		CLK <= '0';
-		wait for CLK_period/2;
-		CLK <= '1';
-		wait for CLK_period/2;
+        CLK <= '0';
+        wait for CLK_period/2;
+        CLK <= '1';
+        wait for CLK_period/2;
    end process;
  
 
    -- Stimulus process
    stim_proc: process
-   begin		
+   begin        
       -- hold reset state for 100 ns.
-      wait for 100 ns;	
+      wait for 100 ns;    
 
       wait for CLK_period*10;
-		wait for CLK_period/2;
-		OP1_IN <= x"0001";
-		OP2_IN <= x"000E";
-		OPCODE <= x"0";
-		wait for CLK_period;
-		ASSERT (D_OUT = x"000F")
-        REPORT "Ouput Data for Instruction 1 incorrect."
-        SEVERITY WARNING;
-		OP1_IN <= x"0010";
-		OP2_IN <= x"0002";
-		OPCODE <= x"1";
-		wait for CLK_period;
-		ASSERT (D_OUT = x"000E")
-        REPORT "Ouput Data for Instruction 2 incorrect."
-        SEVERITY WARNING;
+      wait for CLK_period/2;
+      OP1_IN <= x"0001";
+      OP2_IN <= x"000E";
+      OPCODE <= x"0";
+      wait for CLK_period;
+      ASSERT (D_OUT = x"000F")
+      REPORT "Output Data for Instruction 1 incorrect."
+      SEVERITY WARNING;
+      OP1_IN <= x"0010";
+      OP2_IN <= x"0002";
+      OPCODE <= x"1";
+      wait for CLK_period;
+      ASSERT (D_OUT = x"000E")
+      REPORT "Output Data for Instruction 2 incorrect."
+      SEVERITY WARNING;
       wait;
    end process;
 
