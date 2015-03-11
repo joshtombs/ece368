@@ -28,7 +28,11 @@ begin
     tmp(23 downto 16) <= INST_IN(7 downto 0);
     tmp(15 downto 4)  <= x"000";
     tmp(3 downto 0)   <= INST_IN(7 downto 4);
-    
-    DATA_OUT <= tmp;
+    PROCESS(CLK)
+    BEGIN
+        IF(CLK'EVENT AND CLK = '0') THEN
+            DATA_OUT <= tmp;
+        END IF;
+    END PROCESS;
 end Behavioral;
 
