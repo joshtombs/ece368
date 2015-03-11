@@ -4,7 +4,7 @@
 -- Engineer:   Josh Tombs
 -- 
 -- Create Date:    SPRING 2015
--- Module Name:    OperandAcess Test Bench
+-- Module Name:    OperandAccess Test Bench
 -- Project Name:   UMD_RISC16
 -- Target Devices: Spartan-3E
 -- Tool versions:  Xilinx ISE 14.7
@@ -20,7 +20,7 @@ ARCHITECTURE behavior OF operandaccess_tb IS
  
     -- Component Declaration for the Unit Under Test (UUT)
 
-    COMPONENT operandacess
+    COMPONENT operandaccess
     PORT(
          CLK : IN  std_logic;
          DATA_IN : IN  std_logic_vector(43 downto 0);
@@ -58,7 +58,7 @@ ARCHITECTURE behavior OF operandaccess_tb IS
 BEGIN
  
     -- Instantiate the Unit Under Test (UUT)
-   uut: operandacess PORT MAP (
+   uut: operandaccess PORT MAP (
           CLK => CLK,
           DATA_IN => DATA_IN,
           W_ADDR => W_ADDR,

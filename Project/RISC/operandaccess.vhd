@@ -13,7 +13,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity operandacess is
+entity operandaccess is
     Port( CLK          : in  STD_LOGIC;
           DATA_IN      : in  STD_LOGIC_VECTOR(43 downto 0);
           W_ADDR       : in  STD_LOGIC_VECTOR(3 downto 0);
@@ -25,9 +25,9 @@ entity operandacess is
           OP1          : out STD_LOGIC_VECTOR(15 downto 0);
           OP2          : out STD_LOGIC_VECTOR(15 downto 0);
           OPCODE       : out STD_LOGIC_VECTOR(3 downto 0));
-end operandacess;
+end operandaccess;
 
-architecture Structural of operandacess is
+architecture Structural of operandaccess is
     signal REGA_OUT, REGB_OUT, OP1_MUX_OUT, OP2_MUX_OUT
                        : STD_LOGIC_VECTOR(15 downto 0);
     signal LOW : STD_LOGIC_VECTOR(15 downto 0) := x"0000";
