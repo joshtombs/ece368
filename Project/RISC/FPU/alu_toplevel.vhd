@@ -18,20 +18,20 @@ use work.all;
 
 entity ALU is
     Port ( CLK      : in  STD_LOGIC;
-           RA       : in  STD_LOGIC_VECTOR (7 downto 0);
-           RB       : in  STD_LOGIC_VECTOR (7 downto 0);
+           RA       : in  STD_LOGIC_VECTOR (15 downto 0);
+           RB       : in  STD_LOGIC_VECTOR (15 downto 0);
            OPCODE   : in  STD_LOGIC_VECTOR (3 downto 0);
            CCR      : out STD_LOGIC_VECTOR (3 downto 0);
-           ALU_OUT  : out STD_LOGIC_VECTOR (7 downto 0);
-           LDST_OUT : out STD_LOGIC_VECTOR (7 downto 0));
+           ALU_OUT  : out STD_LOGIC_VECTOR (15 downto 0);
+           LDST_OUT : out STD_LOGIC_VECTOR (15 downto 0));
 end ALU;
 
 architecture Structural of ALU is
 
-    signal arith     : STD_LOGIC_VECTOR (7 downto 0) := (OTHERS => '0');
-    signal logic     : STD_LOGIC_VECTOR (7 downto 0) := (OTHERS => '0');
-    signal shift     : STD_LOGIC_VECTOR (7 downto 0) := (OTHERS => '0');
-    signal memory    : STD_LOGIC_VECTOR (7 downto 0) := (OTHERS => '0');
+    signal arith     : STD_LOGIC_VECTOR (15 downto 0) := (OTHERS => '0');
+    signal logic     : STD_LOGIC_VECTOR (15 downto 0) := (OTHERS => '0');
+    signal shift     : STD_LOGIC_VECTOR (15 downto 0) := (OTHERS => '0');
+    signal memory    : STD_LOGIC_VECTOR (15 downto 0) := (OTHERS => '0');
     signal ccr_arith : STD_LOGIC_VECTOR (3 downto 0) := (OTHERS => '0');
     signal ccr_logic : STD_LOGIC_VECTOR (3 downto 0) := (OTHERS => '0');
 
@@ -55,7 +55,7 @@ begin
 
     shift_unit: entity work.alu_shift_unit
     port map( A      => RA,
-              COUNT  => RB(2 downto 0),
+              COUNT  => RB(3 downto 0),
               OP     => opcode(3),
               RESULT => shift);
 

@@ -17,11 +17,11 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity Logic_Unit is
-    Port ( A      : in  STD_LOGIC_VECTOR (7 downto 0);
-           B      : in  STD_LOGIC_VECTOR (7 downto 0);
+    Port ( A      : in  STD_LOGIC_VECTOR (15 downto 0);
+           B      : in  STD_LOGIC_VECTOR (15 downto 0);
            OP     : in  STD_LOGIC_VECTOR (2 downto 0);
            CCR    : out STD_LOGIC_VECTOR (3 downto 0);
-           RESULT : out STD_LOGIC_VECTOR  (7 downto 0));
+           RESULT : out STD_LOGIC_VECTOR  (15 downto 0));
 end Logic_Unit;
 
 architecture Combinational of Logic_Unit is
@@ -34,7 +34,7 @@ begin
         RESULT <=
             A and B when "010", -- AND  REG A, REG B
             A or  B when "011", -- OR   REG A, REG B
-            x"00"   when "100", -- CMP  REG A, REG B
+            x"0000"   when "100", -- CMP  REG A, REG B
             A and B when OTHERS;-- ANDI REG A, IMMED
 
     --Compare Operation

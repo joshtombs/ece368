@@ -18,16 +18,16 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity Load_Store_Unit is
     Port ( CLK    : in  STD_LOGIC;
-           A      : in  STD_LOGIC_VECTOR (7 downto 0);
-           IMMED  : in  STD_LOGIC_VECTOR (7 downto 0);
+           A      : in  STD_LOGIC_VECTOR (15 downto 0);
+           IMMED  : in  STD_LOGIC_VECTOR (15 downto 0);
            OP     : in  STD_LOGIC_VECTOR (3 downto 0);
-           RESULT : out STD_LOGIC_VECTOR  (7 downto 0));
+           RESULT : out STD_LOGIC_VECTOR  (15 downto 0));
 
 end Load_Store_Unit;
 
 architecture Behavioral of Load_Store_Unit is
 
-    signal reg : STD_LOGIC_VECTOR (7 downto 0) := (OTHERS => '0');
+    signal reg : STD_LOGIC_VECTOR (15 downto 0) := (OTHERS => '0');
     signal w_en : std_logic := '0';-- '1' = write, '0' = read
 
 begin

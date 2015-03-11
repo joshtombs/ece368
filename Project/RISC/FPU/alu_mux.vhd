@@ -18,13 +18,13 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity ALU_Mux is
     Port ( OP        : in  STD_LOGIC_VECTOR (3 downto 0);
-           ARITH     : in  STD_LOGIC_VECTOR (7 downto 0);
-           LOGIC     : in  STD_LOGIC_VECTOR (7 downto 0);
-           SHIFT     : in  STD_LOGIC_VECTOR (7 downto 0);
-           MEMORY    : in  STD_LOGIC_VECTOR (7 downto 0);
+           ARITH     : in  STD_LOGIC_VECTOR (15 downto 0);
+           LOGIC     : in  STD_LOGIC_VECTOR (15 downto 0);
+           SHIFT     : in  STD_LOGIC_VECTOR (15 downto 0);
+           MEMORY    : in  STD_LOGIC_VECTOR (15 downto 0);
            CCR_ARITH : in  STD_LOGIC_VECTOR (3 downto 0);
            CCR_LOGIC : in  STD_LOGIC_VECTOR (3 downto 0);
-           ALU_OUT   : out STD_LOGIC_VECTOR (7 downto 0);
+           ALU_OUT   : out STD_LOGIC_VECTOR (15 downto 0);
            CCR_OUT   : out STD_LOGIC_VECTOR (3 downto 0));
 end ALU_Mux;
 
