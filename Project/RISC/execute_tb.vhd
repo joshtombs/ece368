@@ -74,21 +74,21 @@ BEGIN
       wait for 100 ns;    
 
       wait for CLK_period*10;
-      wait for CLK_period/2;
       OP1_IN <= x"0001";
       OP2_IN <= x"000E";
       OPCODE <= x"0";
       wait for CLK_period;
-      ASSERT (D_OUT = x"000F")
-      REPORT "Output Data for Instruction 1 incorrect."
-      SEVERITY WARNING;
       OP1_IN <= x"0010";
       OP2_IN <= x"0002";
       OPCODE <= x"1";
+      wait for CLK_period/2;
+      ASSERT (D_OUT = x"000F")
+          REPORT "Output Data for Instruction 1 incorrect."
+          SEVERITY WARNING;
       wait for CLK_period;
       ASSERT (D_OUT = x"000E")
-      REPORT "Output Data for Instruction 2 incorrect."
-      SEVERITY WARNING;
+          REPORT "Output Data for Instruction 2 incorrect."
+          SEVERITY WARNING;
       wait;
    end process;
 
