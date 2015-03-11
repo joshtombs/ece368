@@ -12,7 +12,8 @@
 ---------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use work.all;
+use work.UMDRISC_PKG.all;
+-- use work.all;
 
 entity risc_machine is
     Port ( CLK  : in  STD_LOGIC;

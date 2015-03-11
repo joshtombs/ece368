@@ -14,25 +14,22 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.numeric_std.all;
+use work.UMDRISC_PKG.all;
 
 entity register_bank is
-    GENERIC ( M : INTEGER := 16; --Number of registers
-              N : INTEGER := 16; --Size of registers
-              A : INTEGER := 4); --Size of Addresses
-                  
     Port( CLK     : in  STD_LOGIC;
-          ADDR_A  : in  STD_LOGIC_VECTOR (A-1 downto 0);
-          ADDR_B  : in  STD_LOGIC_VECTOR (A-1 downto 0);
-          W_ADDR  : in  STD_LOGIC_VECTOR (A-1 downto 0);
+          ADDR_A  : in  STD_LOGIC_VECTOR (REG_ADDRESS_WIDTH-1 downto 0);
+          ADDR_B  : in  STD_LOGIC_VECTOR (REG_ADDRESS_WIDTH-1 downto 0);
+          W_ADDR  : in  STD_LOGIC_VECTOR (REG_ADDRESS_WIDTH-1 downto 0);
           R_W     : in  STD_LOGIC;        -- 0 = read, 1 = write
           ENB     : in  STD_LOGIC;
-          DATA_IN : in  STD_LOGIC_VECTOR (N-1 downto 0);
-          REG_A   : out STD_LOGIC_VECTOR (N-1 downto 0);
-          REG_B   : out STD_LOGIC_VECTOR (N-1 downto 0));
+          DATA_IN : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+          REG_A   : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+          REG_B   : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0));
 end register_bank;
 
 architecture Behavioral of register_bank is
-    type   bank_type is array (0 to M-1) of std_logic_vector (N-1 downto 0);
+    type   bank_type is array (0 to NUMBER_REGISTERS-1) of std_logic_vector (DATA_WIDTH-1 downto 0);
     signal bank: bank_type := (others=> (others=>'0'));  -- initialize all registers to "0000"
 begin
     PROCESS(CLK)

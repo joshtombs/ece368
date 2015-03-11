@@ -16,21 +16,21 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity operandaccess is
     Port( CLK          : in  STD_LOGIC;
           DATA_IN      : in  STD_LOGIC_VECTOR(43 downto 0);
-          W_ADDR       : in  STD_LOGIC_VECTOR(3 downto 0);
+          W_ADDR       : in  STD_LOGIC_VECTOR(REG_ADDRESS_WIDTH-1 downto 0);
           BANK_R_W     : in  STD_LOGIC;
           BANK_ENB     : in  STD_LOGIC;
-          BANK_DATA    : in  STD_LOGIC_VECTOR(15 downto 0);
+          BANK_DATA    : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           OP1_MUX_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
           OP2_MUX_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
-          OP1          : out STD_LOGIC_VECTOR(15 downto 0);
-          OP2          : out STD_LOGIC_VECTOR(15 downto 0);
+          OP1          : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          OP2          : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           OPCODE       : out STD_LOGIC_VECTOR(3 downto 0));
 end operandaccess;
 
 architecture Structural of operandaccess is
     signal REGA_OUT, REGB_OUT, OP1_MUX_OUT, OP2_MUX_OUT
-                       : STD_LOGIC_VECTOR(15 downto 0);
-    signal LOW : STD_LOGIC_VECTOR(15 downto 0) := x"0000";
+                       : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal LOW : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := x"0000";
 begin
     BANK: entity work.register_bank
     PORT MAP( CLK     => CLK,
