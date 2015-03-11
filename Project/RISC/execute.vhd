@@ -25,13 +25,26 @@ end execute;
 architecture Structural of execute is
     signal ALU_RESULT  : STD_LOGIC_VECTOR(15 downto 0);
     signal LDST_RESULT : STD_LOGIC_VECTOR(15 downto 0);
+    signal RE_OUT1, RE_OUT2 : STD_LOGIC_VECTOR(15 downto 0);
     signal HIGH : STD_LOGIC := '1';
 begin
 
+    REG_RE_1: entity work.reg16_re
+    PORT MAP( CLK => CLK,
+              D   => OP1_IN,
+              ENB => HIGH,
+              Q   => RE_OUT1);
+                
+    REG_RE_2: entity work.reg16_re
+    PORT MAP( CLK => CLK,
+              D   => OP2_IN,
+              ENB => HIGH,
+              Q   => RE_OUT2);
+                  
     ALU: entity work.ALU
     PORT MAP( CLK      => CLK,
-              RA       => OP1_IN,
-              RB       => OP2_IN,
+              RA       => RE_OUT1,
+              RB       => RE_OUT2,
               OPCODE   => OPCODE,
               CCR      => CCR_OUT,
               ALU_OUT  => ALU_RESULT,
