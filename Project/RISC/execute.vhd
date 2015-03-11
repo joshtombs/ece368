@@ -23,9 +23,25 @@ entity execute is
 end execute;
 
 architecture Structural of execute is
-
+	signal ALU_RESULT  : STD_LOGIC_VECTOR(15 downto 0);
+	signal LDST_RESULT : STD_LOGIC_VECTOR(15 downto 0);
+	signal HIGH : STD_LOGIC := '1';
 begin
 
-
+	ALU: entity work.ALU
+	PORT MAP( CLK      => CLK,
+         RA       => OP1_IN,
+         RB       => OP2_IN,
+         OPCODE   => OPCODE,
+         CCR      => CCR_OUT,
+         ALU_OUT  => ALU_RESULT,
+         LDST_OUT => LDST_RESULT);
+	
+	RESULT_REG: entity work.reg16
+	PORT MAP( CLK => CLK,
+				 D   => ALU_RESULT,
+			    ENB => HIGH,
+				 Q   => D_OUT);
+			
 end Structural;
 
