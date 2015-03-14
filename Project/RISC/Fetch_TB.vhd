@@ -25,6 +25,7 @@ ARCHITECTURE behavior OF Fetch_TB IS
          D_IN 	  : IN  std_logic_vector(15 downto 0);
          WEA_In   : IN  std_logic;
          PCRes 	  : IN  std_logic;
+         INST_ENB : IN  std_logic;
          INST_OUT : OUT  std_logic_vector(15 downto 0)
         );
     END COMPONENT;
@@ -36,6 +37,7 @@ ARCHITECTURE behavior OF Fetch_TB IS
    signal D_IN 		: std_logic_vector(15 downto 0) := (others => '0');
    signal WEA_In 	: std_logic := '0';
    signal PCRes 	: std_logic := '0';
+   signal INST_ENB      : std_logic := '0';
 
    --Outputs
    signal INST_OUT 	: std_logic_vector(15 downto 0);
@@ -52,6 +54,7 @@ BEGIN
           D_IN => D_IN,
           WEA_In => WEA_In,
           PCRes => PCRes,
+          INST_ENB => INST_ENB,
           INST_OUT => INST_OUT
         );
 
@@ -74,6 +77,7 @@ BEGIN
       wait for CLK_period*10;
 		  
 		  PCRes <= '1';
+		  INST_ENB <= '1';
 		  wait for CLK_PERIOD;
 		  PCRes <= '0';
 		  wait for CLK_PERIOD * 6;

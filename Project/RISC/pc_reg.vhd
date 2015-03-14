@@ -33,7 +33,7 @@ BEGIN
 	BEGIN
                 IF (Res = '1') THEN
 			Q <= "00000";	-- Need to change if N changes
-                ELSIF (CLK'EVENT AND CLK = '1' ) THEN
+                ELSIF (CLK'EVENT AND CLK = '0' ) THEN
 			IF (Enable = '1') THEN
 				Q <= D ;
 			END IF ;

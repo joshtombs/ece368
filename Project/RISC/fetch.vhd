@@ -23,15 +23,16 @@ Port (
       D_IN      : in STD_LOGIC_VECTOR(15 downto 0);
       WEA_In    : in STD_LOGIC;
       PCRes     : in STD_LOGIC;
+      INST_ENB  : in STD_LOGIC;
       INST_OUT  : out STD_LOGIC_VECTOR(15 downto 0));
 end Fetch;
 
 architecture Structural of Fetch is
 
-signal AddB     : STD_LOGIC_VECTOR(4 downto 0);
-signal AddRes   : STD_LOGIC_VECTOR(4 downto 0);
-signal One      : STD_LOGIC_VECTOR(4 downto 0) := "00001";
-
+signal AddB        : STD_LOGIC_VECTOR(4 downto 0);
+signal AddRes      : STD_LOGIC_VECTOR(4 downto 0);
+signal One         : STD_LOGIC_VECTOR(4 downto 0) := "00001";
+signal instruction : STD_LOGIC_VECTOR(15 downto 0);
 begin
 
    AddRes <= (AddB + One); 
@@ -53,6 +54,13 @@ begin
             WEA(0)=> WEA_In,
             ADDRA => ADD_A,
             DINA  => D_IN, 
-            DOUTB => INST_OUT); 
+            DOUTB => instruction); 
+
+    U3: entity work.reg16
+    port map(
+            CLK   => CLK,
+            D     => instruction,
+            ENB   => INST_ENB,
+            Q     => INST_OUT);
 
  end Structural;
