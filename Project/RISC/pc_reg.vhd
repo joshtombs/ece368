@@ -31,10 +31,10 @@ signal Temp : STD_LOGIC_VECTOR(N-1 DOWNTO 0);
 BEGIN
 	PROCESS (CLK, Res)
 	BEGIN
-		IF (CLK'EVENT AND CLK = '1' ) THEN
-			IF (Res = '1') THEN
+                IF (Res = '1') THEN
 			Q <= "00000";	-- Need to change if N changes
-			ELSIF (Enable = '1') THEN
+                ELSIF (CLK'EVENT AND CLK = '1' ) THEN
+			IF (Enable = '1') THEN
 				Q <= D ;
 			END IF ;
 		END IF;
