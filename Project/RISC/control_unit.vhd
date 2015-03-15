@@ -23,6 +23,7 @@ entity control_unit is
           REG_BANK_WE      : out STD_LOGIC;
           REGBANK_D_SEL    : out STD_LOGIC_VECTOR(1 downto 0);
           DATA_MEM_MUX_SEL : out STD_LOGIC;
+          INSTR_ENB        : out STD_LOGIC;
           DATA_MEM_WE      : out STD_LOGIC
           );
 end control_unit;
@@ -33,6 +34,9 @@ begin
     begin
         if(CLK'EVENT and CLK = '1') then
             PC_MUX_SEL <= "00";
+		end if;
+        if(CLK'EVENT and CLK = '0') then
+              INSTR_ENB <= '1';
         end if;
     end PROCESS;
     
