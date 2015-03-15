@@ -4,7 +4,7 @@
 -- Engineer: Brett Southworth
 -- 
 -- Create Date: SPRING 2015
--- Module Name: Mux_1
+-- Module Name: Mux_2to1
 -- Project Name: UMD_RISC16
 -- Target Devices: Spartan-3E
 -- Tool versions: Xilinx ISE 14.7
@@ -22,7 +22,7 @@ entity MUX2to1 is
           OUTPUT : out  STD_LOGIC_VECTOR(15 downto 0));
 end MUX2to1;
 
-architecture Behavioral of MUX2to1 is
+architecture Dataflow of MUX2to1 is
 
 begin
 
@@ -31,5 +31,5 @@ with SEL select
              IN1 when '1',
              x"0000" when others;
 
-end Behavioral;
+end Dataflow;
 
