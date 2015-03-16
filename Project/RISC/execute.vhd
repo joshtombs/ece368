@@ -19,6 +19,7 @@ entity execute is
           OP2_IN    : in STD_LOGIC_VECTOR(15 downto 0);
           OPCODE    : in STD_LOGIC_VECTOR(3 downto 0);
           RESULT_E  : in STD_LOGIC;
+          OP_OUT    : out STD_LOGIC_VECTOR(3 downto 0);
           CCR_OUT   : out STD_LOGIC_VECTOR(3 downto 0);
           REG_A_OUT : out STD_LOGIC_VECTOR(15 downto 0);
           D_OUT     : out STD_LOGIC_VECTOR(15 downto 0));
@@ -44,6 +45,12 @@ begin
               Q   => RE_OUT2);
                   
     REG_A_OUT <= OP1_IN;
+     
+    OP_REG: entity work.reg4
+    PORT MAP( CLK => CLK,
+              D   => OPCODE,
+              ENB => HIGH,
+              Q   => OP_OUT);
 
     ALU: entity work.ALU
     PORT MAP( CLK      => CLK,
