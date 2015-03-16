@@ -38,7 +38,7 @@ begin
     PROCESS(CLK, ENB, R_W)
     begin
         if (CLK'EVENT and CLK = '1') then        --rising edge event (read)
-            if(ENB = '1' and R_W = '0') then    --enabled and read
+            if(ENB = '1') then    --enabled and read
                 REG_A <= bank(to_integer(unsigned(ADDR_A)));
                 REG_B <= bank(to_integer(unsigned(ADDR_B)));
             end if;
