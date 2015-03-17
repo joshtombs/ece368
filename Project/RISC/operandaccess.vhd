@@ -64,7 +64,7 @@ begin
     PORT MAP( SEL    => OP2_MUX_SEL,
               IN0    => REGB_OUT,
               IN1    => DATA_IN(31 downto 16),
-              IN2    => LOW,
+              IN2    => DATA_IN(15 downto 0),
               IN3    => LOW,
               OUTPUT => OP2_MUX_OUT);
 
