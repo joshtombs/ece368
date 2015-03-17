@@ -33,12 +33,13 @@ architecture Structural of operandaccess is
                        : STD_LOGIC_VECTOR(15 downto 0);
     signal LOW : STD_LOGIC_VECTOR(15 downto 0) := x"0000";
     signal HIGH: STD_LOGIC := '1';
+    signal write_address : STD_LOGIC_VECTOR(3 downto 0);
 begin
     BANK: entity work.register_bank
     PORT MAP( CLK     => CLK,
               ADDR_A  => DATA_IN(39 downto 36),
               ADDR_B  => DATA_IN(35 downto 32),
-              W_ADDR  => W_ADDR,
+              W_ADDR  => write_address,
               R_W     => BANK_R_W,
               ENB     => BANK_ENB,
               DATA_IN => BANK_DATA,
@@ -84,6 +85,12 @@ begin
                 D    => DATA_IN(39 downto 36),
                 ENB  => HIGH,
                 Q    => REGA_ADDR);
+
+     REG5 : entity work.reg4_re
+     PORT MAP ( CLK  => CLK,
+                D    => W_ADDR,
+                ENB  => HIGH,
+                Q    => write_address);
 
 end Structural;
 

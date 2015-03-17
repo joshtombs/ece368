@@ -14,14 +14,14 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity reg4 is
+entity reg4_re is
     GENERIC ( N : INTEGER := 4) ;
     PORT ( D           : in  STD_LOGIC_VECTOR(N-1 DOWNTO 0) ;
            ENB, CLK    : in  STD_LOGIC ;
            Q           : out STD_LOGIC_VECTOR(N-1 DOWNTO 0) ) ;
-end reg4;
+end reg4_re;
 
-architecture Behavioral of reg4 is
+architecture Behavioral of reg4_re is
 begin
     PROCESS (CLK)
     BEGIN
