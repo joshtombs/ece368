@@ -62,8 +62,8 @@ begin
                 when "0100" => OP2_MUX_SEL <= "00";
                 when "0101" => OP2_MUX_SEL <= "01";
                 when "0110" => OP2_MUX_SEL <= "01";
-                when "0111" => OP2_MUX_SEL <= "10";
-                when "1000" => OP2_MUX_SEL <= "10";
+                when "0111" => OP2_MUX_SEL <= "01";
+                when "1000" => OP2_MUX_SEL <= "01";
                 when "1001" => OP2_MUX_SEL <= "01";
                 when "1010" => OP2_MUX_SEL <= "01";
                 when others => OP2_MUX_SEL <= "01";
