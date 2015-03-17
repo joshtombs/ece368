@@ -16,7 +16,6 @@ use work.all;
 
 entity risc_machine is
     Port ( CLK  : in  STD_LOGIC;
-           BANKWADDR : in STD_LOGIC_VECTOR(3 downto 0);
            PC_RESET : in STD_LOGIC;
            INSTR_ENB : in STD_LOGIC;
            CCR_OUT: out STD_LOGIC_VECTOR(3 downto 0));
@@ -32,7 +31,8 @@ signal INST_W_DATA : STD_LOGIC_VECTOR(15 downto 0) := x"0000";
 -- Connections
 signal word : STD_LOGIC_VECTOR(43 downto 0);
 signal SEL_1, SEL_2 : STD_LOGIC_VECTOR(1 downto 0);
-signal OP_OUT, WB_CNTRL_OPCODE : STD_LOGIC_VECTOR(3 downto 0);
+signal OP_OUT, WB_CNTRL_OPCODE, reg_a_address, bank_w_addr
+              : STD_LOGIC_VECTOR(3 downto 0);
 signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL
               : STD_LOGIC_VECTOR(15 downto 0);
 signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB
@@ -55,26 +55,29 @@ begin
      U2: entity work.operandaccess
      PORT MAP( CLK         => CLK,
                DATA_IN     => word,
-               W_ADDR      => BANKWADDR,
+               W_ADDR      => bank_w_addr,
                BANK_R_W    => BANK_RW,
                BANK_ENB    => high,
                BANK_DATA   => BANKD,
                OP1_MUX_SEL => SEL_1,
                OP2_MUX_SEL => SEL_2,
+               REGA_ADDR   => reg_a_address,
                OP1         => OP1_TO_ALU,
                OP2         => OP2_TO_ALU,
                OPCODE      => OP_OUT);
      
-	 U3: entity work.execute
-     PORT MAP( CLK       => CLK,
-               OP1_IN    => OP1_TO_ALU,
-               OP2_IN    => OP2_TO_ALU,
-               OPCODE    => OP_OUT,
-               RESULT_E  => RESULT_REG_ENB,
-               OP_OUT    => WB_CNTRL_OPCODE,
-               CCR_OUT   => CCR_OUT,
-               REG_A_OUT => REG_A_VAL,
-               D_OUT     => FPU_OUT);
+     U3: entity work.execute
+     PORT MAP( CLK        => CLK,
+               OP1_IN     => OP1_TO_ALU,
+               OP2_IN     => OP2_TO_ALU,
+               OPCODE     => OP_OUT,
+               REGA_ADDR  => reg_a_address,
+               RESULT_E   => RESULT_REG_ENB,
+               OP_OUT     => WB_CNTRL_OPCODE,
+               CCR_OUT    => CCR_OUT,
+               REG_A_OUT  => REG_A_VAL,
+               W_REG_ADDR => bank_w_addr,
+               D_OUT      => FPU_OUT);
      
      U4: entity work.writeback
      PORT MAP( CLK       => CLK,
@@ -83,7 +86,7 @@ begin
                FPU_In    => FPU_OUT,
                D_OUT_SEL => WB_MUX_SEL,
                D_Out     => BANKD);
-			   
+
      U5: entity work.control_unit
      PORT MAP( CLK        => CLK,
          -- Fetch

@@ -22,6 +22,7 @@ entity operandaccess is
           BANK_DATA    : in  STD_LOGIC_VECTOR(15 downto 0);
           OP1_MUX_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
           OP2_MUX_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
+          REGA_ADDR    : out STD_LOGIC_VECTOR(3 downto 0);
           OP1          : out STD_LOGIC_VECTOR(15 downto 0);
           OP2          : out STD_LOGIC_VECTOR(15 downto 0);
           OPCODE       : out STD_LOGIC_VECTOR(3 downto 0));
@@ -77,6 +78,12 @@ begin
                D     => DATA_IN(43 downto 40),
                ENB   => HIGH,
                Q     => OPCODE);
+
+     REG4 : entity work.reg4
+     PORT MAP ( CLK  => CLK,
+                D    => DATA_IN(39 downto 36),
+                ENB  => HIGH,
+                Q    => REGA_ADDR);
 
 end Structural;
 
