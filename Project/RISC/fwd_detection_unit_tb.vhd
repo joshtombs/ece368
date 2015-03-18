@@ -22,20 +22,22 @@ ARCHITECTURE behavior OF fwd_detection_unit_tb IS
  
     COMPONENT fwd_detection_unit
     PORT(
-         OPA_REG  : IN   std_logic_vector(3 downto 0);
-         FWD_REG  : IN   std_logic_vector(3 downto 0);
-         CTRL_SEL : IN   std_logic_vector(1 downto 0);
-         MUX_SEL  : OUT  std_logic_vector(1 downto 0)
+         OPA_REG   : in  STD_LOGIC_VECTOR(3 downto 0);
+         E_FWD_REG : in  STD_LOGIC_VECTOR(3 downto 0);
+         W_FWD_REG : in  STD_LOGIC_VECTOR(3 downto 0);
+         CTRL_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
+         MUX_SEL   : out STD_LOGIC_VECTOR(1 downto 0)
         );
     END COMPONENT;
     
 
    --Inputs
    signal OPA_REG  : std_logic_vector(3 downto 0) := (others => '0');
-   signal FWD_REG  : std_logic_vector(3 downto 0) := (others => '0');
+   signal E_FWD_REG  : std_logic_vector(3 downto 0) := (others => '0');
+   signal W_FWD_REG  : std_logic_vector(3 downto 0) := (others => '0');
    signal CTRL_SEL : std_logic_vector(1 downto 0) := (others => '0');
 
-     --Outputs
+   --Outputs
    signal MUX_SEL : std_logic_vector(1 downto 0);
    
    --Clock
@@ -48,7 +50,8 @@ BEGIN
     -- Instantiate the Unit Under Test (UUT)
    uut: fwd_detection_unit PORT MAP (
           OPA_REG => OPA_REG,
-          FWD_REG => FWD_REG,
+          E_FWD_REG => E_FWD_REG,
+          W_FWD_REG => W_FWD_REG,
           CTRL_SEL => CTRL_SEL,
           MUX_SEL => MUX_SEL
         );
@@ -69,7 +72,8 @@ BEGIN
       
         -- Mux sel "00"
        OPA_REG <= "0000";
-       FWD_REG <= "0001";
+       E_FWD_REG <= "0001";
+       W_FWD_REG <= "0010";
        CTRL_SEL <= "00";
        wait for CLK_PERIOD/2;
        ASSERT(MUX_SEL = "00")
@@ -77,23 +81,26 @@ BEGIN
            SEVERITY warning;
        wait for CLK_PERIOD/2;
        OPA_REG <= "0100";
-       FWD_REG <= "0011";
+       E_FWD_REG <= "0011";
+       W_FWD_REG <= "0100";
        CTRL_SEL <= "00";
        wait for CLK_PERIOD/2;
-       ASSERT(MUX_SEL = "00")
+       ASSERT(MUX_SEL = "10")
            REPORT("Mux select incorrect.")
            SEVERITY warning;
        wait for CLK_PERIOD/2;
        OPA_REG <= "0011";
-       FWD_REG <= "0011";
-       CTRL_SEL <= "11";
+       E_FWD_REG <= "0011";
+       W_FWD_REG <= "1000";
+       CTRL_SEL <= "00";
        wait for CLK_PERIOD/2;
-       ASSERT(MUX_SEL = "00")
+       ASSERT(MUX_SEL = "11")
            REPORT("Mux select incorrect.")
            SEVERITY warning;
        wait for CLK_PERIOD/2;
        OPA_REG <= "0100";
-       FWD_REG <= "0100";
+       E_FWD_REG <= "0100";
+       W_FWD_REG <= "0100";
        CTRL_SEL <= "00";
        wait for CLK_PERIOD/2;
        ASSERT(MUX_SEL = "11")
@@ -101,9 +108,10 @@ BEGIN
            SEVERITY warning;
        wait for CLK_PERIOD/2;
        
-        -- Mux sel "01"
+       -- Mux sel "01"
        OPA_REG <= "0000";
-       FWD_REG <= "0001";
+       E_FWD_REG <= "0001";
+       W_FWD_REG <= "0010";
        CTRL_SEL <= "01";
        wait for CLK_PERIOD/2;
        ASSERT(MUX_SEL = "01")
@@ -111,32 +119,15 @@ BEGIN
            SEVERITY warning;
        wait for CLK_PERIOD/2;
        OPA_REG <= "0010";
-       FWD_REG <= "0010";
+       E_FWD_REG <= "0010";
+       W_FWD_REG <= "0100";
        CTRL_SEL <= "01";
        wait for CLK_PERIOD/2;
        ASSERT(MUX_SEL = "01")
            REPORT("Mux select incorrect.")
            SEVERITY warning;
-       wait for CLK_PERIOD/2;
-       
-        -- Mux sel "10"
-       OPA_REG <= "1000";
-       FWD_REG <= "0001";
-       CTRL_SEL <= "10";
-       wait for CLK_PERIOD/2;
-       ASSERT(MUX_SEL = "10")
-           REPORT("Mux select incorrect.")
-           SEVERITY warning;
-       wait for CLK_PERIOD/2;
-       OPA_REG <= "1111";
-       FWD_REG <= "1111";
-       CTRL_SEL <= "10";
-       wait for CLK_PERIOD/2;
-       ASSERT(MUX_SEL = "10")
-           REPORT("Mux select incorrect.")
-           SEVERITY warning;
-               
-      wait;
+
+       wait;
    end process;
 
 END;
