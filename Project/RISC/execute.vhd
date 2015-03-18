@@ -24,6 +24,7 @@ entity execute is
           CCR_OUT   : out STD_LOGIC_VECTOR(3 downto 0);
           REG_A_OUT : out STD_LOGIC_VECTOR(15 downto 0);
           W_REG_ADDR: out STD_LOGIC_VECTOR(3 downto 0);
+          FWD_OUT   : out STD_LOGIC_VECTOR(15 downto 0);
           D_OUT     : out STD_LOGIC_VECTOR(15 downto 0));
 end execute;
 
@@ -62,6 +63,8 @@ begin
               CCR      => CCR_OUT,
               ALU_OUT  => ALU_RESULT,
               LDST_OUT => LDST_RESULT);
+
+    FWD_OUT <= ALU_RESULT;
     
     RESULT_REG: entity work.reg16
     PORT MAP( CLK  => CLK,
