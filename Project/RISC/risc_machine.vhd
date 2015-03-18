@@ -15,10 +15,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 use work.all;
 
 entity risc_machine is
-    Port ( CLK  : in  STD_LOGIC;
-           PC_RESET : in STD_LOGIC;
-           INSTR_ENB : in STD_LOGIC;
-           CCR_OUT: out STD_LOGIC_VECTOR(3 downto 0));
+    Port ( CLK       : in  STD_LOGIC;
+           PC_RESET  : in  STD_LOGIC;
+           INSTR_ENB : in  STD_LOGIC;
+           CCR_OUT   : out STD_LOGIC_VECTOR(3 downto 0));
 end risc_machine;
 
 architecture Structural of risc_machine is
@@ -33,19 +33,19 @@ signal word : STD_LOGIC_VECTOR(43 downto 0);
 signal SEL_1, SEL_2 : STD_LOGIC_VECTOR(1 downto 0);
 signal OP_OUT, WB_CNTRL_OPCODE, reg_a_address, bank_w_addr
               : STD_LOGIC_VECTOR(3 downto 0);
-signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL
+signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data
               : STD_LOGIC_VECTOR(15 downto 0);
 signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB
               : STD_LOGIC;
 begin
-     U0: entity work.fetch
-     PORT MAP( CLK       => CLK,
-               ADD_A     => INST_W_ADR,
-               D_IN      => INST_W_DATA,
-               WEA_In    => low,
-               PCRes     => PC_RESET,
-               INST_ENB  => INSTR_ENB,
-               INST_OUT  => instruction);
+      U0: entity work.fetch
+      PORT MAP( CLK       => CLK,
+                ADD_A     => INST_W_ADR,
+                D_IN      => INST_W_DATA,
+                WEA_In    => low,
+                PCRes     => PC_RESET,
+                INST_ENB  => INSTR_ENB,
+                INST_OUT  => instruction);
 
      U1: entity work.decode
      PORT MAP( CLK      => CLK,
@@ -61,6 +61,10 @@ begin
                BANK_DATA   => BANKD,
                OP1_MUX_SEL => SEL_1,
                OP2_MUX_SEL => SEL_2,
+               E_FWD_IN    => forward_data,
+               E_FWD_ADDR  => reg_a_address,
+               W_FWD_IN    => BANKD,
+               W_FWD_ADDR  => bank_w_addr,
                REGA_ADDR   => reg_a_address,
                OP1         => OP1_TO_ALU,
                OP2         => OP2_TO_ALU,
@@ -77,6 +81,7 @@ begin
                CCR_OUT    => CCR_OUT,
                REG_A_OUT  => REG_A_VAL,
                W_REG_ADDR => bank_w_addr,
+               FWD_OUT    => forward_data,
                D_OUT      => FPU_OUT);
      
      U4: entity work.writeback
