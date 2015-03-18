@@ -38,7 +38,7 @@ begin
             ARITH     when "0001",     -- SUB
             LOGIC     when "0010",     -- AND
             LOGIC     when "0011",     -- OR
-            LOGIC     when "0100",     -- CMP
+            MEMORY    when "0100",     -- MOV
             ARITH     when "0101",     -- ADDI
             LOGIC     when "0110",     -- ANDI
             SHIFT     when "0111",     -- SL

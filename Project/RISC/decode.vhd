@@ -27,8 +27,7 @@ begin
     tmp(35 downto 32) <= INST_IN(7 downto 4);
     tmp(31 downto 24) <= x"00";
     tmp(23 downto 16) <= INST_IN(7 downto 0);
-    tmp(15 downto 4)  <= x"000";
-    tmp(3 downto 0)   <= INST_IN(7 downto 4);
+    tmp(15 downto 0)  <= x"0000";
     PROCESS(CLK)
     BEGIN
         IF(CLK'EVENT AND CLK = '0') THEN

@@ -2,6 +2,7 @@
 -- School: University of Massachusetts Dartmouth
 -- Department: Computer and Electrical Engineering
 -- Engineer: Daniel Noyes
+-- Revised By: Josh Tombs
 -- 
 -- Create Date:    SPRING 2015
 -- Module Name:    ALU_Logic_Unit
@@ -27,23 +28,14 @@ end Load_Store_Unit;
 
 architecture Behavioral of Load_Store_Unit is
 
-    signal reg : STD_LOGIC_VECTOR (15 downto 0) := (OTHERS => '0');
-    signal w_en : std_logic := '0';-- '1' = write, '0' = read
-
 begin
-
-    w_en <= '1' when OP="1010" else '0';
 
     process(CLK)
     begin
         if (CLK'event and CLK='1') then
-            if (w_en = '1') then
-                reg <= A;
-            end if;
+            RESULT <= IMMED;
         end if;
     end process;
-
-    RESULT <= reg;
 
 end Behavioral;
 
