@@ -35,7 +35,7 @@ signal OP_OUT, WB_CNTRL_OPCODE, reg_a_address, bank_w_addr
               : STD_LOGIC_VECTOR(3 downto 0);
 signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data
               : STD_LOGIC_VECTOR(15 downto 0);
-signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB
+signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, E_STALL_OUT, W_STALL_OUT
               : STD_LOGIC;
 begin
       U0: entity work.fetch
@@ -94,6 +94,7 @@ begin
 
      U5: entity work.control_unit
      PORT MAP( CLK        => CLK,
+               STALL      => STALL_OUT,
          -- Fetch
 --          PC_MUX_SEL       : out STD_LOGIC_VECTOR(1 downto 0);
           -- Operand Access
@@ -107,6 +108,15 @@ begin
           WB_OPCODE        => WB_CNTRL_OPCODE,
           DATA_MEM_MUX_SEL => WB_MUX_SEL,
           DATA_MEM_WE      => DATA_MEM_WE);
-    
+
+     U6: entity work.stall_detection_unit
+     PORT MAP( CLK      => CLK,
+               INSTR_IN => instruction,
+               F_STALL  => F_STALL_OUT,
+               D_STALL  => D_STALL_OUT,
+               O_STALL  => O_STALL_OUT,
+               E_STALL  => E_STALL_OUT,
+               W_STALL  => W_STALL_OUT);
+
 end Structural;
 

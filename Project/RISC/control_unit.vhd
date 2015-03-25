@@ -15,6 +15,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity control_unit is
     Port( CLK              : in  STD_LOGIC;
+          STALL            : in  STD_LOGIC;
           -- Fetch
           PC_MUX_SEL       : out STD_LOGIC_VECTOR(1 downto 0);
           -- Operand Access
