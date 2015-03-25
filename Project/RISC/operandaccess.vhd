@@ -26,6 +26,8 @@ entity operandaccess is
           E_FWD_ADDR   : in  STD_LOGIC_VECTOR(3 downto 0);
           W_FWD_IN     : in  STD_LOGIC_VECTOR(15 downto 0);
           W_FWD_ADDR   : in  STD_LOGIC_VECTOR(3 downto 0);
+          E_STALL      : in  STD_LOGIC;
+          W_STALL      : in  STD_LOGIC;
           REGA_ADDR    : out STD_LOGIC_VECTOR(3 downto 0);
           OP1          : out STD_LOGIC_VECTOR(15 downto 0);
           OP2          : out STD_LOGIC_VECTOR(15 downto 0);
@@ -55,6 +57,8 @@ begin
     PORT MAP( OPA_REG   => DATA_IN(39 downto 36),
               E_FWD_REG => E_FWDADDR_REG,
               W_FWD_REG => W_FWDADDR_REG,
+              E_STALL   => E_STALL,
+              W_STALL   => W_STALL,
               CTRL_SEL  => OP1_MUX_SEL,
               MUX_SEL   => DETECT_SEL1);
     
@@ -76,6 +80,8 @@ begin
     PORT MAP( OPA_REG   => DATA_IN(35 downto 32),
               E_FWD_REG => E_FWDADDR_REG,
               W_FWD_REG => W_FWDADDR_REG,
+              E_STALL   => E_STALL,
+              W_STALL   => W_STALL,
               CTRL_SEL  => OP2_MUX_SEL,
               MUX_SEL   => DETECT_SEL2);
 

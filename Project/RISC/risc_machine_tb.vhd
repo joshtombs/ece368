@@ -24,7 +24,6 @@ ARCHITECTURE behavior OF risc_machine_tb2 IS
     PORT(
          CLK : IN  std_logic;
          PC_RESET : IN  std_logic;
-         INSTR_ENB : IN  std_logic;
          CCR_OUT : OUT  std_logic_vector(3 downto 0)
         );
     END COMPONENT;
@@ -33,7 +32,6 @@ ARCHITECTURE behavior OF risc_machine_tb2 IS
    --Inputs
    signal CLK : std_logic := '0';
    signal PC_RESET : std_logic := '0';
-   signal INSTR_ENB : std_logic := '0';
 
    --Outputs
    signal CCR_OUT : std_logic_vector(3 downto 0);
@@ -47,7 +45,6 @@ BEGIN
    uut: risc_machine PORT MAP (
           CLK => CLK,
           PC_RESET => PC_RESET,
-          INSTR_ENB => INSTR_ENB,
           CCR_OUT => CCR_OUT
         );
 
@@ -63,11 +60,10 @@ BEGIN
    TB: process
    begin        
       -- hold reset state for 100 ns.
-      wait for 100 ns;    
+--      wait for 100 ns;
       PC_RESET <= '1';
       wait for CLK_PERIOD;
       PC_RESET <= '0';
-      INSTR_ENB <= '1';
       wait;
    end process;
 

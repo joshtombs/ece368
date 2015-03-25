@@ -15,20 +15,23 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity control_unit is
     Port( CLK              : in  STD_LOGIC;
-          STALL            : in  STD_LOGIC;
           -- Fetch
           PC_MUX_SEL       : out STD_LOGIC_VECTOR(1 downto 0);
+          F_STALL_IN       : in  STD_LOGIC;
+          INSTR_ENB        : out STD_LOGIC;
           -- Operand Access
+          O_STALL_IN       : in  STD_LOGIC;
           OPA_OPCODE       : in  STD_LOGIC_VECTOR(3 downto 0);
           OP1_MUX_SEL      : out STD_LOGIC_VECTOR(1 downto 0);
           OP2_MUX_SEL      : out STD_LOGIC_VECTOR(1 downto 0);
           -- Execute
           RESULT_REG_E     : out STD_LOGIC;
+          E_STALL_IN       : in  STD_LOGIC;
           -- Writeback
+          W_STALL_IN       : in  STD_LOGIC;
           WB_OPCODE        : in  STD_LOGIC_VECTOR(3 downto 0);
           REG_BANK_WE      : out STD_LOGIC;
           DATA_MEM_MUX_SEL : out STD_LOGIC;
-          INSTR_ENB        : out STD_LOGIC;
           DATA_MEM_WE      : out STD_LOGIC
           );
 end control_unit;
@@ -38,10 +41,13 @@ begin
     FETCH: PROCESS(CLK)
     begin
         if(CLK'EVENT and CLK = '1') then
-            PC_MUX_SEL <= "00";
-        end if;
-        if(CLK'EVENT and CLK = '0') then
-              INSTR_ENB <= '1';
+            if(F_STALL_IN = '1') then
+                PC_MUX_SEL <= "11";
+                INSTR_ENB  <= '0';
+            else
+                PC_MUX_SEL <= "00";
+                INSTR_ENB <= '1';
+            end if;
         end if;
     end PROCESS;
     
@@ -79,21 +85,33 @@ begin
         end if;
     end PROCESS;
     
-    WB: PROCESS(CLK)
+    WB: PROCESS(CLK, W_STALL_IN)
     begin
         if(CLK'EVENT and CLK = '1') then
             case WB_OPCODE is
                 when "0000"|"0001"|"0010"|"0011"|"0100"|"0101"|"0110"|"0111"|"1000" => 
                     DATA_MEM_MUX_SEL <= '1';
                     DATA_MEM_WE <= '0';
-                    REG_BANK_WE <= '1';
+                    if(W_STALL_IN = '0') then
+                        REG_BANK_WE <= '1';
+                    else
+                        REG_BANK_WE <= '0';
+                    end if;
                 when "1001" => 
                     DATA_MEM_MUX_SEL <= '0';
                     DATA_MEM_WE <= '0';
-                    REG_BANK_WE <= '1';
+                    if(W_STALL_IN = '0') then
+                        REG_BANK_WE <= '1';
+                    else
+                        REG_BANK_WE <= '0';
+                    end if;
                 when "1010" => 
                     DATA_MEM_MUX_SEL <= '0';
-                    DATA_MEM_WE <= '1';
+                    if(W_STALL_IN = '0') then
+                        DATA_MEM_WE <= '1';
+                    else
+                        DATA_MEM_WE <= '0';
+                    end if;
                     REG_BANK_WE <= '0';
                 when others => 
                     DATA_MEM_MUX_SEL <= '1';

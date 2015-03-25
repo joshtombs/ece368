@@ -17,7 +17,6 @@ use work.all;
 entity risc_machine is
     Port ( CLK       : in  STD_LOGIC;
            PC_RESET  : in  STD_LOGIC;
-           INSTR_ENB : in  STD_LOGIC;
            CCR_OUT   : out STD_LOGIC_VECTOR(3 downto 0));
 end risc_machine;
 
@@ -30,26 +29,28 @@ signal INST_W_DATA : STD_LOGIC_VECTOR(15 downto 0) := x"0000";
 
 -- Connections
 signal word : STD_LOGIC_VECTOR(43 downto 0);
-signal SEL_1, SEL_2 : STD_LOGIC_VECTOR(1 downto 0);
+signal SEL_1, SEL_2, p_counter_mux_sel : STD_LOGIC_VECTOR(1 downto 0);
 signal OP_OUT, WB_CNTRL_OPCODE, reg_a_address, bank_w_addr
               : STD_LOGIC_VECTOR(3 downto 0);
 signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data
               : STD_LOGIC_VECTOR(15 downto 0);
-signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, E_STALL_OUT, W_STALL_OUT
+signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, E_STALL_OUT, W_STALL_OUT, f_instr_enb
               : STD_LOGIC;
 begin
       U0: entity work.fetch
       PORT MAP( CLK       => CLK,
+                MUX_SEL   => p_counter_mux_sel,
                 ADD_A     => INST_W_ADR,
                 D_IN      => INST_W_DATA,
                 WEA_In    => low,
                 PCRes     => PC_RESET,
-                INST_ENB  => INSTR_ENB,
+                INST_ENB  => f_instr_enb,
                 INST_OUT  => instruction);
 
      U1: entity work.decode
      PORT MAP( CLK      => CLK,
                INST_IN  => instruction,
+               MUX_SEL  => D_STALL_OUT,
                DATA_OUT => word);
                   
      U2: entity work.operandaccess
@@ -65,6 +66,8 @@ begin
                E_FWD_ADDR  => reg_a_address,
                W_FWD_IN    => BANKD,
                W_FWD_ADDR  => bank_w_addr,
+               E_STALL     => E_STALL_OUT,
+               W_STALL     => W_STALL_OUT,
                REGA_ADDR   => reg_a_address,
                OP1         => OP1_TO_ALU,
                OP2         => OP2_TO_ALU,
@@ -94,17 +97,21 @@ begin
 
      U5: entity work.control_unit
      PORT MAP( CLK        => CLK,
-               STALL      => STALL_OUT,
-         -- Fetch
---          PC_MUX_SEL       : out STD_LOGIC_VECTOR(1 downto 0);
+          -- Fetch
+          PC_MUX_SEL       => p_counter_mux_sel,
+          F_STALL_IN       => F_STALL_OUT,
+          INSTR_ENB        => f_instr_enb,
           -- Operand Access
+          O_STALL_IN       => O_STALL_OUT,
           OPA_OPCODE       => word(43 downto 40),
           OP1_MUX_SEL      => SEL_1,
           OP2_MUX_SEL      => SEL_2,
           REG_BANK_WE      => BANK_RW,
           -- Execute
+          E_STALL_IN       => E_STALL_OUT,
           RESULT_REG_E     => RESULT_REG_ENB,
           -- Writeback
+          W_STALL_IN       => W_STALL_OUT,
           WB_OPCODE        => WB_CNTRL_OPCODE,
           DATA_MEM_MUX_SEL => WB_MUX_SEL,
           DATA_MEM_WE      => DATA_MEM_WE);

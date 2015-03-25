@@ -18,10 +18,10 @@ entity stall_detection_unit is
     Port( CLK      : in  STD_LOGIC;
           INSTR_IN : in  STD_LOGIC_VECTOR(15 downto 0);
           F_STALL  : out STD_LOGIC;
-			 D_STALL  : out STD_LOGIC;
-			 O_STALL  : out STD_LOGIC;
-			 E_STALL  : out STD_LOGIC;
-			 W_STALL  : out STD_LOGIC);
+          D_STALL  : out STD_LOGIC;
+          O_STALL  : out STD_LOGIC;
+          E_STALL  : out STD_LOGIC;
+          W_STALL  : out STD_LOGIC);
 end stall_detection_unit;
 
 architecture Mixed of stall_detection_unit is
@@ -60,43 +60,43 @@ begin
               ENB => HIGH,
               Q   => reg4);
 
-    load <= '1' when reg2to3(15 downto 12) = "1001" else
+    load <= '1' when reg1to2(15 downto 12) = "1001" else
             '0';
                 
-    loadeqlA <= '1' when reg2to3(11 downto 8) = reg1to2(11 downto 8) else
+    loadeqlA <= '1' when reg1to2(11 downto 8) = reg0to1(11 downto 8) else
                 '0';
     
-    loadeqlB <= '1' when reg2to3(11 downto 8) = reg1to2(7 downto 4) else
+    loadeqlB <= '1' when reg1to2(11 downto 8) = reg0to1(7 downto 4) else
                 '0';
-                
-    inst_LT_five <= '1' when reg1to2(15 downto 12) < "0101" else
+
+    inst_LT_five <= '1' when reg0to1(15 downto 12) < "0101" else
                     '0';
-    
+
     regB_problem <= loadeqlB and inst_LT_five;
-    
+
     reg_problem <= loadeqlA or regB_problem;
-    
+
     STALL<= load and reg_problem;
-	 
-	 F_STALL <= STALL;
-	 
-	 D_STALL <= STALL;
-	 
-	 O_STALL <= STALL;
-	 
-	 FF1: entity work.flip_flop
-	 PORT MAP( CLK  => CLK,
-				  ENB  => HIGH,
-				  D    => STALL,
-				  Q    => ff1_stall);
-	
-	 E_STALL <= ff1_stall;
-	 
-	 FF2: entity work.flip_flop
-	 PORT MAP( CLK  => CLK,
-				  ENB  => HIGH,
-				  D    => ff1_stall,
-				  Q    => ff2_stall);
-	
-	 W_STALL <= ff2_stall;
+
+    F_STALL <= STALL;
+
+    D_STALL <= STALL;
+
+    O_STALL <= STALL;
+
+    FF1: entity work.flip_flop
+    PORT MAP( CLK  => CLK,
+              ENB  => HIGH,
+              D    => STALL,
+              Q    => ff1_stall);
+
+    E_STALL <= ff1_stall;
+
+    FF2: entity work.flip_flop
+    PORT MAP( CLK  => CLK,
+              ENB  => HIGH,
+              D    => ff1_stall,
+              Q    => ff2_stall);
+
+    W_STALL <= ff2_stall;
 end Mixed;
