@@ -47,7 +47,11 @@ begin
               ENB => HIGH,
               Q   => RE_OUT2);
                   
-    REG_A_OUT <= OP1_IN;
+    A_VALUE_REG: entity work.reg16
+    PORT MAP(CLK => CLK,
+             D   => OP1_IN,
+             ENB => HIGH,
+             Q   => REG_A_OUT);
      
     OP_REG: entity work.reg4
     PORT MAP( CLK => CLK,
@@ -56,8 +60,7 @@ begin
               Q   => OP_OUT);
 
     ALU: entity work.ALU
-    PORT MAP( CLK      => CLK,
-              RA       => RE_OUT1,
+    PORT MAP( RA       => RE_OUT1,
               RB       => RE_OUT2,
               OPCODE   => OPCODE,
               CCR      => CCR_OUT,

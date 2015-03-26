@@ -18,24 +18,17 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity Load_Store_Unit is
-    Port ( CLK    : in  STD_LOGIC;
-           A      : in  STD_LOGIC_VECTOR (15 downto 0);
+    Port ( A      : in  STD_LOGIC_VECTOR (15 downto 0);
            IMMED  : in  STD_LOGIC_VECTOR (15 downto 0);
            OP     : in  STD_LOGIC_VECTOR (3 downto 0);
            RESULT : out STD_LOGIC_VECTOR  (15 downto 0));
 
 end Load_Store_Unit;
 
-architecture Behavioral of Load_Store_Unit is
+architecture Dataflow of Load_Store_Unit is
 
 begin
+    RESULT <= IMMED;
 
-    process(CLK)
-    begin
-        if (CLK'event and CLK='1') then
-            RESULT <= IMMED;
-        end if;
-    end process;
-
-end Behavioral;
+end Dataflow;
 

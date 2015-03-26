@@ -17,8 +17,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.all;
 
 entity ALU is
-    Port ( CLK      : in  STD_LOGIC;
-           RA       : in  STD_LOGIC_VECTOR (15 downto 0);
+    Port ( RA       : in  STD_LOGIC_VECTOR (15 downto 0);
            RB       : in  STD_LOGIC_VECTOR (15 downto 0);
            OPCODE   : in  STD_LOGIC_VECTOR (3 downto 0);
            CCR      : out STD_LOGIC_VECTOR (3 downto 0);
@@ -60,8 +59,7 @@ begin
               RESULT => shift);
 
     Load_Store_Unit: entity work.Load_Store_Unit
-    port map( CLK    => CLK,
-              A      => RA,
+    port map( A      => RA,
               IMMED  => RB,
               OP     => opcode,
               RESULT => memory);
