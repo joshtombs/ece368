@@ -26,6 +26,7 @@ entity register_bank is
           W_ADDR  : in  STD_LOGIC_VECTOR (A-1 downto 0);
           R_W     : in  STD_LOGIC;        -- 0 = read, 1 = write
           ENB     : in  STD_LOGIC;
+          RESET   : in  STD_LOGIC;
           DATA_IN : in  STD_LOGIC_VECTOR (N-1 downto 0);
           REG_A   : out STD_LOGIC_VECTOR (N-1 downto 0);
           REG_B   : out STD_LOGIC_VECTOR (N-1 downto 0));
@@ -35,9 +36,26 @@ architecture Behavioral of register_bank is
     type   bank_type is array (0 to M-1) of std_logic_vector (N-1 downto 0);
     signal bank: bank_type := (others=> (others=>'0'));  -- initialize all registers to "0000"
 begin
-    PROCESS(CLK, ENB, R_W)
+    PROCESS(RESET, CLK, ENB, R_W)
     begin
-        if (CLK'EVENT and CLK = '1') then        --rising edge event (read)
+        if(RESET = '1') then
+            bank(0) <= x"0000";
+            bank(1) <= x"0000";
+            bank(2) <= x"0000";
+            bank(3) <= x"0000";
+            bank(4) <= x"0000";
+            bank(5) <= x"0000";
+            bank(6) <= x"0000";
+            bank(7) <= x"0000";
+            bank(8) <= x"0000";
+            bank(9) <= x"0000";
+            bank(10) <= x"0000";
+            bank(11) <= x"0000";
+            bank(12) <= x"0000";
+            bank(13) <= x"0000";
+            bank(14) <= x"0000";
+            bank(15) <= x"0000";
+        elsif (CLK'EVENT and CLK = '1') then        --rising edge event (read)
             if(ENB = '1') then    --enabled and read
                 REG_A <= bank(to_integer(unsigned(ADDR_A)));
                 REG_B <= bank(to_integer(unsigned(ADDR_B)));

@@ -59,6 +59,7 @@ begin
                W_ADDR      => bank_w_addr,
                BANK_R_W    => BANK_RW,
                BANK_ENB    => high,
+               BANK_RESET  => PC_RESET,
                BANK_DATA   => BANKD,
                OP1_MUX_SEL => SEL_1,
                OP2_MUX_SEL => SEL_2,

@@ -64,6 +64,10 @@ BEGIN
       PC_RESET <= '1';
       wait for CLK_PERIOD;
       PC_RESET <= '0';
+      wait for CLK_PERIOD*7;
+      PC_RESET <= '1';
+      wait for CLK_PERIOD;
+      PC_RESET <= '0';
       wait;
    end process;
 

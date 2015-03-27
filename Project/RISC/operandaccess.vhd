@@ -19,6 +19,7 @@ entity operandaccess is
           W_ADDR       : in  STD_LOGIC_VECTOR(3 downto 0);
           BANK_R_W     : in  STD_LOGIC;
           BANK_ENB     : in  STD_LOGIC;
+          BANK_RESET   : in  STD_LOGIC;
           BANK_DATA    : in  STD_LOGIC_VECTOR(15 downto 0);
           OP1_MUX_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
           OP2_MUX_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
@@ -49,6 +50,7 @@ begin
               W_ADDR  => write_address,
               R_W     => BANK_R_W,
               ENB     => BANK_ENB,
+              RESET   => BANK_RESET,
               DATA_IN => BANK_DATA,
               REG_A   => REGA_OUT,
               REG_B   => REGB_OUT);
