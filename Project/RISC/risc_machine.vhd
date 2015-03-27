@@ -16,7 +16,7 @@ use work.all;
 
 entity risc_machine is
     Port ( CLK       : in  STD_LOGIC;
-           PC_RESET  : in  STD_LOGIC;
+           RESET  : in  STD_LOGIC;
            CCR_OUT   : out STD_LOGIC_VECTOR(3 downto 0));
 end risc_machine;
 
@@ -34,7 +34,7 @@ signal OP_OUT, WB_CNTRL_OPCODE, reg_a_address, bank_w_addr
               : STD_LOGIC_VECTOR(3 downto 0);
 signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data
               : STD_LOGIC_VECTOR(15 downto 0);
-signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, f_instr_enb, D_NOP_OUT, O_NOP_IN, O_NOP_OUT, E_NOP_IN, E_NOP_OUT, W_NOP_IN
+signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, f_instr_enb, D_NOP_IN, D_NOP_OUT, O_NOP_IN, O_NOP_OUT, E_NOP_IN, E_NOP_OUT, W_NOP_IN
               : STD_LOGIC;
 begin
       U0: entity work.fetch
@@ -43,15 +43,16 @@ begin
                 ADD_A     => INST_W_ADR,
                 D_IN      => INST_W_DATA,
                 WEA_In    => low,
-                PCRes     => PC_RESET,
+                PCRes     => RESET,
                 INST_ENB  => f_instr_enb,
                 INST_OUT  => instruction);
 
      U1: entity work.decode
      PORT MAP( CLK      => CLK,
                INST_IN  => instruction,
+               NOP      => D_NOP_IN,
                MUX_SEL  => D_STALL_OUT,
-               NOP      => D_NOP_OUT,
+               NOP_OUT  => D_NOP_OUT,
                DATA_OUT => word);
                   
      U2: entity work.operandaccess
@@ -64,7 +65,7 @@ begin
                W_ADDR      => bank_w_addr,
                BANK_R_W    => BANK_RW,
                BANK_ENB    => high,
-               BANK_RESET  => PC_RESET,
+               BANK_RESET  => RESET,
                BANK_DATA   => BANKD,
                OP1_MUX_SEL => SEL_1,
                OP2_MUX_SEL => SEL_2,
@@ -103,25 +104,28 @@ begin
 
      U5: entity work.control_unit
      PORT MAP( CLK        => CLK,
+          RESET            => RESET,
           -- Fetch
           PC_MUX_SEL       => p_counter_mux_sel,
           F_STALL_IN       => F_STALL_OUT,
           INSTR_ENB        => f_instr_enb,
+          -- Decode
+          D_NOP_OUT        => D_NOP_IN,
           -- Operand Access
           O_NOP_IN         => D_NOP_OUT,
-			 O_NOP_OUT        => O_NOP_IN,
-			 O_STALL_IN       => O_STALL_OUT,
+          O_NOP_OUT        => O_NOP_IN,
+          O_STALL_IN       => O_STALL_OUT,
           OPA_OPCODE       => word(43 downto 40),
           OP1_MUX_SEL      => SEL_1,
           OP2_MUX_SEL      => SEL_2,
           REG_BANK_WE      => BANK_RW,
           -- Execute
-			 E_NOP_IN         => O_NOP_OUT,
-			 E_NOP_OUT        => E_NOP_IN,
+          E_NOP_IN         => O_NOP_OUT,
+          E_NOP_OUT        => E_NOP_IN,
           RESULT_REG_E     => RESULT_REG_ENB,
           -- Writeback
           W_NOP_IN         => E_NOP_OUT,
-			 W_NOP_OUT        => W_NOP_IN,
+          W_NOP_OUT        => W_NOP_IN,
           WB_OPCODE        => WB_CNTRL_OPCODE,
           DATA_MEM_MUX_SEL => WB_MUX_SEL,
           DATA_MEM_WE      => DATA_MEM_WE);
