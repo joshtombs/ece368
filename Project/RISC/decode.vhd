@@ -17,6 +17,7 @@ entity decode is
     Port( CLK     : in  STD_LOGIC;
           INST_IN : in  STD_LOGIC_VECTOR (15 downto 0);
           MUX_SEL : in  STD_LOGIC;
+          NOP     : out STD_LOGIC;
           DATA_OUT: out STD_LOGIC_VECTOR (43 downto 0));
 end decode;
 
@@ -35,6 +36,11 @@ begin
     BEGIN
         IF(CLK'EVENT AND CLK = '0') THEN
             DATA_OUT <= tmp;
+            if(INST_IN = x"0000") then
+                NOP <= '1';
+            else
+                NOP <= '0';
+            end if;
         END IF;
     END PROCESS;
 

@@ -34,7 +34,7 @@ signal OP_OUT, WB_CNTRL_OPCODE, reg_a_address, bank_w_addr
               : STD_LOGIC_VECTOR(3 downto 0);
 signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data
               : STD_LOGIC_VECTOR(15 downto 0);
-signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, E_STALL_OUT, W_STALL_OUT, f_instr_enb
+signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, E_STALL_OUT, W_STALL_OUT, f_instr_enb, NOP_OUT
               : STD_LOGIC;
 begin
       U0: entity work.fetch
@@ -51,6 +51,7 @@ begin
      PORT MAP( CLK      => CLK,
                INST_IN  => instruction,
                MUX_SEL  => D_STALL_OUT,
+               NOP      => NOP_OUT,
                DATA_OUT => word);
                   
      U2: entity work.operandaccess
