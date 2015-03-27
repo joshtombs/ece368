@@ -15,11 +15,13 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity execute is
     Port( CLK       : in STD_LOGIC;
+          NOP       : in STD_LOGIC;
           OP1_IN    : in STD_LOGIC_VECTOR(15 downto 0);
           OP2_IN    : in STD_LOGIC_VECTOR(15 downto 0);
           OPCODE    : in STD_LOGIC_VECTOR(3 downto 0);
           REGA_ADDR : in STD_LOGIC_VECTOR(3 downto 0);
           RESULT_E  : in STD_LOGIC;
+          NOP_OUT   : out STD_LOGIC;
           OP_OUT    : out STD_LOGIC_VECTOR(3 downto 0);
           CCR_OUT   : out STD_LOGIC_VECTOR(3 downto 0);
           REG_A_OUT : out STD_LOGIC_VECTOR(15 downto 0);
@@ -80,6 +82,12 @@ begin
                D    => REGA_ADDR,
                ENB  => HIGH,
                Q    => W_REG_ADDR);
+                    
+    FF1 : entity work.flip_flop
+    PORT MAP( CLK  => CLK,
+              ENB  => HIGH,
+              D    => NOP,
+              Q    => NOP_OUT);
             
 end Structural;
 

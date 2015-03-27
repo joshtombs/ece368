@@ -34,7 +34,7 @@ signal OP_OUT, WB_CNTRL_OPCODE, reg_a_address, bank_w_addr
               : STD_LOGIC_VECTOR(3 downto 0);
 signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data
               : STD_LOGIC_VECTOR(15 downto 0);
-signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, E_STALL_OUT, W_STALL_OUT, f_instr_enb, NOP_OUT
+signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, f_instr_enb, D_NOP_OUT, O_NOP_IN, O_NOP_OUT, E_NOP_IN, E_NOP_OUT, W_NOP_IN
               : STD_LOGIC;
 begin
       U0: entity work.fetch
@@ -51,11 +51,15 @@ begin
      PORT MAP( CLK      => CLK,
                INST_IN  => instruction,
                MUX_SEL  => D_STALL_OUT,
-               NOP      => NOP_OUT,
+               NOP      => D_NOP_OUT,
                DATA_OUT => word);
                   
      U2: entity work.operandaccess
      PORT MAP( CLK         => CLK,
+               NOP         => O_NOP_IN,
+               E_NOP       => E_NOP_IN,
+               W_NOP       => W_NOP_IN,
+               NOP_OUT     => O_NOP_OUT,
                DATA_IN     => word,
                W_ADDR      => bank_w_addr,
                BANK_R_W    => BANK_RW,
@@ -68,8 +72,6 @@ begin
                E_FWD_ADDR  => reg_a_address,
                W_FWD_IN    => BANKD,
                W_FWD_ADDR  => bank_w_addr,
-               E_STALL     => E_STALL_OUT,
-               W_STALL     => W_STALL_OUT,
                REGA_ADDR   => reg_a_address,
                OP1         => OP1_TO_ALU,
                OP2         => OP2_TO_ALU,
@@ -77,6 +79,8 @@ begin
      
      U3: entity work.execute
      PORT MAP( CLK        => CLK,
+               NOP        => E_NOP_IN,
+               NOP_OUT    => E_NOP_OUT,
                OP1_IN     => OP1_TO_ALU,
                OP2_IN     => OP2_TO_ALU,
                OPCODE     => OP_OUT,
@@ -104,16 +108,20 @@ begin
           F_STALL_IN       => F_STALL_OUT,
           INSTR_ENB        => f_instr_enb,
           -- Operand Access
-          O_STALL_IN       => O_STALL_OUT,
+          O_NOP_IN         => D_NOP_OUT,
+			 O_NOP_OUT        => O_NOP_IN,
+			 O_STALL_IN       => O_STALL_OUT,
           OPA_OPCODE       => word(43 downto 40),
           OP1_MUX_SEL      => SEL_1,
           OP2_MUX_SEL      => SEL_2,
           REG_BANK_WE      => BANK_RW,
           -- Execute
-          E_STALL_IN       => E_STALL_OUT,
+			 E_NOP_IN         => O_NOP_OUT,
+			 E_NOP_OUT        => E_NOP_IN,
           RESULT_REG_E     => RESULT_REG_ENB,
           -- Writeback
-          W_STALL_IN       => W_STALL_OUT,
+          W_NOP_IN         => E_NOP_OUT,
+			 W_NOP_OUT        => W_NOP_IN,
           WB_OPCODE        => WB_CNTRL_OPCODE,
           DATA_MEM_MUX_SEL => WB_MUX_SEL,
           DATA_MEM_WE      => DATA_MEM_WE);
@@ -123,9 +131,7 @@ begin
                INSTR_IN => instruction,
                F_STALL  => F_STALL_OUT,
                D_STALL  => D_STALL_OUT,
-               O_STALL  => O_STALL_OUT,
-               E_STALL  => E_STALL_OUT,
-               W_STALL  => W_STALL_OUT);
+               O_STALL  => O_STALL_OUT);
 
 end Structural;
 

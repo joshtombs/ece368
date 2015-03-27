@@ -19,15 +19,13 @@ entity stall_detection_unit is
           INSTR_IN : in  STD_LOGIC_VECTOR(15 downto 0);
           F_STALL  : out STD_LOGIC;
           D_STALL  : out STD_LOGIC;
-          O_STALL  : out STD_LOGIC;
-          E_STALL  : out STD_LOGIC;
-          W_STALL  : out STD_LOGIC);
+          O_STALL  : out STD_LOGIC);
 end stall_detection_unit;
 
 architecture Mixed of stall_detection_unit is
      signal high : STD_LOGIC := '1';
      signal reg0to1, reg1to2, reg2to3, reg3to4, reg4 : STD_LOGIC_VECTOR(15 downto 0);
-     signal load, loadeqlA, loadeqlB, inst_LT_five, regB_problem, reg_problem, STALL, ff1_stall, ff2_stall
+     signal load, loadeqlA, loadeqlB, inst_LT_five, regB_problem, reg_problem, STALL
         :STD_LOGIC := '0';
 begin
     R0: entity work.reg16
@@ -83,20 +81,4 @@ begin
     D_STALL <= STALL;
 
     O_STALL <= STALL;
-
-    FF1: entity work.flip_flop
-    PORT MAP( CLK  => CLK,
-              ENB  => HIGH,
-              D    => STALL,
-              Q    => ff1_stall);
-
-    E_STALL <= ff1_stall;
-
-    FF2: entity work.flip_flop
-    PORT MAP( CLK  => CLK,
-              ENB  => HIGH,
-              D    => ff1_stall,
-              Q    => ff2_stall);
-
-    W_STALL <= ff2_stall;
 end Mixed;

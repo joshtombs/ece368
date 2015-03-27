@@ -15,6 +15,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity operandaccess is
     Port( CLK          : in  STD_LOGIC;
+          NOP          : in  STD_LOGIC;
+          E_NOP        : in  STD_LOGIC;
+          W_NOP        : in  STD_LOGIC;
           DATA_IN      : in  STD_LOGIC_VECTOR(43 downto 0);
           W_ADDR       : in  STD_LOGIC_VECTOR(3 downto 0);
           BANK_R_W     : in  STD_LOGIC;
@@ -27,8 +30,7 @@ entity operandaccess is
           E_FWD_ADDR   : in  STD_LOGIC_VECTOR(3 downto 0);
           W_FWD_IN     : in  STD_LOGIC_VECTOR(15 downto 0);
           W_FWD_ADDR   : in  STD_LOGIC_VECTOR(3 downto 0);
-          E_STALL      : in  STD_LOGIC;
-          W_STALL      : in  STD_LOGIC;
+          NOP_OUT      : out STD_LOGIC;
           REGA_ADDR    : out STD_LOGIC_VECTOR(3 downto 0);
           OP1          : out STD_LOGIC_VECTOR(15 downto 0);
           OP2          : out STD_LOGIC_VECTOR(15 downto 0);
@@ -59,8 +61,8 @@ begin
     PORT MAP( OPA_REG   => DATA_IN(39 downto 36),
               E_FWD_REG => E_FWDADDR_REG,
               W_FWD_REG => W_FWDADDR_REG,
-              E_STALL   => E_STALL,
-              W_STALL   => W_STALL,
+              E_NOP     => E_NOP,
+              W_NOP     => W_NOP,
               CTRL_SEL  => OP1_MUX_SEL,
               MUX_SEL   => DETECT_SEL1);
     
@@ -82,8 +84,8 @@ begin
     PORT MAP( OPA_REG   => DATA_IN(35 downto 32),
               E_FWD_REG => E_FWDADDR_REG,
               W_FWD_REG => W_FWDADDR_REG,
-              E_STALL   => E_STALL,
-              W_STALL   => W_STALL,
+              E_NOP     => E_NOP,
+              W_NOP     => W_NOP,
               CTRL_SEL  => OP2_MUX_SEL,
               MUX_SEL   => DETECT_SEL2);
 
@@ -130,6 +132,13 @@ begin
               D    => W_FWD_ADDR,
               ENB  => HIGH,
               Q    => W_FWDADDR_REG);
+                  
+    REG8 : entity work.flip_flop
+    PORT MAP( CLK  => CLK,
+              ENB  => HIGH,
+              D    => NOP,
+              Q    => NOP_OUT);
+
 
 end Structural;
 
