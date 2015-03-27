@@ -15,20 +15,27 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity control_unit is
     Port( CLK              : in  STD_LOGIC;
+          RESET            : in  STD_LOGIC;
           -- Fetch
           PC_MUX_SEL       : out STD_LOGIC_VECTOR(1 downto 0);
           F_STALL_IN       : in  STD_LOGIC;
           INSTR_ENB        : out STD_LOGIC;
+          -- Decode
+          D_NOP_OUT        : out STD_LOGIC;
           -- Operand Access
+          O_NOP_IN         : in  STD_LOGIC;
+          O_NOP_OUT        : out STD_LOGIC;
           O_STALL_IN       : in  STD_LOGIC;
           OPA_OPCODE       : in  STD_LOGIC_VECTOR(3 downto 0);
           OP1_MUX_SEL      : out STD_LOGIC_VECTOR(1 downto 0);
           OP2_MUX_SEL      : out STD_LOGIC_VECTOR(1 downto 0);
           -- Execute
+          E_NOP_IN         : in  STD_LOGIC;
+          E_NOP_OUT        : out STD_LOGIC;
           RESULT_REG_E     : out STD_LOGIC;
-          E_STALL_IN       : in  STD_LOGIC;
           -- Writeback
-          W_STALL_IN       : in  STD_LOGIC;
+          W_NOP_IN         : in  STD_LOGIC;
+          W_NOP_OUT        : out STD_LOGIC;
           WB_OPCODE        : in  STD_LOGIC_VECTOR(3 downto 0);
           REG_BANK_WE      : out STD_LOGIC;
           DATA_MEM_MUX_SEL : out STD_LOGIC;
@@ -46,16 +53,21 @@ begin
                 INSTR_ENB  <= '0';
             else
                 PC_MUX_SEL <= "00";
-                INSTR_ENB <= '1';
+                INSTR_ENB  <= '1';
             end if;
         end if;
     end PROCESS;
     
---    DECODE: PROCESS(CLK)
---    begin
---        if(CLK'EVENT and CLK = '1') then
---        end if;
---    end PROCESS;
+    DECODE: PROCESS(CLK)
+    begin
+        if(CLK'EVENT and CLK = '1') then
+            if(RESET = '1') then
+                D_NOP_OUT <= '1';
+            else
+                D_NOP_OUT <= '0';
+            end if;
+        end if;
+    end PROCESS;
     
     OPA: PROCESS(CLK)
     begin
@@ -75,24 +87,39 @@ begin
                 when "1010" => OP2_MUX_SEL <= "01";
                 when others => OP2_MUX_SEL <= "01";
             end case;        
-        end if;
+            if( O_NOP_IN = '1' or O_STALL_IN = '1' or RESET = '1') then
+                O_NOP_OUT <= '1';
+            else
+                O_NOP_OUT <= '0';
+            end if;
+          end if;
     end PROCESS;
     
     EXECUTE: PROCESS(CLK)
     begin
         if(CLK'EVENT and CLK = '1') then
             RESULT_REG_E <= '1';
+            if (E_NOP_IN = '1' or RESET = '1') then
+                E_NOP_OUT <= '1';
+            else
+                E_NOP_OUT <= '0';
+            end if;
         end if;
     end PROCESS;
     
-    WB: PROCESS(CLK, W_STALL_IN)
+    WB: PROCESS(CLK)
     begin
         if(CLK'EVENT and CLK = '1') then
+            if (W_NOP_IN = '1' or RESET = '1') then
+                W_NOP_OUT <= '1';
+            else
+                W_NOP_OUT <= '0';
+            end if;
             case WB_OPCODE is
                 when "0000"|"0001"|"0010"|"0011"|"0100"|"0101"|"0110"|"0111"|"1000" => 
                     DATA_MEM_MUX_SEL <= '1';
                     DATA_MEM_WE <= '0';
-                    if(W_STALL_IN = '0') then
+                    if(W_NOP_IN = '0' and RESET = '0') then
                         REG_BANK_WE <= '1';
                     else
                         REG_BANK_WE <= '0';
@@ -100,14 +127,14 @@ begin
                 when "1001" => 
                     DATA_MEM_MUX_SEL <= '0';
                     DATA_MEM_WE <= '0';
-                    if(W_STALL_IN = '0') then
+                    if(W_NOP_IN = '0' and RESET = '0') then
                         REG_BANK_WE <= '1';
                     else
                         REG_BANK_WE <= '0';
                     end if;
                 when "1010" => 
                     DATA_MEM_MUX_SEL <= '0';
-                    if(W_STALL_IN = '0') then
+                    if(W_NOP_IN = '0' and RESET = '0') then
                         DATA_MEM_WE <= '1';
                     else
                         DATA_MEM_WE <= '0';

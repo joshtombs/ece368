@@ -16,7 +16,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity decode is
     Port( CLK     : in  STD_LOGIC;
           INST_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+          NOP     : in  STD_LOGIC;
           MUX_SEL : in  STD_LOGIC;
+          NOP_OUT : out STD_LOGIC;
           DATA_OUT: out STD_LOGIC_VECTOR (43 downto 0));
 end decode;
 
@@ -35,6 +37,11 @@ begin
     BEGIN
         IF(CLK'EVENT AND CLK = '0') THEN
             DATA_OUT <= tmp;
+            if(INST_IN = x"0000" or NOP = '1') then
+                NOP_OUT <= '1';
+            else
+                NOP_OUT <= '0';
+            end if;
         END IF;
     END PROCESS;
 
@@ -55,5 +62,6 @@ begin
              IN0     => INST_IN,
              IN1     => fe_out,
              OUTPUT  => instruction);
+
 end Mixed;
 
