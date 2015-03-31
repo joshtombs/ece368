@@ -14,14 +14,15 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use work.UMDRISC_PKG.all;
 
 entity addr_MUX4to1 is
     Port( SEL    : in  STD_LOGIC_VECTOR (1 downto 0);
-          IN0    : in  STD_LOGIC_VECTOR (4 downto 0);
-          IN1    : in  STD_LOGIC_VECTOR (4 downto 0);
-          IN2    : in  STD_LOGIC_VECTOR (4 downto 0);
-          IN3    : in  STD_LOGIC_VECTOR (4 downto 0);
-          OUTPUT : out  STD_LOGIC_VECTOR(4 downto 0));
+          IN0    : in  STD_LOGIC_VECTOR (INSTR_MEM_WIDTH-1 downto 0);
+          IN1    : in  STD_LOGIC_VECTOR (INSTR_MEM_WIDTH-1 downto 0);
+          IN2    : in  STD_LOGIC_VECTOR (INSTR_MEM_WIDTH-1 downto 0);
+          IN3    : in  STD_LOGIC_VECTOR (INSTR_MEM_WIDTH-1 downto 0);
+          OUTPUT : out  STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0));
 end addr_MUX4to1;
 
 architecture Behavioral of addr_MUX4to1 is
@@ -33,7 +34,7 @@ with SEL select
              IN1 when "01",
              IN2 when "10",
              IN3 when "11",
-             "00000" when others;
+             "000000000000" when others;
 
 end Behavioral;
 

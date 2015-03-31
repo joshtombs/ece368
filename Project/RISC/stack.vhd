@@ -14,22 +14,22 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.numeric_std.all;
+use work.UMDRISC_PKG.all;
 
 entity stack is
     Generic( A : integer := 4;   -- Number of Address bits
-             S : integer := 5;   -- Size of memory location (bits)
              N : integer := 16); -- Number of stack locations
     Port( CLK      : in  STD_LOGIC;
           ENB      : in  STD_LOGIC;
-          PUSH_POP : in  STD_LOGIC; -- 1 = 
-          DATA_IN  : in  STD_LOGIC_VECTOR(4 downto 0);
+          PUSH_POP : in  STD_LOGIC; -- 0 = push, 1 = pop
+          DATA_IN  : in  STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
           S_EMPTY  : out STD_LOGIC;
           S_FULL   : out STD_LOGIC;
-          DATA_OUT : out STD_LOGIC_VECTOR(4 downto 0));
+          DATA_OUT : out STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0));
 end stack;
 
 architecture Behavioral of stack is
-    type   stack_type is array (0 to N-1) of std_logic_vector (S downto 0);
+    type   stack_type is array (0 to N-1) of std_logic_vector (INSTR_MEM_WIDTH-1 downto 0);
     signal stack: stack_type := (others=> (others=>'0'));  -- initialize all registers to "00000"
     signal stack_ptr : integer := 0;
     signal full, empty : STD_LOGIC := '0';

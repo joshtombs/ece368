@@ -13,26 +13,26 @@
 
 LIBRARY ieee ;
 USE ieee.std_logic_1164.all ;
+use work.UMDRISC_PKG.all;
 use work.all;
 
 ENTITY PC_Reg IS
-	GENERIC ( N : INTEGER := 5 ) ;
-	PORT (	D       : IN	 	STD_LOGIC_VECTOR(N-1 DOWNTO 0);
+	PORT (	D       : IN	 	STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 DOWNTO 0);
 		Res     : IN		STD_LOGIC;	
 		Enable  : IN 		STD_LOGIC;
 		CLK     : IN 		STD_LOGIC ;
-		Q       : OUT 		STD_LOGIC_VECTOR(N-1 DOWNTO 0) ) ;
+		Q       : OUT 		STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 DOWNTO 0) ) ;
 END PC_Reg ;
 
 ARCHITECTURE Behavior OF PC_Reg IS	
 
-signal Temp : STD_LOGIC_VECTOR(N-1 DOWNTO 0);
+signal Temp : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 DOWNTO 0);
 
 BEGIN
 	PROCESS (CLK, Res)
 	BEGIN
                 IF (Res = '1') THEN
-			Q <= "00000";	-- Need to change if N changes
+			Q <= "000000000000";	-- Need to change if N changes
                 ELSIF (CLK'EVENT AND CLK = '0' ) THEN
 			IF (Enable = '1') THEN
 				Q <= D ;
