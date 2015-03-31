@@ -21,7 +21,7 @@ entity stack is
              N : integer := 16); -- Number of stack locations
     Port( CLK      : in  STD_LOGIC;
           ENB      : in  STD_LOGIC;
-          PUSH_POP : in  STD_LOGIC;
+          PUSH_POP : in  STD_LOGIC; -- 1 = 
           DATA_IN  : in  STD_LOGIC_VECTOR(4 downto 0);
           S_EMPTY  : out STD_LOGIC;
           S_FULL   : out STD_LOGIC;
@@ -40,7 +40,6 @@ begin
     PROCESS(CLK)
     begin
         if(CLK'EVENT and CLK = '0') then
-            -- PUSH
             if( stack_ptr = N ) then
                 full <= '1';
                 empty <= '0';
@@ -51,6 +50,7 @@ begin
                 full <= '0';
                 empty <= '0';
             end if;
+            -- PUSH
             if(ENB = '1' AND PUSH_POP = '0' AND FULL = '0') then
                 stack(stack_ptr) <= DATA_IN;
                 if( stack_ptr < N ) then
