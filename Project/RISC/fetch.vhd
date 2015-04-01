@@ -26,22 +26,20 @@ Port (
       WEA_In        : in  STD_LOGIC;
       PCRes         : in  STD_LOGIC;
       INST_ENB      : in  STD_LOGIC;
-      BRJMP         : in  STD_LOGIC;
+      BRJMP         : in  STD_LOGIC_VECTOR(1 downto 0);
       JMP_IN        : in  STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
       STACK_ENB     : in  STD_LOGIC;
       STACK_PUSHPOP : in  STD_LOGIC;
       STACK_E       : out STD_LOGIC;
       STACK_F       : out STD_LOGIC;
-      BRJMP_OUT     : out STD_LOGIC;
+      BRJMP_OUT     : out STD_LOGIC_VECTOR(1 downto 0);
       INST_OUT      : out STD_LOGIC_VECTOR(15 downto 0));
 end Fetch;
 
 architecture Structural of Fetch is
 
-signal AddB        : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
-signal AddRes      : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
-signal Mux_out     : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
-signal stack_res   : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
+signal AddB, AddRes, Mux_out, stack_res, addr_re1, reg_out
+                   : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
 signal One         : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0) := "000000000001";
 signal instruction : STD_LOGIC_VECTOR(15 downto 0);
 begin
@@ -87,14 +85,27 @@ begin
     port map( CLK      => CLK,
               ENB      => STACK_ENB,
               PUSH_POP => STACK_PUSHPOP,
-              DATA_IN  => AddRes,
+              DATA_IN  => reg_out,
               S_FULL   => STACK_F,
               S_EMPTY  => STACK_E,
               DATA_OUT => stack_res);
 
-    FF1: entity work.flip_flop
+    FF1: entity work.flip_flop2
     port map( CLK   => CLK,
               D     => BRJMP,
               ENB   => One(0),
               Q     => BRJMP_OUT);
+
+    REG_RE1: entity work.addr_reg_re
+    port map( CLK   => CLK,
+              D     => AddB,
+              ENB   => One(0),
+              Q     => addr_re1);
+
+    REG1: entity work.addr_reg
+    port map( CLK   => CLK,
+              D     => addr_re1,
+              ENB   => One(0),
+              Q     => reg_out);
+
  end Structural;

@@ -30,14 +30,15 @@ signal INST_W_DATA : STD_LOGIC_VECTOR(15 downto 0) := x"0000";
 
 -- Connections
 signal word : STD_LOGIC_VECTOR(43 downto 0);
-signal SEL_1, SEL_2, p_counter_mux_sel : STD_LOGIC_VECTOR(1 downto 0);
+signal SEL_1, SEL_2, p_counter_mux_sel, prg_cntr_op, BR_JUMP_OP
+              : STD_LOGIC_VECTOR(1 downto 0);
 signal OP_OUT, WB_CNTRL_OPCODE, reg_a_address, bank_w_addr
               : STD_LOGIC_VECTOR(3 downto 0);
 signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data, jump_addr
               : STD_LOGIC_VECTOR(15 downto 0);
 signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, 
        f_instr_enb, D_NOP_IN, D_NOP_OUT, O_NOP_IN, O_NOP_OUT, E_NOP_IN, E_NOP_OUT, W_NOP_IN,
-       stack_enable, stack_op, prg_cntr_op, BR_JUMP_OP
+       stack_enable, stack_op
               : STD_LOGIC;
 begin
       U0: entity work.fetch
