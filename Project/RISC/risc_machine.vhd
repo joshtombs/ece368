@@ -13,6 +13,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use work.all;
+use work.UMDRISC_PKG.all;
 
 entity risc_machine is
     Port ( CLK       : in  STD_LOGIC;
@@ -24,7 +25,7 @@ architecture Structural of risc_machine is
 -- Specific signals
 signal high : STD_LOGIC := '1';
 signal low  : STD_LOGIC := '0';
-signal INST_W_ADR : STD_LOGIC_VECTOR(4 downto 0) := "00000";
+signal INST_W_ADR : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0) := "000000000000";
 signal INST_W_DATA : STD_LOGIC_VECTOR(15 downto 0) := x"0000";
 
 -- Connections
@@ -32,20 +33,29 @@ signal word : STD_LOGIC_VECTOR(43 downto 0);
 signal SEL_1, SEL_2, p_counter_mux_sel : STD_LOGIC_VECTOR(1 downto 0);
 signal OP_OUT, WB_CNTRL_OPCODE, reg_a_address, bank_w_addr
               : STD_LOGIC_VECTOR(3 downto 0);
-signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data
+signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data, jump_addr
               : STD_LOGIC_VECTOR(15 downto 0);
-signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, f_instr_enb, D_NOP_IN, D_NOP_OUT, O_NOP_IN, O_NOP_OUT, E_NOP_IN, E_NOP_OUT, W_NOP_IN
+signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, 
+       f_instr_enb, D_NOP_IN, D_NOP_OUT, O_NOP_IN, O_NOP_OUT, E_NOP_IN, E_NOP_OUT, W_NOP_IN,
+       stack_enable, stack_op, prg_cntr_op, BR_JUMP_OP
               : STD_LOGIC;
 begin
       U0: entity work.fetch
-      PORT MAP( CLK       => CLK,
-                MUX_SEL   => p_counter_mux_sel,
-                ADD_A     => INST_W_ADR,
-                D_IN      => INST_W_DATA,
-                WEA_In    => low,
-                PCRes     => RESET,
-                INST_ENB  => f_instr_enb,
-                INST_OUT  => instruction);
+      PORT MAP( CLK           => CLK,
+                MUX_SEL       => p_counter_mux_sel,
+                ADD_A         => INST_W_ADR,
+                D_IN          => INST_W_DATA,
+                WEA_In        => low,
+                PCRes         => RESET,
+                INST_ENB      => f_instr_enb,
+                JMP_IN        => jump_addr(INSTR_MEM_WIDTH-1 downto 0),
+                STACK_ENB     => stack_enable,
+                STACK_PUSHPOP => stack_op,
+                BRJMP         => prg_cntr_op,
+                BRJMP_OUT     => BR_JUMP_OP,
+--              STACK_E       => ,
+--              STACK_F       => ,
+                INST_OUT      => instruction);
 
      U1: entity work.decode
      PORT MAP( CLK      => CLK,
@@ -74,6 +84,7 @@ begin
                W_FWD_IN    => BANKD,
                W_FWD_ADDR  => bank_w_addr,
                REGA_ADDR   => reg_a_address,
+               JMP_OUT     => jump_addr,
                OP1         => OP1_TO_ALU,
                OP2         => OP2_TO_ALU,
                OPCODE      => OP_OUT);
@@ -109,9 +120,13 @@ begin
           PC_MUX_SEL       => p_counter_mux_sel,
           F_STALL_IN       => F_STALL_OUT,
           INSTR_ENB        => f_instr_enb,
+          PC_BR            => BR_JUMP_OP,
           -- Decode
           D_NOP_OUT        => D_NOP_IN,
           -- Operand Access
+          STACK_ENB        => stack_enable,
+          STACK_OPERATION  => stack_op,
+          PC_OP            => prg_cntr_op,
           O_NOP_IN         => D_NOP_OUT,
           O_NOP_OUT        => O_NOP_IN,
           O_STALL_IN       => O_STALL_OUT,
@@ -120,6 +135,7 @@ begin
           OP2_MUX_SEL      => SEL_2,
           REG_BANK_WE      => BANK_RW,
           -- Execute
+          EX_OPCODE        => OP_OUT,
           E_NOP_IN         => O_NOP_OUT,
           E_NOP_OUT        => E_NOP_IN,
           RESULT_REG_E     => RESULT_REG_ENB,

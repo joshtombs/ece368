@@ -32,7 +32,8 @@ begin
     tmp(35 downto 32) <= instruction(7 downto 4);
     tmp(31 downto 24) <= x"00";
     tmp(23 downto 16) <= instruction(7 downto 0);
-    tmp(15 downto 0)  <= x"0000";
+    tmp(15 downto 12) <= x"0";
+    tmp(11 downto 0)  <= instruction(11 downto 0);
     PROCESS(CLK)
     BEGIN
         IF(CLK'EVENT AND CLK = '0') THEN

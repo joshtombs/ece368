@@ -32,6 +32,7 @@ entity operandaccess is
           W_FWD_ADDR   : in  STD_LOGIC_VECTOR(3 downto 0);
           NOP_OUT      : out STD_LOGIC;
           REGA_ADDR    : out STD_LOGIC_VECTOR(3 downto 0);
+          JMP_OUT      : out STD_LOGIC_VECTOR(15 downto 0);
           OP1          : out STD_LOGIC_VECTOR(15 downto 0);
           OP2          : out STD_LOGIC_VECTOR(15 downto 0);
           OPCODE       : out STD_LOGIC_VECTOR(3 downto 0));
@@ -139,6 +140,10 @@ begin
               D    => NOP,
               Q    => NOP_OUT);
 
-
+    REG9 : entity work.reg16
+    PORT MAP( CLK  => CLK,
+              ENB  => HIGH,
+              D    => DATA_IN(15 downto 0),
+              Q    => JMP_OUT);
 end Structural;
 
