@@ -20,7 +20,7 @@ use work.all;
 entity Fetch is
 Port (
       CLK           : in  STD_LOGIC;
-      MUX_SEL       : in  STD_LOGIC_VECTOR(1 downto 0);
+      MUX_SEL       : in  STD_LOGIC_VECTOR(2 downto 0);
       ADD_A         : in  STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
       D_IN          : in  STD_LOGIC_VECTOR(15 downto 0);
       WEA_In        : in  STD_LOGIC;
@@ -72,12 +72,16 @@ begin
             ENB   => INST_ENB,
             Q     => INST_OUT);
 
-     U4: entity work.addr_mux4to1
+     U4: entity work.addr_mux8to1
      port map(SEL    => MUX_SEL,
           IN0    => AddRes,
           IN1    => STACK_res,
           IN2    => JMP_IN,
           IN3    => AddB,
+          IN4    => One,
+          IN5    => One,
+          IN6    => One,
+          IN7    => One,
           OUTPUT => Mux_out
      );
 

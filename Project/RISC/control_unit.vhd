@@ -17,7 +17,7 @@ entity control_unit is
     Port( CLK              : in  STD_LOGIC;
           RESET            : in  STD_LOGIC;
           -- Fetch
-          PC_MUX_SEL       : out STD_LOGIC_VECTOR(1 downto 0);
+          PC_MUX_SEL       : out STD_LOGIC_VECTOR(2 downto 0);
           F_STALL_IN       : in  STD_LOGIC;
           INSTR_ENB        : out STD_LOGIC;
           PC_BR            : in  STD_LOGIC_VECTOR(1 downto 0);
@@ -54,16 +54,16 @@ begin
     begin
         if(CLK'EVENT and CLK = '1') then
             if(F_STALL_IN = '1') then
-                PC_MUX_SEL <= "11";
+                PC_MUX_SEL <= "011";
                 INSTR_ENB  <= '0';
             elsif( PC_BR = "01") then
-                PC_MUX_SEL <= "10";
+                PC_MUX_SEL <= "010";
                 INSTR_ENB  <= '1';
             elsif( PC_BR = "10" ) then
-                PC_MUX_SEL <= "01";
+                PC_MUX_SEL <= "001";
                 INSTR_ENB  <= '1';
             else
-                PC_MUX_SEL <= "00";
+                PC_MUX_SEL <= "000";
                 INSTR_ENB  <= '1';
             end if;
         end if;
