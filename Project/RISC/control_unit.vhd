@@ -17,12 +17,17 @@ entity control_unit is
     Port( CLK              : in  STD_LOGIC;
           RESET            : in  STD_LOGIC;
           -- Fetch
-          PC_MUX_SEL       : out STD_LOGIC_VECTOR(1 downto 0);
+          PC_MUX_SEL       : out STD_LOGIC_VECTOR(2 downto 0);
           F_STALL_IN       : in  STD_LOGIC;
           INSTR_ENB        : out STD_LOGIC;
+          PC_BR            : in  STD_LOGIC_VECTOR(1 downto 0);
           -- Decode
           D_NOP_OUT        : out STD_LOGIC;
           -- Operand Access
+          BRANCH_MATCH     : in  STD_LOGIC;
+          STACK_ENB        : out STD_LOGIC;
+          STACK_OPERATION  : out STD_LOGIC; -- 0 = PUSH, 1 = POP
+          PC_OP            : out STD_LOGIC_VECTOR(1 downto 0);
           O_NOP_IN         : in  STD_LOGIC;
           O_NOP_OUT        : out STD_LOGIC;
           O_STALL_IN       : in  STD_LOGIC;
@@ -30,6 +35,7 @@ entity control_unit is
           OP1_MUX_SEL      : out STD_LOGIC_VECTOR(1 downto 0);
           OP2_MUX_SEL      : out STD_LOGIC_VECTOR(1 downto 0);
           -- Execute
+          EX_OPCODE        : in  STD_LOGIC_VECTOR(3 downto 0);
           E_NOP_IN         : in  STD_LOGIC;
           E_NOP_OUT        : out STD_LOGIC;
           RESULT_REG_E     : out STD_LOGIC;
@@ -49,19 +55,41 @@ begin
     begin
         if(CLK'EVENT and CLK = '1') then
             if(F_STALL_IN = '1') then
-                PC_MUX_SEL <= "11";
+                PC_MUX_SEL <= "011";
                 INSTR_ENB  <= '0';
+            elsif( PC_BR = "01") then
+                PC_MUX_SEL <= "010";
+                INSTR_ENB  <= '1';
+            elsif( PC_BR = "10" ) then
+                PC_MUX_SEL <= "001";
+                INSTR_ENB  <= '1';
+            elsif ( PC_BR = "11" ) then
+                PC_MUX_SEL <= "100";
+                INSTR_ENB  <= '1';
             else
-                PC_MUX_SEL <= "00";
+                PC_MUX_SEL <= "000";
                 INSTR_ENB  <= '1';
             end if;
         end if;
     end PROCESS;
     
     DECODE: PROCESS(CLK)
+        variable BRJMP : STD_LOGIC := '0';
     begin
         if(CLK'EVENT and CLK = '1') then
-            if(RESET = '1') then
+            --Determine if there is a JMP/BRA/RTL in pipeline
+            if( OPA_OPCODE = "1101" or OPA_OPCODE = "1110" or OPA_OPCODE = "1111") then
+                BRJMP := '1';
+            elsif (EX_OPCODE = "1101" or EX_OPCODE = "1110" or EX_OPCODE = "1111") then
+                BRJMP := '1';
+            elsif ( WB_OPCODE = "1101" or WB_OPCODE = "1110" or WB_OPCODE = "1111") then
+                BRJMP := '1';
+            else
+                BRJMP := '0';
+            end if;
+
+            --Turn to NOP if JMP/BRA/RTL in pipe
+            if(RESET = '1' or PC_BR = "01" or PC_BR = "10" or PC_BR = "11" or BRJMP = '1') then
                 D_NOP_OUT <= '1';
             else
                 D_NOP_OUT <= '0';
@@ -70,9 +98,12 @@ begin
     end PROCESS;
     
     OPA: PROCESS(CLK)
+         variable BRJMP, INST_NOP : STD_LOGIC := '0';
     begin
         if(CLK'EVENT and CLK = '1') then
             OP1_MUX_SEL <= "00" ;    
+
+            -- Operand MUX Select
             case OPA_OPCODE is
                 when "0000" => OP2_MUX_SEL <= "00";
                 when "0001" => OP2_MUX_SEL <= "00";
@@ -86,13 +117,45 @@ begin
                 when "1001" => OP2_MUX_SEL <= "01";
                 when "1010" => OP2_MUX_SEL <= "01";
                 when others => OP2_MUX_SEL <= "01";
-            end case;        
+            end case;
+
+            --Determine if NOP
             if( O_NOP_IN = '1' or O_STALL_IN = '1' or RESET = '1') then
-                O_NOP_OUT <= '1';
+                INST_NOP := '1';
             else
-                O_NOP_OUT <= '0';
+                INST_NOP := '0';
             end if;
-          end if;
+
+            -- Jump & Branch & Return
+            if(OPA_OPCODE = "1101" AND INST_NOP = '0') then
+                STACK_OPERATION <= '0';
+                STACK_ENB <= '1';
+                BRJMP := '1';
+                PC_OP <= "01";
+            elsif(OPA_OPCODE = "1110" AND INST_NOP= '0') then
+                STACK_OPERATION <= '1';
+                STACK_ENB <= '1';
+                BRJMP := '1';
+                PC_OP <= "10";
+            elsif(OPA_OPCODE = "1111" AND INST_NOP = '0' AND BRANCH_MATCH = '1') then
+                STACK_ENB <= '0';
+                BRJMP := '1';
+                PC_OP <= "11";
+            else
+                STACK_ENB <= '0';
+                BRJMP := '0';
+                PC_OP <= "00";
+            end if;
+
+            -- If BRA/JMP/RTL, OPA -> NOP
+            if(BRJMP = '1' or PC_BR = "01" or PC_BR = "10" or PC_BR = "11" or INST_NOP = '1') THEN
+                INST_NOP := '1';
+            else
+                INST_NOP := '0';
+            end if;
+            O_NOP_OUT <= INST_NOP;
+
+        end if;
     end PROCESS;
     
     EXECUTE: PROCESS(CLK)

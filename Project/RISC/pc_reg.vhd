@@ -12,31 +12,31 @@
 ---------------------------------------------------
 
 LIBRARY ieee ;
-USE ieee.std_logic_1164.all ;
+USE ieee.std_logic_1164.all;
+USE ieee.numeric_std.all;
+use work.UMDRISC_PKG.all;
 use work.all;
 
 ENTITY PC_Reg IS
-	GENERIC ( N : INTEGER := 5 ) ;
-	PORT (	D       : IN	 	STD_LOGIC_VECTOR(N-1 DOWNTO 0);
-		Res     : IN		STD_LOGIC;	
-		Enable  : IN 		STD_LOGIC;
-		CLK     : IN 		STD_LOGIC ;
-		Q       : OUT 		STD_LOGIC_VECTOR(N-1 DOWNTO 0) ) ;
+    PORT (  D       : IN  STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 DOWNTO 0);
+            Res     : IN  STD_LOGIC;    
+            Enable  : IN  STD_LOGIC;
+            CLK     : IN  STD_LOGIC ;
+            Q       : OUT STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 DOWNTO 0) ) ;
 END PC_Reg ;
 
-ARCHITECTURE Behavior OF PC_Reg IS	
-
-signal Temp : STD_LOGIC_VECTOR(N-1 DOWNTO 0);
-
+ARCHITECTURE Behavior OF PC_Reg IS
+    signal Temp : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 DOWNTO 0);
+    constant zero : integer := 0;
 BEGIN
-	PROCESS (CLK, Res)
-	BEGIN
-                IF (Res = '1') THEN
-			Q <= "00000";	-- Need to change if N changes
-                ELSIF (CLK'EVENT AND CLK = '0' ) THEN
-			IF (Enable = '1') THEN
-				Q <= D ;
-			END IF ;
-		END IF;
-	END PROCESS ;
+    PROCESS (CLK, Res)
+    BEGIN
+        IF (Res = '1') THEN
+            Q <= std_logic_vector(to_unsigned(zero, INSTR_MEM_WIDTH));    -- Need to change if N changes
+        ELSIF (CLK'EVENT AND CLK = '0' ) THEN
+            IF (Enable = '1') THEN
+                Q <= D ;
+            END IF ;
+        END IF;
+    END PROCESS ;
 END Behavior ;
