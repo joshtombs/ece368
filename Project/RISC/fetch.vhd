@@ -61,10 +61,10 @@ begin
    U2: entity work.Instr_Mem
    port map( 
             CLKB  => CLK,
-            ADDRB => AddB(4 downto 0),
+            ADDRB => AddB(INSTR_MEM_USED-1 downto 0),
             CLKA  => CLK,
             WEA(0)=> WEA_In,
-            ADDRA => ADD_A(4 downto 0),
+            ADDRA => ADD_A(INSTR_MEM_USED-1 downto 0),
             DINA  => D_IN, 
             DOUTB => instruction); 
 
