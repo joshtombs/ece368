@@ -26,15 +26,14 @@ entity addr_MUX4to1 is
 end addr_MUX4to1;
 
 architecture Behavioral of addr_MUX4to1 is
-
+    constant zero : integer := 0;
 begin
-
-with SEL select
-    OUTPUT<= IN0 when "00",
-             IN1 when "01",
-             IN2 when "10",
-             IN3 when "11",
-             "000000000000" when others;
+    with SEL select
+        OUTPUT<= IN0 when "00",
+                 IN1 when "01",
+                 IN2 when "10",
+                 IN3 when "11",
+                 std_logic_vector(to_unsigned(zero, INSTR_MEM_WIDTH)) when others;
 
 end Behavioral;
 

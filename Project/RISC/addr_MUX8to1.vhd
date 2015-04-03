@@ -12,6 +12,7 @@
 ---------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 use work.UMDRISC_PKG.all;
 
 entity addr_MUX8to1 is
@@ -28,18 +29,18 @@ entity addr_MUX8to1 is
 end addr_MUX8to1;
 
 architecture Behavioral of addr_MUX8to1 is
-
+    constant zero : integer := 0;
 begin
     with SEL select
         OUTPUT<= IN0 when "000",
-             IN1 when "001",
-             IN2 when "010",
-             IN3 when "011",
-             IN4 when "100",
-             IN5 when "101",
-             IN6 when "110",
-             IN7 when "111",
-             "000000000000" when others;
+                 IN1 when "001",
+                 IN2 when "010",
+                 IN3 when "011",
+                 IN4 when "100",
+                 IN5 when "101",
+                 IN6 when "110",
+                 IN7 when "111",
+                 std_logic_vector(to_unsigned(zero, INSTR_MEM_WIDTH)) when others;
 
 end Behavioral;
 

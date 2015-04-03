@@ -19,7 +19,7 @@ entity operandaccess is
           NOP          : in  STD_LOGIC;
           E_NOP        : in  STD_LOGIC;
           W_NOP        : in  STD_LOGIC;
-          DATA_IN      : in  STD_LOGIC_VECTOR(55downto 0);
+          DATA_IN      : in  STD_LOGIC_VECTOR(55 downto 0);
           W_ADDR       : in  STD_LOGIC_VECTOR(3 downto 0);
           BANK_R_W     : in  STD_LOGIC;
           BANK_ENB     : in  STD_LOGIC;
