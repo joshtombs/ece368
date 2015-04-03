@@ -12,6 +12,7 @@
 ---------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+use work.UMD_RISC16.all;
  
 ENTITY execute_tb IS
 END execute_tb;

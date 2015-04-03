@@ -12,28 +12,28 @@
 ---------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.NUMERIC_STD.ALL;
+use work.UMDRISC_PKG.all;
 
 entity MUX4to1 is
     Port( SEL    : in  STD_LOGIC_VECTOR (1 downto 0);
-          IN0    : in  STD_LOGIC_VECTOR (15 downto 0);
-          IN1    : in  STD_LOGIC_VECTOR (15 downto 0);
-          IN2    : in  STD_LOGIC_VECTOR (15 downto 0);
-          IN3    : in  STD_LOGIC_VECTOR (15 downto 0);
-          OUTPUT : out  STD_LOGIC_VECTOR(15 downto 0));
+          IN0    : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+          IN1    : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+          IN2    : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+          IN3    : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+          OUTPUT : out  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0));
 end MUX4to1;
 
 architecture Behavioral of MUX4to1 is
-
+    constant zero : integer := 0;
 begin
 
-with SEL select
-    OUTPUT<= IN0 when "00",
+    with SEL select
+        OUTPUT<= IN0 when "00",
              IN1 when "01",
              IN2 when "10",
              IN3 when "11",
-             x"0000" when others;
+             std_logic_vector(to_unsigned(zero, DATA_WIDTH)) when others;
 
 end Behavioral;
 

@@ -14,12 +14,13 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use work.UMDRISC_PKG.all;
 
 entity MUX2to1 is
     Port( SEL    : in  STD_LOGIC;
-          IN0    : in  STD_LOGIC_VECTOR (15 downto 0);
-          IN1    : in  STD_LOGIC_VECTOR (15 downto 0);
-          OUTPUT : out  STD_LOGIC_VECTOR(15 downto 0));
+          IN0    : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+          IN1    : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+          OUTPUT : out  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0));
 end MUX2to1;
 
 architecture Dataflow of MUX2to1 is

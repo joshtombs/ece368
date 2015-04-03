@@ -8,24 +8,25 @@
 -- Project Name:   UMD_RISC16
 -- Target Devices: Spartan-3E
 -- Tool versions:  Xilinx ISE 14.7
--- Description:    Create 16 bit edge triggered register
---     with an enable.
+-- Description:    Create edge triggered register
+--     with an enable that reads on rising edge, uses
+--     same width of data in UMD_RISC16.
 ---------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use work.UMDRISC_PKG.all;
 
-entity reg16 is
-    GENERIC ( N : INTEGER := 16 ) ;
-    PORT ( D         : in  STD_LOGIC_VECTOR(N-1 DOWNTO 0) ;
+entity data_reg_re is
+    PORT ( D         : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0) ;
            ENB, CLK  : in  STD_LOGIC ;
-           Q         : out STD_LOGIC_VECTOR(N-1 DOWNTO 0) ) ;
-end reg16;
+           Q         : out STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0) ) ;
+end data_reg_re;
 
-architecture Behavioral of reg16 is
+architecture Behavioral of data_reg_re is
 begin
     PROCESS (CLK)
     BEGIN
-        IF (CLK'EVENT AND CLK = '0') THEN
+        IF (CLK'EVENT AND CLK = '1') THEN
             IF ENB = '1' THEN
                 Q <= D ;
             END IF;

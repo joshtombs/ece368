@@ -15,18 +15,19 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use work.UMDRISC_PKG.all;
 
 entity ALU_Shift_Unit is
-    Port ( A      : in  STD_LOGIC_VECTOR (15 downto 0);
+    Port ( A      : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
            COUNT  : in  STD_LOGIC_VECTOR (3 downto 0);
            OP     : in  STD_LOGIC;
-           RESULT : out STD_LOGIC_VECTOR  (15 downto 0));
+           RESULT : out STD_LOGIC_VECTOR  (DATA_WIDTH-1 downto 0));
 
 end ALU_Shift_Unit;
 
 architecture Combinational of ALU_Shift_Unit is
 
-    signal shift_left, shift_right : std_logic_vector (15 downto 0) := (OTHERS => '0');
+    signal shift_left, shift_right : std_logic_vector (DATA_WIDTH-1 downto 0) := (OTHERS => '0');
 
 begin
 

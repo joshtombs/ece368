@@ -24,28 +24,28 @@ entity operandaccess is
           BANK_R_W     : in  STD_LOGIC;
           BANK_ENB     : in  STD_LOGIC;
           BANK_RESET   : in  STD_LOGIC;
-          BANK_DATA    : in  STD_LOGIC_VECTOR(15 downto 0);
+          BANK_DATA    : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           OP1_MUX_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
           OP2_MUX_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
-          E_FWD_IN     : in  STD_LOGIC_VECTOR(15 downto 0);
+          E_FWD_IN     : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           E_FWD_ADDR   : in  STD_LOGIC_VECTOR(3 downto 0);
-          W_FWD_IN     : in  STD_LOGIC_VECTOR(15 downto 0);
+          W_FWD_IN     : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           W_FWD_ADDR   : in  STD_LOGIC_VECTOR(3 downto 0);
           CCR_IN       : in  STD_LOGIC_VECTOR(3 downto 0);
           MASK_MATCH   : out STD_LOGIC;
           NOP_OUT      : out STD_LOGIC;
           REGA_ADDR    : out STD_LOGIC_VECTOR(3 downto 0);
-          JMP_OUT      : out STD_LOGIC_VECTOR(15 downto 0);
+          JMP_OUT      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           BRANCH_OUT   : out STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
-          OP1          : out STD_LOGIC_VECTOR(15 downto 0);
-          OP2          : out STD_LOGIC_VECTOR(15 downto 0);
+          OP1          : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          OP2          : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           OPCODE       : out STD_LOGIC_VECTOR(3 downto 0));
 end operandaccess;
 
 architecture Mixed of operandaccess is
     signal REGA_OUT, REGB_OUT, OP1_MUX_OUT, OP2_MUX_OUT
-                       : STD_LOGIC_VECTOR(15 downto 0);
-    signal LOW : STD_LOGIC_VECTOR(15 downto 0) := x"0000";
+                       : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal LOW : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := x"0000";
     signal HIGH: STD_LOGIC := '1';
     signal write_address, E_FWDADDR_REG, W_FWDADDR_REG, MASK_BITS : STD_LOGIC_VECTOR(3 downto 0);
     signal DETECT_SEL1, DETECT_SEL2 : STD_LOGIC_VECTOR(1 downto 0);
@@ -79,7 +79,7 @@ begin
               IN3 => E_FWD_IN,
               OUTPUT => OP1_MUX_OUT);
 
-    REG1 : entity work.reg16
+    REG1 : entity work.data_reg
     PORT MAP( CLK   => CLK,
               D     => OP1_MUX_OUT,
               ENB   => HIGH,
@@ -102,7 +102,7 @@ begin
               IN3    => E_FWD_IN,
               OUTPUT => OP2_MUX_OUT);
 
-    REG2 : entity work.reg16
+    REG2 : entity work.data_reg
     PORT MAP( CLK   => CLK,
               D     => OP2_MUX_OUT,
               ENB   => HIGH,
@@ -144,7 +144,7 @@ begin
               D    => NOP,
               Q    => NOP_OUT);
 
-    REG9 : entity work.reg16
+    REG9 : entity work.data_reg
     PORT MAP( CLK  => CLK,
               ENB  => HIGH,
               D    => DATA_IN(15 downto 0),
