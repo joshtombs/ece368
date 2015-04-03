@@ -28,23 +28,27 @@ Port (
       INST_ENB      : in  STD_LOGIC;
       BRJMP         : in  STD_LOGIC_VECTOR(1 downto 0);
       JMP_IN        : in  STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
+      BR_IN         : in  STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
       STACK_ENB     : in  STD_LOGIC;
       STACK_PUSHPOP : in  STD_LOGIC;
       STACK_E       : out STD_LOGIC;
       STACK_F       : out STD_LOGIC;
+      PC_ADDR       : out STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
       BRJMP_OUT     : out STD_LOGIC_VECTOR(1 downto 0);
       INST_OUT      : out STD_LOGIC_VECTOR(15 downto 0));
 end Fetch;
 
 architecture Structural of Fetch is
 
-signal AddB, AddRes, Mux_out, stack_res, addr_re1, reg_out
+signal AddB, AddRes, Mux_out, stack_res, addr_re1, reg_out, br_addr
                    : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
 signal One         : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0) := "000000000001";
 signal instruction : STD_LOGIC_VECTOR(15 downto 0);
 begin
 
-   AddRes <= (AddB + One); 
+   AddRes <= (AddB + One);
+    
+   PC_ADDR <= reg_out;
 
    U1: entity work.PC_Reg
    port map(
@@ -53,8 +57,7 @@ begin
          CLK    => CLK,
          Q      => AddB,
          Res    => PCRes);
-         
- 
+
    U2: entity work.Instr_Mem
    port map( 
             CLKB  => CLK,
@@ -72,18 +75,17 @@ begin
             ENB   => INST_ENB,
             Q     => INST_OUT);
 
-     U4: entity work.addr_mux8to1
-     port map(SEL    => MUX_SEL,
-          IN0    => AddRes,
-          IN1    => STACK_res,
-          IN2    => JMP_IN,
-          IN3    => AddB,
-          IN4    => One,
-          IN5    => One,
-          IN6    => One,
-          IN7    => One,
-          OUTPUT => Mux_out
-     );
+    U4: entity work.addr_mux8to1
+    port map( SEL    => MUX_SEL,
+              IN0    => AddRes,
+              IN1    => STACK_res,
+              IN2    => JMP_IN,
+              IN3    => AddB,
+              IN4    => br_addr,
+              IN5    => One,
+              IN6    => One,
+              IN7    => One,
+              OUTPUT => Mux_out);
 
     Stack: entity work.stack
     port map( CLK      => CLK,
@@ -111,5 +113,11 @@ begin
               D     => addr_re1,
               ENB   => One(0),
               Q     => reg_out);
+        
+    REG2: entity work.addr_reg
+    port map( CLK   => CLK,
+              D     => BR_IN,
+              ENB   => One(0),
+              Q     => br_addr);
 
  end Structural;

@@ -12,13 +12,14 @@
 ---------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use work.UMDRISC_PKG.all;
 
 entity operandaccess is
     Port( CLK          : in  STD_LOGIC;
           NOP          : in  STD_LOGIC;
           E_NOP        : in  STD_LOGIC;
           W_NOP        : in  STD_LOGIC;
-          DATA_IN      : in  STD_LOGIC_VECTOR(43 downto 0);
+          DATA_IN      : in  STD_LOGIC_VECTOR(55downto 0);
           W_ADDR       : in  STD_LOGIC_VECTOR(3 downto 0);
           BANK_R_W     : in  STD_LOGIC;
           BANK_ENB     : in  STD_LOGIC;
@@ -30,20 +31,23 @@ entity operandaccess is
           E_FWD_ADDR   : in  STD_LOGIC_VECTOR(3 downto 0);
           W_FWD_IN     : in  STD_LOGIC_VECTOR(15 downto 0);
           W_FWD_ADDR   : in  STD_LOGIC_VECTOR(3 downto 0);
+          CCR_IN       : in  STD_LOGIC_VECTOR(3 downto 0);
+          MASK_MATCH   : out STD_LOGIC;
           NOP_OUT      : out STD_LOGIC;
           REGA_ADDR    : out STD_LOGIC_VECTOR(3 downto 0);
           JMP_OUT      : out STD_LOGIC_VECTOR(15 downto 0);
+          BRANCH_OUT   : out STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
           OP1          : out STD_LOGIC_VECTOR(15 downto 0);
           OP2          : out STD_LOGIC_VECTOR(15 downto 0);
           OPCODE       : out STD_LOGIC_VECTOR(3 downto 0));
 end operandaccess;
 
-architecture Structural of operandaccess is
+architecture Mixed of operandaccess is
     signal REGA_OUT, REGB_OUT, OP1_MUX_OUT, OP2_MUX_OUT
                        : STD_LOGIC_VECTOR(15 downto 0);
     signal LOW : STD_LOGIC_VECTOR(15 downto 0) := x"0000";
     signal HIGH: STD_LOGIC := '1';
-    signal write_address, E_FWDADDR_REG, W_FWDADDR_REG : STD_LOGIC_VECTOR(3 downto 0);
+    signal write_address, E_FWDADDR_REG, W_FWDADDR_REG, MASK_BITS : STD_LOGIC_VECTOR(3 downto 0);
     signal DETECT_SEL1, DETECT_SEL2 : STD_LOGIC_VECTOR(1 downto 0);
 begin
     BANK: entity work.register_bank
@@ -74,7 +78,7 @@ begin
               IN2 => W_FWD_IN,
               IN3 => E_FWD_IN,
               OUTPUT => OP1_MUX_OUT);
-                 
+
     REG1 : entity work.reg16
     PORT MAP( CLK   => CLK,
               D     => OP1_MUX_OUT,
@@ -99,28 +103,28 @@ begin
               OUTPUT => OP2_MUX_OUT);
 
     REG2 : entity work.reg16
-     PORT MAP( CLK   => CLK,
-               D     => OP2_MUX_OUT,
-               ENB   => HIGH,
-               Q     => OP2);
+    PORT MAP( CLK   => CLK,
+              D     => OP2_MUX_OUT,
+              ENB   => HIGH,
+              Q     => OP2);
 
-     REG3 : entity work.reg4
-     PORT MAP( CLK   => CLK,
-               D     => DATA_IN(43 downto 40),
-               ENB   => HIGH,
-               Q     => OPCODE);
+    REG3 : entity work.reg4
+    PORT MAP( CLK   => CLK,
+              D     => DATA_IN(43 downto 40),
+              ENB   => HIGH,
+              Q     => OPCODE);
 
-     REG4 : entity work.reg4
-     PORT MAP ( CLK  => CLK,
-                D    => DATA_IN(39 downto 36),
-                ENB  => HIGH,
-                Q    => REGA_ADDR);
+    REG4 : entity work.reg4
+    PORT MAP ( CLK  => CLK,
+               D    => DATA_IN(39 downto 36),
+               ENB  => HIGH,
+               Q    => REGA_ADDR);
 
-     REG5 : entity work.reg4_re
-     PORT MAP ( CLK  => CLK,
-                D    => W_ADDR,
-                ENB  => HIGH,
-                Q    => write_address);
+    REG5 : entity work.reg4_re
+    PORT MAP ( CLK  => CLK,
+               D    => W_ADDR,
+               ENB  => HIGH,
+               Q    => write_address);
 
     REG6 : entity work.reg4_re
     PORT MAP ( CLK  => CLK,
@@ -145,5 +149,18 @@ begin
               ENB  => HIGH,
               D    => DATA_IN(15 downto 0),
               Q    => JMP_OUT);
-end Structural;
+
+    BR_ADDR : entity work.branch_adder
+    PORT MAP(PC_ADDR   => DATA_IN(55 downto 44),
+             IMMEDIATE => DATA_IN(31 downto 16),
+             RESULT    => BRANCH_OUT);
+
+    MASK_BITS(0) <= (CCR_IN(0) XNOR DATA_IN(36));
+    MASK_BITS(1) <= (CCR_IN(1) XNOR DATA_IN(37));
+    MASK_BITS(2) <= (CCR_IN(2) XNOR DATA_IN(38));
+    MASK_BITS(3) <= (CCR_IN(3) XNOR DATA_IN(39));
+
+    MASK_MATCH <=  MASK_BITS(3) AND MASK_BITS(2) AND MASK_BITS(1) AND MASK_BITS(0);
+
+end Mixed;
 

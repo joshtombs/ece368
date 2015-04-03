@@ -12,21 +12,24 @@
 ---------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use work.UMDRISC_PKG.all;
 
 entity decode is
     Port( CLK     : in  STD_LOGIC;
           INST_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+          PC_ADDR : in  STD_LOGIC_VECTOR (INSTR_MEM_WIDTH-1 downto 0);
           NOP     : in  STD_LOGIC;
           MUX_SEL : in  STD_LOGIC;
           NOP_OUT : out STD_LOGIC;
-          DATA_OUT: out STD_LOGIC_VECTOR (43 downto 0));
+          DATA_OUT: out STD_LOGIC_VECTOR (55 downto 0));
 end decode;
 
 architecture Mixed of decode is
-    signal tmp : STD_LOGIC_VECTOR (43 downto 0) := (OTHERS => '0');
+    signal tmp : STD_LOGIC_VECTOR (55 downto 0) := (OTHERS => '0');
     signal instruction, re_out, fe_out : STD_LOGIC_VECTOR(15 downto 0) := (OTHERS => '0');
     signal high : STD_LOGIC := '1';
 begin
+    tmp(55 downto 44) <= PC_ADDR;
     tmp(43 downto 40) <= instruction(15 downto 12);
     tmp(39 downto 36) <= instruction(11 downto 8);
     tmp(35 downto 32) <= instruction(7 downto 4);
