@@ -17,7 +17,7 @@ use work.UMDRISC_PKG.all;
 
 entity risc_machine is
     Port ( CLK       : in  STD_LOGIC;
-           RESET  : in  STD_LOGIC;
+           RESET     : in  STD_LOGIC;
            CCR_OUT   : out STD_LOGIC_VECTOR(3 downto 0));
 end risc_machine;
 
@@ -26,7 +26,7 @@ architecture Structural of risc_machine is
 signal high : STD_LOGIC := '1';
 signal low  : STD_LOGIC := '0';
 signal INST_W_ADR : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0) := "000000000000";
-signal INST_W_DATA : STD_LOGIC_VECTOR(15 downto 0) := x"0000";
+signal INST_W_DATA : STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0) := x"0000";
 
 -- Connections
 signal word : STD_LOGIC_VECTOR(55 downto 0);
@@ -37,7 +37,7 @@ signal p_counter_mux_sel : STD_LOGIC_VECTOR(2 downto 0);
 signal OP_OUT, WB_CNTRL_OPCODE, reg_a_address, bank_w_addr, ex_ccr_out
               : STD_LOGIC_VECTOR(3 downto 0);
 signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data, jump_addr
-              : STD_LOGIC_VECTOR(15 downto 0);
+              : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, 
        f_instr_enb, D_NOP_IN, D_NOP_OUT, O_NOP_IN, O_NOP_OUT, E_NOP_IN, E_NOP_OUT, W_NOP_IN,
        stack_enable, stack_op, br_mask_match

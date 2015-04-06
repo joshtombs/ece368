@@ -22,7 +22,7 @@ Port (
       CLK           : in  STD_LOGIC;
       MUX_SEL       : in  STD_LOGIC_VECTOR(2 downto 0);
       ADD_A         : in  STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
-      D_IN          : in  STD_LOGIC_VECTOR(15 downto 0);
+      D_IN          : in  STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
       WEA_In        : in  STD_LOGIC;
       PCRes         : in  STD_LOGIC;
       INST_ENB      : in  STD_LOGIC;
@@ -35,7 +35,7 @@ Port (
       STACK_F       : out STD_LOGIC;
       PC_ADDR       : out STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
       BRJMP_OUT     : out STD_LOGIC_VECTOR(1 downto 0);
-      INST_OUT      : out STD_LOGIC_VECTOR(15 downto 0));
+      INST_OUT      : out STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0));
 end Fetch;
 
 architecture Structural of Fetch is
@@ -43,7 +43,7 @@ architecture Structural of Fetch is
 signal AddB, AddRes, Mux_out, stack_res, addr_re1, reg_out, br_addr
                    : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
 signal One         : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0) := "000000000001";
-signal instruction : STD_LOGIC_VECTOR(15 downto 0);
+signal instruction : STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
 begin
 
    AddRes <= (AddB + One);
@@ -68,7 +68,7 @@ begin
             DINA  => D_IN, 
             DOUTB => instruction); 
 
-    U3: entity work.reg16
+    U3: entity work.instr_reg
     port map(
             CLK   => CLK,
             D     => instruction,

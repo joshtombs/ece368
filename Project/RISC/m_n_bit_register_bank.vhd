@@ -36,37 +36,40 @@ architecture Behavioral of register_bank is
     type   bank_type is array (0 to M-1) of std_logic_vector (N-1 downto 0);
     signal bank: bank_type := (others=> (others=>'0'));  -- initialize all registers to "0000"
 begin
-    PROCESS(RESET, CLK, ENB, R_W)
+    PROCESS(CLK, RESET, ENB, R_W)
     begin
-        if(RESET = '1') then
-            bank(0) <= x"0000";
-            bank(1) <= x"0000";
-            bank(2) <= x"0000";
-            bank(3) <= x"0000";
-            bank(4) <= x"0000";
-            bank(5) <= x"0000";
-            bank(6) <= x"0000";
-            bank(7) <= x"0000";
-            bank(8) <= x"0000";
-            bank(9) <= x"0000";
-            bank(10) <= x"0000";
-            bank(11) <= x"0000";
-            bank(12) <= x"0000";
-            bank(13) <= x"0000";
-            bank(14) <= x"0000";
-            bank(15) <= x"0000";
-        elsif (CLK'EVENT and CLK = '1') then        --rising edge event (read)
-            if(ENB = '1') then    --enabled and read
+          if (CLK'EVENT and CLK = '1') then        --rising edge event (read)
+                if(ENB = '1') then    --enabled and read
                 REG_A <= bank(to_integer(unsigned(ADDR_A)));
                 REG_B <= bank(to_integer(unsigned(ADDR_B)));
             end if;
         end if;
+    end PROCESS;
+
+    PROCESS(CLK, RESET, ENB, R_W)
+    begin
         if (CLK'EVENT and CLK = '0') then    --falling edge event (write)
-            if(ENB = '1' and R_W = '1') then    --enabled and write
+            if(RESET = '1') then
+                bank(0) <= x"0000";
+                bank(1) <= x"0000";
+                bank(2) <= x"0000";
+                bank(3) <= x"0000";
+                bank(4) <= x"0000";
+                bank(5) <= x"0000";
+                bank(6) <= x"0000";
+                bank(7) <= x"0000";
+                bank(8) <= x"0000";
+                bank(9) <= x"0000";
+                bank(10) <= x"0000";
+                bank(11) <= x"0000";
+                bank(12) <= x"0000";
+                bank(13) <= x"0000";
+                bank(14) <= x"0000";
+                bank(15) <= x"0000";
+            elsif(ENB = '1' and R_W = '1') then    --enabled and write
                 bank(to_integer(unsigned(W_ADDR))) <= DATA_IN;
             end if;
         end if;
     end PROCESS;
 
 end Behavioral;
-

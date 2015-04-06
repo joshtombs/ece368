@@ -14,23 +14,24 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use work.UMDRISC_PKG.all;
 use work.all;
 
 entity ALU is
-    Port ( RA       : in  STD_LOGIC_VECTOR (15 downto 0);
-           RB       : in  STD_LOGIC_VECTOR (15 downto 0);
+    Port ( RA       : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           RB       : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
            OPCODE   : in  STD_LOGIC_VECTOR (3 downto 0);
            CCR      : out STD_LOGIC_VECTOR (3 downto 0);
-           ALU_OUT  : out STD_LOGIC_VECTOR (15 downto 0);
-           LDST_OUT : out STD_LOGIC_VECTOR (15 downto 0));
+           ALU_OUT  : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           LDST_OUT : out STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0));
 end ALU;
 
 architecture Structural of ALU is
 
-    signal arith     : STD_LOGIC_VECTOR (15 downto 0) := (OTHERS => '0');
-    signal logic     : STD_LOGIC_VECTOR (15 downto 0) := (OTHERS => '0');
-    signal shift     : STD_LOGIC_VECTOR (15 downto 0) := (OTHERS => '0');
-    signal memory    : STD_LOGIC_VECTOR (15 downto 0) := (OTHERS => '0');
+    signal arith     : STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0) := (OTHERS => '0');
+    signal logic     : STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0) := (OTHERS => '0');
+    signal shift     : STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0) := (OTHERS => '0');
+    signal memory    : STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0) := (OTHERS => '0');
     signal ccr_arith : STD_LOGIC_VECTOR (3 downto 0) := (OTHERS => '0');
     signal ccr_logic : STD_LOGIC_VECTOR (3 downto 0) := (OTHERS => '0');
 

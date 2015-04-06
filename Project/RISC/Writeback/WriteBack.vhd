@@ -15,25 +15,26 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use work.UMDRISC_PKG.all;
 use work.all;
 
 
 entity WriteBack is
 Port(
       CLK       : in STD_LOGIC;
-      D_In      : in STD_LOGIC_VECTOR(15 downto 0);
+      D_In      : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
       WEA0      : in STD_LOGIC;
-      FPU_In    : in STD_LOGIC_VECTOR(15 downto 0);
+      FPU_In    : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
       D_OUT_SEL : in STD_LOGIC;
-      D_Out     : out STD_LOGIC_VECTOR(15 downto 0));
+      D_Out     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0));
 
 end WriteBack;
 
 architecture Structural of WriteBack is
 
-signal D_Out2Mux          : STD_LOGIC_VECTOR(15 downto 0);
+signal D_Out2Mux          : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 signal High               : STD_LOGIC := '1';
-signal Reg_Out, D_Reg_out : STD_LOGIC_VECTOR(15 downto 0);
+signal Reg_Out, D_Reg_out : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 signal InvCLK             : STD_LOGIC;
 
 begin   
@@ -58,14 +59,14 @@ U2: entity work.Data_Mem
          DINA     => D_Reg_Out,
          DOUTB    => D_Out2Mux
             );
-U3: entity work.Reg16_RE
+U3: entity work.data_reg_re
    port map(
          CLK      => CLK,
          D        => FPU_In,
          Q        => Reg_Out,
          ENB      => High
             );
-U4: entity work.Reg16_RE
+U4: entity work.data_reg_re
    port map(
          CLK      => CLK,
          D        => D_In,

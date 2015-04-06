@@ -12,44 +12,45 @@
 ---------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use work.UMDRISC_PKG.all;
 
 entity execute is
     Port( CLK       : in STD_LOGIC;
           NOP       : in STD_LOGIC;
-          OP1_IN    : in STD_LOGIC_VECTOR(15 downto 0);
-          OP2_IN    : in STD_LOGIC_VECTOR(15 downto 0);
+          OP1_IN    : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          OP2_IN    : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           OPCODE    : in STD_LOGIC_VECTOR(3 downto 0);
           REGA_ADDR : in STD_LOGIC_VECTOR(3 downto 0);
           RESULT_E  : in STD_LOGIC;
           NOP_OUT   : out STD_LOGIC;
           OP_OUT    : out STD_LOGIC_VECTOR(3 downto 0);
           CCR_OUT   : out STD_LOGIC_VECTOR(3 downto 0);
-          REG_A_OUT : out STD_LOGIC_VECTOR(15 downto 0);
+          REG_A_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           W_REG_ADDR: out STD_LOGIC_VECTOR(3 downto 0);
-          FWD_OUT   : out STD_LOGIC_VECTOR(15 downto 0);
-          D_OUT     : out STD_LOGIC_VECTOR(15 downto 0));
+          FWD_OUT   : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          D_OUT     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0));
 end execute;
 
 architecture Structural of execute is
-    signal ALU_RESULT  : STD_LOGIC_VECTOR(15 downto 0);
-    signal LDST_RESULT : STD_LOGIC_VECTOR(15 downto 0);
-    signal RE_OUT1, RE_OUT2 : STD_LOGIC_VECTOR(15 downto 0);
+    signal ALU_RESULT  : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal LDST_RESULT : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+    signal RE_OUT1, RE_OUT2 : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal HIGH : STD_LOGIC := '1';
 begin
 
-    REG_RE_1: entity work.reg16_re
+    REG_RE_1: entity work.data_reg_re
     PORT MAP( CLK => CLK,
               D   => OP1_IN,
               ENB => HIGH,
               Q   => RE_OUT1);
                 
-    REG_RE_2: entity work.reg16_re
+    REG_RE_2: entity work.data_reg_re
     PORT MAP( CLK => CLK,
               D   => OP2_IN,
               ENB => HIGH,
               Q   => RE_OUT2);
                   
-    A_VALUE_REG: entity work.reg16
+    A_VALUE_REG: entity work.data_reg
     PORT MAP(CLK => CLK,
              D   => OP1_IN,
              ENB => HIGH,
@@ -71,7 +72,7 @@ begin
 
     FWD_OUT <= ALU_RESULT;
     
-    RESULT_REG: entity work.reg16
+    RESULT_REG: entity work.data_reg
     PORT MAP( CLK  => CLK,
               D    => ALU_RESULT,
               ENB  => RESULT_E,

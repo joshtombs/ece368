@@ -15,13 +15,14 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use work.UMDRISC_PKG.all;
 
 entity Logic_Unit is
-    Port ( A      : in  STD_LOGIC_VECTOR (15 downto 0);
-           B      : in  STD_LOGIC_VECTOR (15 downto 0);
+    Port ( A      : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
+           B      : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
            OP     : in  STD_LOGIC_VECTOR (2 downto 0);
            CCR    : out STD_LOGIC_VECTOR (3 downto 0);
-           RESULT : out STD_LOGIC_VECTOR  (15 downto 0));
+           RESULT : out STD_LOGIC_VECTOR  (DATA_WIDTH-1 downto 0));
 end Logic_Unit;
 
 architecture Combinational of Logic_Unit is

@@ -4,24 +4,24 @@
 -- Engineer:   Josh Tombs
 -- 
 -- Create Date:    SPRING 2015
--- Module Name:    Reg16
+-- Module Name:    instr_reg
 -- Project Name:   UMD_RISC16
 -- Target Devices: Spartan-3E
 -- Tool versions:  Xilinx ISE 14.7
--- Description:    Create 16 bit edge triggered register
---     with an enable that reads on rising edge.
+-- Description:    Create edge triggered register
+--     with an enable of same width as UMDRISC instructions.
 ---------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use work.UMDRISC_PKG.all;
 
-entity reg16_re is
-    GENERIC ( N : INTEGER := 16 ) ;
-    PORT ( D         : in  STD_LOGIC_VECTOR(N-1 DOWNTO 0) ;
+entity instr_reg is
+    PORT ( D         : in  STD_LOGIC_VECTOR(INSTR_LENGTH-1 DOWNTO 0) ;
            ENB, CLK  : in  STD_LOGIC ;
-           Q         : out STD_LOGIC_VECTOR(N-1 DOWNTO 0) ) ;
-end reg16_re;
+           Q         : out STD_LOGIC_VECTOR(INSTR_LENGTH-1 DOWNTO 0) ) ;
+end instr_reg;
 
-architecture Behavioral of reg16_re is
+architecture Behavioral of instr_reg is
 begin
     PROCESS (CLK)
     BEGIN

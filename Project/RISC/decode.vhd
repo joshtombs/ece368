@@ -16,7 +16,7 @@ use work.UMDRISC_PKG.all;
 
 entity decode is
     Port( CLK     : in  STD_LOGIC;
-          INST_IN : in  STD_LOGIC_VECTOR (15 downto 0);
+          INST_IN : in  STD_LOGIC_VECTOR (DATA_WIDTH-1 downto 0);
           PC_ADDR : in  STD_LOGIC_VECTOR (INSTR_MEM_WIDTH-1 downto 0);
           NOP     : in  STD_LOGIC;
           MUX_SEL : in  STD_LOGIC;
@@ -26,7 +26,7 @@ end decode;
 
 architecture Mixed of decode is
     signal tmp : STD_LOGIC_VECTOR (55 downto 0) := (OTHERS => '0');
-    signal instruction, re_out, fe_out : STD_LOGIC_VECTOR(15 downto 0) := (OTHERS => '0');
+    signal instruction, re_out, fe_out : STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0) := (OTHERS => '0');
     signal high : STD_LOGIC := '1';
 begin
     tmp(55 downto 44) <= PC_ADDR;
@@ -49,13 +49,13 @@ begin
         END IF;
     END PROCESS;
 
-    reg1: entity work.reg16_re
+    reg1: entity work.data_reg_re
     port map( CLK  => CLK,
               ENB  => HIGH,
               D    => INST_IN,
               Q    => re_out);
 
-    reg2: entity work.reg16
+    reg2: entity work.data_reg
     port map( CLK  => CLK,
               ENB  => HIGH,
               D    => re_out,

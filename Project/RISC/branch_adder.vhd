@@ -19,7 +19,7 @@ use work.UMDRISC_PKG.all;
 
 entity branch_adder is
     Port( PC_ADDR   : in  STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
-          IMMEDIATE : in  STD_LOGIC_VECTOR(15 downto 0);
+          IMMEDIATE : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           RESULT    : out STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0));
 end branch_adder;
 
