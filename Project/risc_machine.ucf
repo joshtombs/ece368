@@ -41,7 +41,7 @@ NET "SW<0>" LOC = G18;
 NET "SW<1>" LOC = H18;
 NET "SW<2>" LOC = K18;
 NET "SW<3>" LOC = K17;
-NET "Ena<0>" LOC = R17;
+NET "SW<4>" LOC = L14;
 
 ##VGA Assignment
 #8-bit color(256 options), only need 3-bit just use the 510ohm connects

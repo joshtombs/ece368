@@ -20,8 +20,7 @@ entity umd_risc is
           PS2_C  : inout STD_LOGIC;
           PS2_D  : inout STD_LOGIC;
           RST    : in    STD_LOGIC;
-			 SW	  : in    STD_LOGIC_VECTOR(3 downto 0);			--Switches 0 - 3 for checking memory values
-			 Ena	  : in    STD_LOGIC;										--Switch 7 for enabling the viewing
+			 SW	  : in    STD_LOGIC_VECTOR(4 downto 0);			--Switches 0 - 3 for checking memory values				--Switch 4 for enabling the viewing
           HSYNC  : out   STD_LOGIC;
           VSYNC  : out   STD_LOGIC; 
           VGARED : out   STD_LOGIC_VECTOR (2 downto 0);
@@ -56,7 +55,6 @@ begin
               SEG   => SEG,
               AN    => AN,
 				  SW_In => SW,
-				  Ena   => Ena,
 				  INSTR_IN => inst,
 				  B_Data0	  => B_Data0,
 				  B_Data1	  => B_Data1,

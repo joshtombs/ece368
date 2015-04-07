@@ -22,8 +22,7 @@ entity user_interface is
           PS2_C  : inout STD_LOGIC;
           PS2_D  : inout STD_LOGIC;
           RST    : in    STD_LOGIC;
-			 SW_IN  : in STD_LOGIC_VECTOR(3 downto 0);
-			 Ena	  : in STD_LOGIC;
+			 SW_IN  : in STD_LOGIC_VECTOR(4 downto 0);
 			 B_Data0 : in STD_LOGIC_VECTOR(15 downto 0);
 			 B_Data1 : in STD_LOGIC_VECTOR(15 downto 0);
 			 B_Data2 : in STD_LOGIC_VECTOR(15 downto 0);
@@ -138,7 +137,7 @@ begin
 			port map(
 				  		In0 => Mux_Out,
 						In1 => instruction,
-						SEL => Ena,
+						SEL => SW_IN(4),
 						Output => Mux_Out2
 						);			
 				 
