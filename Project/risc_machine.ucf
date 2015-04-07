@@ -36,6 +36,13 @@ NET "RST" LOC = B18;
 NET "PS2_C"  LOC = R12;
 NET "PS2_D" LOC = P11;
 
+##Switch Assignment 
+NET "SW<0>" LOC = G18;
+NET "SW<1>" LOC = H18;
+NET "SW<2>" LOC = K18;
+NET "SW<3>" LOC = K17;
+NET "Ena<0>" LOC = R17;
+
 ##VGA Assignment
 #8-bit color(256 options), only need 3-bit just use the 510ohm connects
 Net "VGARED<0>" LOC = R9; #2Kohm  to RED
