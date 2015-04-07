@@ -80,7 +80,7 @@ begin
               W_ENB => ascii_we,
               DATA_OUT => instruction);
     
-    I_OUT <= instruction;
+    I_OUT <= Mux_Out2;
                  
     U3: entity work.vga_toplevel
     port map( CLK      => CLK,
@@ -135,8 +135,8 @@ begin
 					  );		
 		U6: entity MUX2to1
 			port map(
-				  		In0 => Mux_Out,
-						In1 => instruction,
+				  		In1 => Mux_Out,
+						In0 => instruction,
 						SEL => SW_IN(4),
 						Output => Mux_Out2
 						);			
