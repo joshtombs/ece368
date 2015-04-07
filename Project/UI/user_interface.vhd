@@ -24,7 +24,7 @@ entity user_interface is
           RST    : in    STD_LOGIC;
 			 
 			 INSTR_IN : in STD_LOGIC_VECTOR(15 downto 0);
-			 WB     	 : in STD_LOGIC_VECTOR(15 downto 0);
+			 WB_In  	 : in STD_LOGIC_VECTOR(15 downto 0);
           
 			 HSYNC  : out   STD_LOGIC;
           VSYNC  : out   STD_LOGIC; 
