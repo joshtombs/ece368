@@ -22,8 +22,11 @@ entity user_interface is
           PS2_C  : inout STD_LOGIC;
           PS2_D  : inout STD_LOGIC;
           RST    : in    STD_LOGIC;
---        WB     : in    STD_LOGIC_VECTOR ( 7 downto 0);
-          HSYNC  : out   STD_LOGIC;
+			 
+			 INSTR_IN : in STD_LOGIC_VECTOR(15 downto 0);
+			 WB     	 : in STD_LOGIC_VECTOR(15 downto 0);
+          
+			 HSYNC  : out   STD_LOGIC;
           VSYNC  : out   STD_LOGIC; 
           VGARED : out   STD_LOGIC_VECTOR (2 downto 0);
           VGAGRN : out   STD_LOGIC_VECTOR (2 downto 0);
@@ -86,6 +89,15 @@ begin
               SEG_OUT => SEG,
               DP_OUT  => DP,
               AN_OUT  => AN);
+				  
+	 U5: entity work.Reg_Handler
+	 Port Map(
+				INSTR_IN => INSTR_IN,
+				WB_IN => WB_IN,
+				--SEL => ,
+				CLK => CLK
+				--DATA_OUT => 
+				);
 
 end Structural;
 

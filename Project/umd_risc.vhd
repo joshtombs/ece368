@@ -54,7 +54,8 @@ begin
     RISC: entity work.risc_machine
     port map( CLK  => CLK,
               I_IN => inst,
-              WB   => LED);
+              --WB   => LED,
+				  RESET => RST);
 
 end Structural;
 
