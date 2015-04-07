@@ -44,6 +44,7 @@ entity control_unit is
           W_NOP_OUT        : out STD_LOGIC;
           WB_OPCODE        : in  STD_LOGIC_VECTOR(3 downto 0);
           REG_BANK_WE      : out STD_LOGIC;
+          SBANK_WE         : out STD_LOGIC;
           DATA_MEM_MUX_SEL : out STD_LOGIC;
           DATA_MEM_WE      : out STD_LOGIC
           );
@@ -116,6 +117,7 @@ begin
                 when "1000" => OP2_MUX_SEL <= "01";
                 when "1001" => OP2_MUX_SEL <= "01";
                 when "1010" => OP2_MUX_SEL <= "01";
+                when "1100" => OP2_MUX_SEL <= "01";
                 when others => OP2_MUX_SEL <= "01";
             end case;
 
@@ -178,6 +180,7 @@ begin
             else
                 W_NOP_OUT <= '0';
             end if;
+            SBANK_WE <= '0';
             case WB_OPCODE is
                 when "0000"|"0001"|"0010"|"0011"|"0100"|"0101"|"0110"|"0111"|"1000" => 
                     DATA_MEM_MUX_SEL <= '1';

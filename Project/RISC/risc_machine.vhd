@@ -31,16 +31,17 @@ signal INST_W_DATA : STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0) := x"0000";
 -- Connections
 signal word : STD_LOGIC_VECTOR(55 downto 0);
 signal pc_address, br_addr : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
-signal SEL_1, SEL_2, prg_cntr_op, BR_JUMP_OP
+signal SEL_1, SEL_2, prg_cntr_op, BR_JUMP_OP, instruction_id
               : STD_LOGIC_VECTOR(1 downto 0);
 signal p_counter_mux_sel : STD_LOGIC_VECTOR(2 downto 0);
 signal OP_OUT, WB_CNTRL_OPCODE, reg_a_address, bank_w_addr, ex_ccr_out
               : STD_LOGIC_VECTOR(3 downto 0);
-signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data, jump_addr
+signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data, jump_addr,
+       exmem_immediate
               : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
 signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, 
        f_instr_enb, D_NOP_IN, D_NOP_OUT, O_NOP_IN, O_NOP_OUT, E_NOP_IN, E_NOP_OUT, W_NOP_IN,
-       stack_enable, stack_op, br_mask_match
+       stack_enable, stack_op, br_mask_match, SBANK_W_ENABLE
               : STD_LOGIC;
 begin
       U0: entity work.fetch
@@ -72,31 +73,36 @@ begin
               DATA_OUT => word);
 
     U2: entity work.operandaccess
-    PORT MAP( CLK         => CLK,
-              NOP         => O_NOP_IN,
-              E_NOP       => E_NOP_IN,
-              W_NOP       => W_NOP_IN,
-              NOP_OUT     => O_NOP_OUT,
-              DATA_IN     => word,
-              W_ADDR      => bank_w_addr,
-              BANK_R_W    => BANK_RW,
-              BANK_ENB    => high,
-              BANK_RESET  => RESET,
-              BANK_DATA   => BANKD,
-              OP1_MUX_SEL => SEL_1,
-              OP2_MUX_SEL => SEL_2,
-              E_FWD_IN    => forward_data,
-              E_FWD_ADDR  => reg_a_address,
-              W_FWD_IN    => BANKD,
-              W_FWD_ADDR  => bank_w_addr,
-              CCR_IN      => ex_ccr_out,
-              MASK_MATCH  => br_mask_match,
-              REGA_ADDR   => reg_a_address,
-              JMP_OUT     => jump_addr,
-              BRANCH_OUT  => br_addr,
-              OP1         => OP1_TO_ALU,
-              OP2         => OP2_TO_ALU,
-              OPCODE      => OP_OUT);
+    PORT MAP( CLK           => CLK,
+              NOP           => O_NOP_IN,
+              E_NOP         => E_NOP_IN,
+              W_NOP         => W_NOP_IN,
+              NOP_OUT       => O_NOP_OUT,
+              DATA_IN       => word,
+              W_ADDR        => bank_w_addr,
+              BANK_R_W      => BANK_RW,
+              BANK_ENB      => high,
+              BANK_RESET    => RESET,
+              BANK_DATA     => BANKD,
+              SBANK_W_ENB   => SBANK_W_ENABLE,
+              SBANK_DATA    => BANKD,
+              SBANK_W_ADDR  => "00",
+              OP1_MUX_SEL   => SEL_1,
+              OP2_MUX_SEL   => SEL_2,
+              E_FWD_IN      => forward_data,
+              E_FWD_ADDR    => reg_a_address,
+              W_FWD_IN      => BANKD,
+              W_FWD_ADDR    => bank_w_addr,
+              CCR_IN        => ex_ccr_out,
+              MASK_MATCH    => br_mask_match,
+              REGA_ADDR     => reg_a_address,
+              JMP_OUT       => jump_addr,
+              BRANCH_OUT    => br_addr,
+              ID_OUT        => instruction_id,
+              EXMEM_IMM_OUT => exmem_immediate,
+              OP1           => OP1_TO_ALU,
+              OP2           => OP2_TO_ALU,
+              OPCODE        => OP_OUT);
 
     U3: entity work.execute
     PORT MAP( CLK        => CLK,
@@ -146,6 +152,7 @@ begin
          OP1_MUX_SEL      => SEL_1,
          OP2_MUX_SEL      => SEL_2,
          REG_BANK_WE      => BANK_RW,
+         SBANK_WE         => SBANK_W_ENABLE,
          -- Execute
          EX_OPCODE        => OP_OUT,
          E_NOP_IN         => O_NOP_OUT,
