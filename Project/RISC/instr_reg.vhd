@@ -25,7 +25,7 @@ architecture Behavioral of instr_reg is
 begin
     PROCESS (CLK)
     BEGIN
-        IF (CLK'EVENT AND CLK = '1') THEN
+        IF (CLK'EVENT AND CLK = '0') THEN
             IF ENB = '1' THEN
                 Q <= D ;
             END IF;
