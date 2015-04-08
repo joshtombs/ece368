@@ -14,6 +14,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use work.all;
+use work.UMDRISC_PKG.all;
 
 entity umd_risc is
     Port( CLK    : in    STD_LOGIC;
