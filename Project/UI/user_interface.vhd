@@ -2,6 +2,7 @@
 -- School:     University of Massachusetts Dartmouth
 -- Department: Computer and Electrical Engineering
 -- Engineer:   Josh Tombs
+-- Revised By: Brett Southworth
 -- 
 -- Create Date:    SPRING 2015
 -- Module Name:    UMD RISC
@@ -22,28 +23,26 @@ entity user_interface is
           PS2_C  : inout STD_LOGIC;
           PS2_D  : inout STD_LOGIC;
           RST    : in    STD_LOGIC;
-			 SW_IN  : in STD_LOGIC_VECTOR(4 downto 0);
-			 B_Data0 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data1 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data2 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data3 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data4 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data5 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data6 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data7 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data8 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data9 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data10 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data11 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data12 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data13 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data14 : in STD_LOGIC_VECTOR(15 downto 0);
-			 B_Data15 : in STD_LOGIC_VECTOR(15 downto 0);
-			 
-			 INSTR_IN : in STD_LOGIC_VECTOR(15 downto 0);
-			 WB_In  	 : in STD_LOGIC_VECTOR(15 downto 0);
-          
-			 HSYNC  : out   STD_LOGIC;
+          SW_IN  : in STD_LOGIC_VECTOR(4 downto 0);
+          B_Data0 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data1 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data2 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data3 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data4 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data5 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data6 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data7 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data8 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data9 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data10 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data11 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data12 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data13 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data14 : in STD_LOGIC_VECTOR(15 downto 0);
+          B_Data15 : in STD_LOGIC_VECTOR(15 downto 0);
+          INSTR_IN : in STD_LOGIC_VECTOR(15 downto 0);
+          WB_In    : in STD_LOGIC_VECTOR(15 downto 0);
+          HSYNC  : out   STD_LOGIC;
           VSYNC  : out   STD_LOGIC; 
           VGARED : out   STD_LOGIC_VECTOR (2 downto 0);
           VGAGRN : out   STD_LOGIC_VECTOR (2 downto 0);
@@ -61,8 +60,8 @@ architecture Structural of user_interface is
     signal enl : STD_LOGIC := '1';
     signal dpc : STD_LOGIC_VECTOR (3 downto 0) := "1111";
     signal cen : STD_LOGIC := '0';
-	 signal Mux_Out, Mux_Out2: STD_LOGIC_VECTOR(15 downto 0);
-	 
+    signal Mux_Out, Mux_Out2: STD_LOGIC_VECTOR(15 downto 0);
+     
 begin
     U1: entity work.keyboard_controller
     port map( CLK      => CLK,
@@ -108,47 +107,37 @@ begin
               SEG_OUT => SEG,
               DP_OUT  => DP,
               AN_OUT  => AN);
-		
-		U5: entity MUX16to1_V2
-			port map(
-				  SEL(0) => SW_IN(0),
-				  SEL(1) => SW_IN(1),
-				  SEL(2) => SW_IN(2),
-				  SEL(3) => SW_IN(3),
-				  In0 => B_Data0,
-				  In1 => B_Data1,
-				  In2 => B_Data2,
-				  In3 => B_Data3,
-				  In4 => B_Data4,
-				  In5 => B_Data5,
-				  In6 => B_Data6,
-				  In7 => B_Data7,
-				  In8 => B_Data8,
-				  In9 => B_Data9,
-				  In10 => B_Data10,
-				  In11 => B_Data11,
-				  In12 => B_Data12,
-		  		  In13 => B_Data13,
-		  		  In14 => B_Data14,
-		  	  	  In15 => B_Data15, 
-				  D_Out => Mux_Out
-					  );		
-		U6: entity MUX2to1
-			port map(
-				  		In1 => Mux_Out,
-						In0 => instruction,
-						SEL => SW_IN(4),
-						Output => Mux_Out2
-						);			
-				 
-	-- U7: entity work.Reg_Handler
-	-- Port Map(
-	--			INSTR_IN => INSTR_IN,
-	--			WB_IN => WB_IN,
-				--SEL => ,
-	--			CLK => CLK
-				--DATA_OUT => 
-	--			);
+        
+    U5: entity MUX16to1
+    port map(
+            SEL(0) => SW_IN(0),
+            SEL(1) => SW_IN(1),
+            SEL(2) => SW_IN(2),
+            SEL(3) => SW_IN(3),
+            In0 => B_Data0,
+            In1 => B_Data1,
+            In2 => B_Data2,
+            In3 => B_Data3,
+            In4 => B_Data4,
+            In5 => B_Data5,
+            In6 => B_Data6,
+            In7 => B_Data7,
+            In8 => B_Data8,
+            In9 => B_Data9,
+            In10 => B_Data10,
+            In11 => B_Data11,
+            In12 => B_Data12,
+            In13 => B_Data13,
+            In14 => B_Data14,
+            In15 => B_Data15, 
+            OUTPUT => Mux_Out);
+
+    U6: entity MUX2to1
+    port map(
+            In1 => Mux_Out,
+            In0 => instruction,
+            SEL => SW_IN(4),
+            Output => Mux_Out2);
 
 end Structural;
 

@@ -28,8 +28,8 @@ entity umd_risc is
           VGABLU : out   STD_LOGIC_VECTOR (1 downto 0);
           SEG    : out   STD_LOGIC_VECTOR (6 downto 0);
           DP     : out   STD_LOGIC;
-          AN     : out   STD_LOGIC_VECTOR (3 downto 0);
-          LED    : out   STD_LOGIC_VECTOR (7 downto 0));
+          AN     : out   STD_LOGIC_VECTOR (3 downto 0));
+          --LED    : out   STD_LOGIC_VECTOR (7 downto 0));
 end umd_risc;
 
 architecture Structural of umd_risc is

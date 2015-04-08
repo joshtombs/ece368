@@ -20,14 +20,14 @@ NET "CLK" PERIOD = 20.0ns HIGH 50%;
 NET "CLK" LOC = B8 | IOSTANDARD = LVTTL;
 
 ##LED ASCII Assignment
-NET "LED<0>" LOC = J14;
-NET "LED<1>" LOC = J15;
-NET "LED<2>" LOC = K15;
-NET "LED<3>" LOC = K14;
-NET "LED<4>" LOC = E17;
-NET "LED<5>" LOC = P15;
-NET "LED<6>" LOC = F4;
-NET "LED<7>" LOC = R4;
+//NET "LED<0>" LOC = J14;
+//NET "LED<1>" LOC = J15;
+//NET "LED<2>" LOC = K15;
+//NET "LED<3>" LOC = K14;
+//NET "LED<4>" LOC = E17;
+//NET "LED<5>" LOC = P15;
+//NET "LED<6>" LOC = F4;
+//NET "LED<7>" LOC = R4;
 
 ##Button Assignment
 NET "RST" LOC = B18;
