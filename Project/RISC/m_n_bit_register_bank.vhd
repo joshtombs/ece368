@@ -27,26 +27,25 @@ entity register_bank is
            R_W     : in  STD_LOGIC;        -- 0 = read, 1 = write
            ENB     : in  STD_LOGIC;
            RESET   : in  STD_LOGIC;
-           DATA_IN : in  STD_LOGIC_VECTOR (N-1 downto 0);
-           REG_A   : out STD_LOGIC_VECTOR (N-1 downto 0);
-           REG_B   : out STD_LOGIC_VECTOR (N-1 downto 0);
-			  B_Data0   : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data1   : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data2   : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data3   : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data4   : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data5   : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data6   : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data7   : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data8   : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data9   : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data10  : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data11  : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data12  : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data13  : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data14  : out STD_LOGIC_VECTOR(15 downto 0);
-			  B_Data15  : out STD_LOGIC_VECTOR(15 downto 0)
-			  );
+           DATA_IN : in  STD_LOGIC_VECTOR(N-1 downto 0);
+           REG_A   : out STD_LOGIC_VECTOR(N-1 downto 0);
+           REG_B   : out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data0 : out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data1 : out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data2 : out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data3 : out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data4 : out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data5 : out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data6 : out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data7 : out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data8 : out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data9 : out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data10: out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data11: out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data12: out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data13: out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data14: out STD_LOGIC_VECTOR(N-1 downto 0);
+           B_Data15: out STD_LOGIC_VECTOR(N-1 downto 0));
 end register_bank;
 
 architecture Behavioral of register_bank is
@@ -56,28 +55,28 @@ begin
     PROCESS(CLK, RESET, ENB, R_W)
     begin
           if (CLK'EVENT and CLK = '1') then        --rising edge event (read)
-                if(ENB = '1') then    --enabled and read
+            if(ENB = '1') then    --enabled and read
                 REG_A <= bank(to_integer(unsigned(ADDR_A)));
                 REG_B <= bank(to_integer(unsigned(ADDR_B)));
             end if;
         end if;
     end PROCESS;
-				  B_Data0	<= bank(0);
-				  B_Data1	<= bank(1);
-				  B_Data2	<= bank(2);
-				  B_Data3	<= bank(3);
-				  B_Data4	<= bank(4);
-				  B_Data5	<= bank(5);
-				  B_Data6	<= bank(6);
-				  B_Data7	<= bank(7);
-				  B_Data8	<= bank(8);
-				  B_Data9	<= bank(9);
-				  B_Data10	<= bank(10);
-				  B_Data11	<= bank(11);
-				  B_Data12	<= bank(12);
-				  B_Data13	<= bank(13);
-				  B_Data14	<= bank(14);
-				  B_Data15	<= bank(15);
+    B_Data0    <= bank(0);
+    B_Data1    <= bank(1);
+    B_Data2    <= bank(2);
+    B_Data3    <= bank(3);
+    B_Data4    <= bank(4);
+    B_Data5    <= bank(5);
+    B_Data6    <= bank(6);
+    B_Data7    <= bank(7);
+    B_Data8    <= bank(8);
+    B_Data9    <= bank(9);
+    B_Data10    <= bank(10);
+    B_Data11    <= bank(11);
+    B_Data12    <= bank(12);
+    B_Data13    <= bank(13);
+    B_Data14    <= bank(14);
+    B_Data15    <= bank(15);
 
     PROCESS(CLK, RESET, ENB, R_W)
     begin

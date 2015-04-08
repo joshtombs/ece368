@@ -46,22 +46,22 @@ entity operandaccess is
           OP1          : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           OP2          : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           OPCODE       : out STD_LOGIC_VECTOR(3 downto 0);
-          B_Data0      : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data1      : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data2      : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data3      : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data4      : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data5      : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data6      : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data7      : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data8      : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data9      : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data10     : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data11     : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data12     : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data13     : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data14     : out STD_LOGIC_VECTOR(15 downto 0);
-          B_Data15     : out STD_LOGIC_VECTOR(15 downto 0));
+          B_Data0      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data1      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data2      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data3      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data4      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data5      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data6      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data7      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data8      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data9      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data10     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data11     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data12     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data13     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data14     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          B_Data15     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0));
 
 end operandaccess;
 
@@ -84,22 +84,22 @@ begin
               DATA_IN => BANK_DATA,
               REG_A   => REGA_OUT,
               REG_B   => REGB_OUT,
-                  B_Data0      => B_Data0,
-                  B_Data1      => B_Data1,
-                  B_Data2      => B_Data2,
-                  B_Data3      => B_Data3,
-                  B_Data4      => B_Data4,
-                  B_Data5      => B_Data5,
-                  B_Data6      => B_Data6,
-                  B_Data7      => B_Data7,
-                  B_Data8      => B_Data8,
-                  B_Data9      => B_Data9,
-                  B_Data10      => B_Data10,
-                  B_Data11      => B_Data11,
-                  B_Data12      => B_Data12,
-                  B_Data13      => B_Data13,
-                  B_Data14      => B_Data14,
-                  B_Data15      => B_Data15);
+              B_Data0      => B_Data0,
+              B_Data1      => B_Data1,
+              B_Data2      => B_Data2,
+              B_Data3      => B_Data3,
+              B_Data4      => B_Data4,
+              B_Data5      => B_Data5,
+              B_Data6      => B_Data6,
+              B_Data7      => B_Data7,
+              B_Data8      => B_Data8,
+              B_Data9      => B_Data9,
+              B_Data10     => B_Data10,
+              B_Data11     => B_Data11,
+              B_Data12     => B_Data12,
+              B_Data13     => B_Data13,
+              B_Data14     => B_Data14,
+              B_Data15     => B_Data15);
 
     SHDW_BANK: entity work.shadow_register_bank
     PORT MAP( CLK    => CLK,

@@ -20,7 +20,7 @@ entity umd_risc is
           PS2_C  : inout STD_LOGIC;
           PS2_D  : inout STD_LOGIC;
           RST    : in    STD_LOGIC;
-			 SW	  : in    STD_LOGIC_VECTOR(4 downto 0);			--Switches 0 - 3 for checking memory values				--Switch 4 for enabling the viewing
+          SW     : in    STD_LOGIC_VECTOR(4 downto 0);            --Switches 0 - 3 for checking memory values                --Switch 4 for enabling the viewing
           HSYNC  : out   STD_LOGIC;
           VSYNC  : out   STD_LOGIC; 
           VGARED : out   STD_LOGIC_VECTOR (2 downto 0);
@@ -54,46 +54,46 @@ begin
               DP    => DP,
               SEG   => SEG,
               AN    => AN,
-				  SW_In => SW,
-				  INSTR_IN => inst,
-				  B_Data0	  => B_Data0,
-				  B_Data1	  => B_Data1,
-				  B_Data2	  => B_Data2,
-				  B_Data3	  => B_Data3,
-				  B_Data4	  => B_Data4,
-				  B_Data5	  => B_Data5,
-				  B_Data6	  => B_Data6,
-				  B_Data7	  => B_Data7,
-				  B_Data8	  => B_Data8,
-				  B_Data9	  => B_Data9,
-				  B_Data10	  => B_Data10,
-				  B_Data11	  => B_Data11,
-				  B_Data12	  => B_Data12,
-				  B_Data13	  => B_Data13,
-				  B_Data14	  => B_Data14,
-				  B_Data15	  => B_Data15);
+              SW_In => SW,
+              INSTR_IN => inst,
+              B_Data0  => B_Data0,
+              B_Data1  => B_Data1,
+              B_Data2  => B_Data2,
+              B_Data3  => B_Data3,
+              B_Data4  => B_Data4,
+              B_Data5  => B_Data5,
+              B_Data6  => B_Data6,
+              B_Data7  => B_Data7,
+              B_Data8  => B_Data8,
+              B_Data9  => B_Data9,
+              B_Data10 => B_Data10,
+              B_Data11 => B_Data11,
+              B_Data12 => B_Data12,
+              B_Data13  => B_Data13,
+              B_Data14  => B_Data14,
+              B_Data15  => B_Data15);
             
     RISC: entity work.risc_machine
     port map( CLK  => CLK,
               I_IN => inst,
               WB   => wb,
-				  RESET => RST,
-				  B_Data0	=> B_Data0,
-				  B_Data1	=> B_Data1,
-				  B_Data2	=> B_Data2,
-				  B_Data3	=> B_Data3,
-				  B_Data4	=> B_Data4,
-				  B_Data5	=> B_Data5,
-				  B_Data6	=> B_Data6,
-				  B_Data7	=> B_Data7,
-				  B_Data8	=> B_Data8,
-				  B_Data9	=> B_Data9,
-				  B_Data10	=> B_Data10,
-				  B_Data11	=> B_Data11,
-				  B_Data12	=> B_Data12,
-				  B_Data13	=> B_Data13,
-				  B_Data14	=> B_Data14,
-				  B_Data15	=> B_Data15);
+              RESET => RST,
+              B_Data0    => B_Data0,
+              B_Data1    => B_Data1,
+              B_Data2    => B_Data2,
+              B_Data3    => B_Data3,
+              B_Data4    => B_Data4,
+              B_Data5    => B_Data5,
+              B_Data6    => B_Data6,
+              B_Data7    => B_Data7,
+              B_Data8    => B_Data8,
+              B_Data9    => B_Data9,
+              B_Data10    => B_Data10,
+              B_Data11    => B_Data11,
+              B_Data12    => B_Data12,
+              B_Data13    => B_Data13,
+              B_Data14    => B_Data14,
+              B_Data15    => B_Data15);
 
 end Structural;
 
