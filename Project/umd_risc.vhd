@@ -35,7 +35,6 @@ end umd_risc;
 
 architecture Structural of umd_risc is
 signal inst : STD_LOGIC_VECTOR (15 downto 0);
-signal wb : STD_LOGIC_VECTOR (15 downto 0);
 signal B_Data0, B_Data1, B_Data2, B_Data3, B_Data4, B_Data5, B_Data6, B_Data7, 
 B_Data8, B_Data9, B_Data10, B_Data11, B_Data12, B_Data13, B_Data14, B_Data15 : STD_LOGIC_VECTOR(15 downto 0);
 
@@ -76,8 +75,6 @@ begin
             
     RISC: entity work.risc_machine
     port map( CLK  => CLK,
-              I_IN => inst,
-              WB   => wb,
               RESET => RST,
               B_Data0    => B_Data0,
               B_Data1    => B_Data1,
