@@ -23,7 +23,23 @@ entity risc_machine is
            EXMEM_WE    : out STD_LOGIC;
            EXMEM_WADDR : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
            EXMEM_D_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           CCR_OUT     : out STD_LOGIC_VECTOR(3 downto 0));
+           CCR_OUT     : out STD_LOGIC_VECTOR(3 downto 0);
+           B_Data0     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data1     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data2     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data3     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data4     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data5     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data6     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data7     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data8     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data9     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data10    : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data11    : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data12    : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data13    : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data14    : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           B_Data15    : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0));
 end risc_machine;
 
 architecture Structural of risc_machine is
@@ -35,6 +51,7 @@ signal INST_W_DATA : STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0) := x"0000";
 
 -- Connections
 signal word : STD_LOGIC_VECTOR(55 downto 0);
+
 signal pc_address, br_addr : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
 signal SEL_1, SEL_2, prg_cntr_op, BR_JUMP_OP, instruction_id, instruction_id2wb,
        WB_MUX_SEL
@@ -109,7 +126,23 @@ begin
               RA_VALUE      => register_a_value,
               OP1           => OP1_TO_ALU,
               OP2           => OP2_TO_ALU,
-              OPCODE        => OP_OUT);
+              OPCODE        => OP_OUT,
+              B_Data0      => B_Data0,
+              B_Data1      => B_Data1,
+              B_Data2      => B_Data2,
+              B_Data3      => B_Data3,
+              B_Data4      => B_Data4,
+              B_Data5      => B_Data5,
+              B_Data6      => B_Data6,
+              B_Data7      => B_Data7,
+              B_Data8      => B_Data8,
+              B_Data9      => B_Data9,
+              B_Data10      => B_Data10,
+              B_Data11      => B_Data11,
+              B_Data12      => B_Data12,
+              B_Data13      => B_Data13,
+              B_Data14      => B_Data14,
+              B_Data15      => B_Data15);
 
     U3: entity work.execute
     PORT MAP( CLK        => CLK,

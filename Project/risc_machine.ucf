@@ -20,14 +20,14 @@ NET "CLK" PERIOD = 20.0ns HIGH 50%;
 NET "CLK" LOC = B8 | IOSTANDARD = LVTTL;
 
 ##LED ASCII Assignment
-NET "LED<0>" LOC = J14;
-NET "LED<1>" LOC = J15;
-NET "LED<2>" LOC = K15;
-NET "LED<3>" LOC = K14;
-NET "LED<4>" LOC = E17;
-NET "LED<5>" LOC = P15;
-NET "LED<6>" LOC = F4;
-NET "LED<7>" LOC = R4;
+//NET "LED<0>" LOC = J14;
+//NET "LED<1>" LOC = J15;
+//NET "LED<2>" LOC = K15;
+//NET "LED<3>" LOC = K14;
+//NET "LED<4>" LOC = E17;
+//NET "LED<5>" LOC = P15;
+//NET "LED<6>" LOC = F4;
+//NET "LED<7>" LOC = R4;
 
 ##Button Assignment
 NET "RST" LOC = B18;
@@ -35,6 +35,13 @@ NET "RST" LOC = B18;
 ##PS/2 Assignment
 NET "PS2_C"  LOC = R12;
 NET "PS2_D" LOC = P11;
+
+##Switch Assignment 
+NET "SW<0>" LOC = G18;
+NET "SW<1>" LOC = H18;
+NET "SW<2>" LOC = K18;
+NET "SW<3>" LOC = K17;
+NET "SW<4>" LOC = L14;
 
 ##VGA Assignment
 #8-bit color(256 options), only need 3-bit just use the 510ohm connects

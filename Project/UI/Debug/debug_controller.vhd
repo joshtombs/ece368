@@ -17,7 +17,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.numeric_std.ALL;
 
 entity debug_controller is
-    Port( DATA_IN      : in STD_LOGIC_VECTOR (7 downto 0);
+    Port( 	DATA_IN      : in STD_LOGIC_VECTOR (7 downto 0);
             CLK        : in STD_LOGIC;
             RD         : in STD_LOGIC;
             W_ENB      : in STD_LOGIC;
