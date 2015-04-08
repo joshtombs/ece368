@@ -24,6 +24,11 @@ ARCHITECTURE behavior OF risc_machine_tb2 IS
     PORT(
          CLK : IN  std_logic;
          RESET : IN  std_logic;
+         EXMEM_D_IN  : in STD_LOGIC_VECTOR(15 downto 0);
+         EXMEM_WE    : out STD_LOGIC;
+         EXMEM_RADDR : out STD_LOGIC_VECTOR(15 downto 0);
+         EXMEM_WADDR : out STD_LOGIC_VECTOR(15 downto 0);
+         EXMEM_D_OUT : out STD_LOGIC_VECTOR(15 downto 0);
          CCR_OUT : OUT  std_logic_vector(3 downto 0)
         );
     END COMPONENT;
@@ -32,9 +37,14 @@ ARCHITECTURE behavior OF risc_machine_tb2 IS
    --Inputs
    signal CLK : std_logic := '0';
    signal RESET : std_logic := '0';
+    signal EXMEM_D_IN : std_logic_vector(15 downto 0) := x"3333";
 
    --Outputs
    signal CCR_OUT : std_logic_vector(3 downto 0);
+   signal EXMEM_WE : STD_LOGIC;
+   signal EXMEM_RADDR : STD_LOGIC_VECTOR(15 downto 0);
+   signal EXMEM_WADDR : STD_LOGIC_VECTOR(15 downto 0);
+   signal EXMEM_D_OUT : STD_LOGIC_VECTOR(15 downto 0);
 
    -- Clock period definitions
    constant CLK_period : time := 20 ns;
@@ -45,6 +55,11 @@ BEGIN
    uut: risc_machine PORT MAP (
           CLK => CLK,
           RESET => RESET,
+          EXMEM_D_IN => EXMEM_D_IN,
+          EXMEM_WE => EXMEM_WE,
+          EXMEM_RADDR => EXMEM_RADDR,
+          EXMEM_WADDR => EXMEM_WADDR,
+          EXMEM_D_OUT => EXMEM_D_OUT,
           CCR_OUT => CCR_OUT
         );
 

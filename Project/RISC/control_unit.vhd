@@ -43,9 +43,11 @@ entity control_unit is
           W_NOP_IN         : in  STD_LOGIC;
           W_NOP_OUT        : out STD_LOGIC;
           WB_OPCODE        : in  STD_LOGIC_VECTOR(3 downto 0);
+          WB_ID            : in  STD_LOGIC_VECTOR(1 downto 0);
           REG_BANK_WE      : out STD_LOGIC;
           SBANK_WE         : out STD_LOGIC;
-          DATA_MEM_MUX_SEL : out STD_LOGIC;
+          DATA_MEM_MUX_SEL : out STD_LOGIC_VECTOR(1 downto 0);
+          EX_MEM_WE        : out STD_LOGIC;
           DATA_MEM_WE      : out STD_LOGIC
           );
 end control_unit;
@@ -102,23 +104,22 @@ begin
          variable BRJMP, INST_NOP : STD_LOGIC := '0';
     begin
         if(CLK'EVENT and CLK = '1') then
-            OP1_MUX_SEL <= "00" ;    
-
             -- Operand MUX Select
             case OPA_OPCODE is
-                when "0000" => OP2_MUX_SEL <= "00";
-                when "0001" => OP2_MUX_SEL <= "00";
-                when "0010" => OP2_MUX_SEL <= "00";
-                when "0011" => OP2_MUX_SEL <= "00";
-                when "0100" => OP2_MUX_SEL <= "00";
-                when "0101" => OP2_MUX_SEL <= "01";
-                when "0110" => OP2_MUX_SEL <= "01";
-                when "0111" => OP2_MUX_SEL <= "01";
-                when "1000" => OP2_MUX_SEL <= "01";
-                when "1001" => OP2_MUX_SEL <= "01";
-                when "1010" => OP2_MUX_SEL <= "01";
-                when "1100" => OP2_MUX_SEL <= "01";
-                when others => OP2_MUX_SEL <= "01";
+                when "0000" => OP2_MUX_SEL <= "00"; OP1_MUX_SEL <= "00";
+                when "0001" => OP2_MUX_SEL <= "00"; OP1_MUX_SEL <= "00";
+                when "0010" => OP2_MUX_SEL <= "00"; OP1_MUX_SEL <= "00";
+                when "0011" => OP2_MUX_SEL <= "00"; OP1_MUX_SEL <= "00";
+                when "0100" => OP2_MUX_SEL <= "00"; OP1_MUX_SEL <= "00";
+                when "0101" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "00";
+                when "0110" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "00";
+                when "0111" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "00";
+                when "1000" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "00";
+                when "1001" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "00";
+                when "1010" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "00";
+                when "1011" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "01";
+                when "1100" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "01";
+                when others => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "00";
             end case;
 
             --Determine if NOP
@@ -180,36 +181,73 @@ begin
             else
                 W_NOP_OUT <= '0';
             end if;
-            SBANK_WE <= '0';
             case WB_OPCODE is
                 when "0000"|"0001"|"0010"|"0011"|"0100"|"0101"|"0110"|"0111"|"1000" => 
-                    DATA_MEM_MUX_SEL <= '1';
+                    DATA_MEM_MUX_SEL <= "01";
                     DATA_MEM_WE <= '0';
+                    SBANK_WE <= '0';
+                    EX_MEM_WE <= '0';
                     if(W_NOP_IN = '0' and RESET = '0') then
                         REG_BANK_WE <= '1';
                     else
                         REG_BANK_WE <= '0';
                     end if;
                 when "1001" => 
-                    DATA_MEM_MUX_SEL <= '0';
+                    DATA_MEM_MUX_SEL <= "00";
                     DATA_MEM_WE <= '0';
+                    SBANK_WE <= '0';
+                    EX_MEM_WE <= '0';
                     if(W_NOP_IN = '0' and RESET = '0') then
                         REG_BANK_WE <= '1';
                     else
                         REG_BANK_WE <= '0';
                     end if;
                 when "1010" => 
-                    DATA_MEM_MUX_SEL <= '0';
+                    DATA_MEM_MUX_SEL <= "00";
+                    SBANK_WE <= '0';
+                    EX_MEM_WE <= '0';
                     if(W_NOP_IN = '0' and RESET = '0') then
                         DATA_MEM_WE <= '1';
                     else
                         DATA_MEM_WE <= '0';
                     end if;
                     REG_BANK_WE <= '0';
-                when others => 
-                    DATA_MEM_MUX_SEL <= '1';
+                when "1011" =>
+                    DATA_MEM_MUX_SEL <= "10";
+                    DATA_MEM_WE <= '0';
+                    EX_MEM_WE <= '0';
+                    SBANK_WE <= '0';
+                    if(W_NOP_IN = '0' and RESET = '0') then
+                        case WB_ID is
+                            when "00" =>
+                                REG_BANK_WE <= '1';
+                            when others =>
+                                REG_BANK_WE <= '0';
+                        end case;
+                    else
+                        REG_BANK_WE <= '0';
+                    end if;
+                when "1100" =>
+                    DATA_MEM_MUX_SEL <= "01";
                     DATA_MEM_WE <= '0';
                     REG_BANK_WE <= '0';
+                    SBANK_WE <= '0';
+                    if(W_NOP_IN = '0' and RESET = '0') then
+                        case WB_ID is
+                            when "00" =>
+                                EX_MEM_WE <= '1';
+                            when others =>
+                                EX_MEM_WE <= '0';
+                        end case;
+                    else
+                        EX_MEM_WE <= '0';
+                    end if;
+                when others => 
+                    DATA_MEM_MUX_SEL <= "01";
+                    DATA_MEM_WE <= '0';
+                    REG_BANK_WE <= '0';
+                    SBANK_WE <= '0';
+                    EX_MEM_WE <= '0';
             end case;
         end if;
     end PROCESS;

@@ -16,9 +16,14 @@ use work.all;
 use work.UMDRISC_PKG.all;
 
 entity risc_machine is
-    Port ( CLK       : in  STD_LOGIC;
-           RESET     : in  STD_LOGIC;
-           CCR_OUT   : out STD_LOGIC_VECTOR(3 downto 0));
+    Port ( CLK         : in  STD_LOGIC;
+           RESET       : in  STD_LOGIC;
+           EXMEM_D_IN  : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           EXMEM_RADDR : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           EXMEM_WE    : out STD_LOGIC;
+           EXMEM_WADDR : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           EXMEM_D_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+           CCR_OUT     : out STD_LOGIC_VECTOR(3 downto 0));
 end risc_machine;
 
 architecture Structural of risc_machine is
@@ -31,15 +36,16 @@ signal INST_W_DATA : STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0) := x"0000";
 -- Connections
 signal word : STD_LOGIC_VECTOR(55 downto 0);
 signal pc_address, br_addr : STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
-signal SEL_1, SEL_2, prg_cntr_op, BR_JUMP_OP, instruction_id
+signal SEL_1, SEL_2, prg_cntr_op, BR_JUMP_OP, instruction_id, instruction_id2wb,
+       WB_MUX_SEL
               : STD_LOGIC_VECTOR(1 downto 0);
 signal p_counter_mux_sel : STD_LOGIC_VECTOR(2 downto 0);
 signal OP_OUT, WB_CNTRL_OPCODE, reg_a_address, bank_w_addr, ex_ccr_out
               : STD_LOGIC_VECTOR(3 downto 0);
 signal OP1_TO_ALU, OP2_TO_ALU, instruction, FPU_OUT, BANKD, REG_A_VAL, forward_data, jump_addr,
-       exmem_immediate
+       exmem_immediate, register_a_value
               : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-signal DATA_MEM_WE, WB_MUX_SEL, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, 
+signal DATA_MEM_WE, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_OUT, 
        f_instr_enb, D_NOP_IN, D_NOP_OUT, O_NOP_IN, O_NOP_OUT, E_NOP_IN, E_NOP_OUT, W_NOP_IN,
        stack_enable, stack_op, br_mask_match, SBANK_W_ENABLE
               : STD_LOGIC;
@@ -100,6 +106,7 @@ begin
               BRANCH_OUT    => br_addr,
               ID_OUT        => instruction_id,
               EXMEM_IMM_OUT => exmem_immediate,
+              RA_VALUE      => register_a_value,
               OP1           => OP1_TO_ALU,
               OP2           => OP2_TO_ALU,
               OPCODE        => OP_OUT);
@@ -111,7 +118,10 @@ begin
               OP1_IN     => OP1_TO_ALU,
               OP2_IN     => OP2_TO_ALU,
               OPCODE     => OP_OUT,
+              ID_IN      => instruction_id,
+              ID_OUT     => instruction_id2wb,
               REGA_ADDR  => reg_a_address,
+              REGA_VAL   => register_a_value,
               RESULT_E   => RESULT_REG_ENB,
               OP_OUT     => WB_CNTRL_OPCODE,
               CCR_OUT    => ex_ccr_out,
@@ -123,12 +133,16 @@ begin
     CCR_OUT <= ex_ccr_out;
 
     U4: entity work.writeback
-    PORT MAP( CLK       => CLK,
-              D_In      => REG_A_VAL,
-              WEA0      => DATA_MEM_WE,
-              FPU_In    => FPU_OUT,
-              D_OUT_SEL => WB_MUX_SEL,
-              D_Out     => BANKD);
+    PORT MAP( CLK         => CLK,
+              D_In        => REG_A_VAL,
+              WEA0        => DATA_MEM_WE,
+              FPU_In      => FPU_OUT,
+              D_OUT_SEL   => WB_MUX_SEL,
+              EXMEM_RADDR => EXMEM_RADDR,
+              EXMEM_WADDR => EXMEM_WADDR,
+              EXMEM_DATA  => EXMEM_D_OUT,
+              EXMEM_D_IN  => EXMEM_D_IN,
+              D_Out       => BANKD);
 
     U5: entity work.control_unit
     PORT MAP(  CLK        => CLK,
@@ -162,7 +176,9 @@ begin
          W_NOP_IN         => E_NOP_OUT,
          W_NOP_OUT        => W_NOP_IN,
          WB_OPCODE        => WB_CNTRL_OPCODE,
+         WB_ID            => instruction_id2wb,
          DATA_MEM_MUX_SEL => WB_MUX_SEL,
+         EX_MEM_WE        => EXMEM_WE,
          DATA_MEM_WE      => DATA_MEM_WE);
 
     U6: entity work.stall_detection_unit
