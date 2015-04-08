@@ -25,6 +25,9 @@ entity operandaccess is
           BANK_ENB     : in  STD_LOGIC;
           BANK_RESET   : in  STD_LOGIC;
           BANK_DATA    : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          SBANK_W_ENB  : in  STD_LOGIC;
+          SBANK_DATA   : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          SBANK_W_ADDR : in  STD_LOGIC_VECTOR(1 downto 0);
           OP1_MUX_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
           OP2_MUX_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
           E_FWD_IN     : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
@@ -37,18 +40,21 @@ entity operandaccess is
           REGA_ADDR    : out STD_LOGIC_VECTOR(3 downto 0);
           JMP_OUT      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           BRANCH_OUT   : out STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
+          ID_OUT       : out STD_LOGIC_VECTOR(1 downto 0);
+          EXMEM_IMM_OUT: out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          RA_VALUE     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           OP1          : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           OP2          : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           OPCODE       : out STD_LOGIC_VECTOR(3 downto 0));
 end operandaccess;
 
 architecture Mixed of operandaccess is
-    signal REGA_OUT, REGB_OUT, OP1_MUX_OUT, OP2_MUX_OUT
+    signal REGA_OUT, REGB_OUT, OP1_MUX_OUT, OP2_MUX_OUT, REGS_OUT, operand2, REGA_MUX_OUT
                        : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
     signal LOW : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := x"0000";
     signal HIGH: STD_LOGIC := '1';
     signal write_address, E_FWDADDR_REG, W_FWDADDR_REG, MASK_BITS : STD_LOGIC_VECTOR(3 downto 0);
-    signal DETECT_SEL1, DETECT_SEL2 : STD_LOGIC_VECTOR(1 downto 0);
+    signal DETECT_SEL1, DETECT_SEL2, ID_REG_OUT, DETECT_SEL3 : STD_LOGIC_VECTOR(1 downto 0);
 begin
     BANK: entity work.register_bank
     PORT MAP( CLK     => CLK,
@@ -62,6 +68,16 @@ begin
               REG_A   => REGA_OUT,
               REG_B   => REGB_OUT);
 
+    SHDW_BANK: entity work.shadow_register_bank
+    PORT MAP( CLK    => CLK,
+              RESET  => BANK_RESET,
+              ENB    => BANK_ENB,
+              S_ADDR => DATA_IN(35 downto 34),
+              W_ADDR => SBANK_W_ADDR,
+              W_ENB  => SBANK_W_ENB,
+              W_DATA => SBANK_DATA,
+              S_DATA => REGS_OUT);
+
     FWD_DETECT1: entity work.fwd_detection_unit
     PORT MAP( OPA_REG   => DATA_IN(39 downto 36),
               E_FWD_REG => E_FWDADDR_REG,
@@ -74,7 +90,7 @@ begin
     OP1_MUX: entity work.MUX4to1
     PORT MAP( SEL => DETECT_SEL1,
               IN0 => REGA_OUT,
-              IN1 => LOW,
+              IN1 => REGS_OUT,
               IN2 => W_FWD_IN,
               IN3 => E_FWD_IN,
               OUTPUT => OP1_MUX_OUT);
@@ -106,7 +122,9 @@ begin
     PORT MAP( CLK   => CLK,
               D     => OP2_MUX_OUT,
               ENB   => HIGH,
-              Q     => OP2);
+              Q     => operand2);
+
+    OP2 <= operand2;
 
     REG3 : entity work.reg4
     PORT MAP( CLK   => CLK,
@@ -154,6 +172,37 @@ begin
     PORT MAP(PC_ADDR   => DATA_IN(55 downto 44),
              IMMEDIATE => DATA_IN(31 downto 16),
              RESULT    => BRANCH_OUT);
+
+    ID_REG : entity work.flip_flop2
+    PORT MAP( CLK  => CLK,
+              ENB  => HIGH,
+              D    => DATA_IN(33 downto 32),
+              Q    => ID_REG_OUT);
+
+    ID_OUT <= ID_REG_OUT;
+
+    FWD_DETECT3: entity work.fwd_detection_unit
+    PORT MAP( OPA_REG   => DATA_IN(35 downto 32),
+              E_FWD_REG => E_FWDADDR_REG,
+              W_FWD_REG => W_FWDADDR_REG,
+              E_NOP     => E_NOP,
+              W_NOP     => W_NOP,
+              CTRL_SEL  => LOW(1 downto 0),
+              MUX_SEL   => DETECT_SEL3);
+
+     REGA_MUX: entity work.MUX4to1
+    PORT MAP( SEL    => DETECT_SEL3,
+              IN0    => REGA_OUT,
+              IN1    => LOW,
+              IN2    => W_FWD_IN,
+              IN3    => E_FWD_IN,
+              OUTPUT => REGA_MUX_OUT);
+
+     REG10 : entity work.data_reg
+    PORT MAP( CLK  => CLK,
+              ENB  => HIGH,
+              D    => REGA_MUX_OUT,
+              Q    => RA_VALUE);
 
     MASK_BITS(0) <= (CCR_IN(0) XNOR DATA_IN(36));
     MASK_BITS(1) <= (CCR_IN(1) XNOR DATA_IN(37));

@@ -45,6 +45,8 @@ begin
             SHIFT     when "0111",     -- SL
             SHIFT     when "1000",     -- SR
             MEMORY    when "1001",     -- LW
+            ARITH     when "1011",     -- LWV
+            ARITH     when "1100",     -- SWV
             MEMORY    when OTHERS;     -- SW
 
     with OP select
