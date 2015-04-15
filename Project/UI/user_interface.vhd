@@ -42,7 +42,6 @@ entity user_interface is
           B_Data14 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           B_Data15 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           INSTR_IN : in STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
-          WB_In    : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           HSYNC  : out   STD_LOGIC;
           VSYNC  : out   STD_LOGIC; 
           VGARED : out   STD_LOGIC_VECTOR (2 downto 0);

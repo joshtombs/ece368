@@ -50,7 +50,6 @@ begin
               VGAGRN=> VGAGRN,
               VGABLU=> VGABLU,
               I_OUT => inst,
-              WB_In => wb,
               DP    => DP,
               SEG   => SEG,
               AN    => AN,
