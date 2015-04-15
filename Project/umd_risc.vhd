@@ -36,9 +36,13 @@ end umd_risc;
 architecture Structural of umd_risc is
 signal inst : STD_LOGIC_VECTOR (15 downto 0);
 signal B_Data0, B_Data1, B_Data2, B_Data3, B_Data4, B_Data5, B_Data6, B_Data7, 
-B_Data8, B_Data9, B_Data10, B_Data11, B_Data12, B_Data13, B_Data14, B_Data15 : STD_LOGIC_VECTOR(15 downto 0);
-
+B_Data8, B_Data9, B_Data10, B_Data11, B_Data12, B_Data13, B_Data14, B_Data15,
+external_din, external_dout, external_raddr, external_waddr : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+signal external_we, notCLK : STD_LOGIC;
+signal zero : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := x"0000";
 begin
+    notCLK <= not CLK;
+
     UI : entity work.user_interface
     port map( CLK   => CLK,
               PS2_C => PS2_C,
@@ -75,16 +79,21 @@ begin
     RISC: entity work.risc_machine
     port map( CLK  => CLK,
               RESET => RST,
-              B_Data0    => B_Data0,
-              B_Data1    => B_Data1,
-              B_Data2    => B_Data2,
-              B_Data3    => B_Data3,
-              B_Data4    => B_Data4,
-              B_Data5    => B_Data5,
-              B_Data6    => B_Data6,
-              B_Data7    => B_Data7,
-              B_Data8    => B_Data8,
-              B_Data9    => B_Data9,
+              EXMEM_D_IN  => external_din,
+              EXMEM_RADDR => external_raddr,
+              EXMEM_WE    => external_we,
+              EXMEM_WADDR => external_waddr,
+              EXMEM_D_OUT => external_dout,
+              B_Data0     => B_Data0,
+              B_Data1     => B_Data1,
+              B_Data2     => B_Data2,
+              B_Data3     => B_Data3,
+              B_Data4     => B_Data4,
+              B_Data5     => B_Data5,
+              B_Data6     => B_Data6,
+              B_Data7     => B_Data7,
+              B_Data8     => B_Data8,
+              B_Data9     => B_Data9,
               B_Data10    => B_Data10,
               B_Data11    => B_Data11,
               B_Data12    => B_Data12,
@@ -92,5 +101,13 @@ begin
               B_Data14    => B_Data14,
               B_Data15    => B_Data15);
 
+    EXTERNAL_MEMORY: entity work.external_mem
+    port map( CLKB  => CLK,
+              ADDRB => external_raddr(EX_MEM_USED-1 downto 0),
+              CLKA  => notCLK,
+              WEA(0)=> external_we,
+              ADDRA => external_waddr(EX_MEM_USED-1 downto 0),
+              DINA  => external_din,
+              DOUTB => external_dout);
 end Structural;
 
