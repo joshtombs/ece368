@@ -25,23 +25,12 @@ entity user_interface is
           PS2_D  : inout STD_LOGIC;
           RST    : in    STD_LOGIC;
           SW_IN  : in STD_LOGIC_VECTOR(4 downto 0);
-          B_Data0 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data1 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data2 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data3 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data4 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data5 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data6 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data7 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data8 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data9 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data10 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data11 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data12 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data13 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data14 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          B_Data15 : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          INSTR_IN : in STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+          MUX_IN : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+			 Fetch  : in STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+	       Decode : in STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0); 
+	       OP     : in STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+	       Execute: in STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0); 
+	       WB     : in STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0); 
           HSYNC  : out   STD_LOGIC;
           VSYNC  : out   STD_LOGIC; 
           VGARED : out   STD_LOGIC_VECTOR (2 downto 0);
@@ -50,13 +39,14 @@ entity user_interface is
           I_OUT  : out   STD_LOGIC_VECTOR(15 downto 0);
           SEG    : out   STD_LOGIC_VECTOR (6 downto 0);
           DP     : out   STD_LOGIC;
-          AN     : out   STD_LOGIC_VECTOR (3 downto 0));
+          AN     : out   STD_LOGIC_VECTOR (3 downto 0)
+			 );
 end user_interface;
 
 architecture Structural of user_interface is
-    signal reg_a, reg_b, ascii, alu_out : STD_LOGIC_VECTOR (7 downto 0);
+    signal reg_a, reg_b, ascii,ascii2, alu_out : STD_LOGIC_VECTOR (7 downto 0);
     signal instruction : STD_LOGIC_VECTOR (INSTR_LENGTH-1 downto 0) := (OTHERS => '0');
-    signal ascii_rd, ascii_we : STD_LOGIC;
+    signal ascii_rd,ascii_rd2, ascii_we, ascii_we2 : STD_LOGIC;
     signal enl : STD_LOGIC := '1';
     signal dpc : STD_LOGIC_VECTOR (3 downto 0) := "1111";
     signal cen : STD_LOGIC := '0';
@@ -84,10 +74,9 @@ begin
     U3: entity work.vga_toplevel
     port map( CLK      => CLK,
               RST      => RST,
---            SW       => ,
-              ASCII    => ascii,
-              ASCII_RD => ascii_rd,
-              ASCII_WE => ascii_we,
+              ASCII    => ascii2,
+              ASCII_RD => ascii_rd2,
+              ASCII_WE => ascii_we2,
               HSYNC    => HSYNC,
               VSYNC    => VSYNC,
               VGARED   => VGARED,
@@ -107,37 +96,28 @@ begin
               SEG_OUT => SEG,
               DP_OUT  => DP,
               AN_OUT  => AN);
-        
-    U5: entity MUX16to1
-    port map(
-            SEL(0) => SW_IN(0),
-            SEL(1) => SW_IN(1),
-            SEL(2) => SW_IN(2),
-            SEL(3) => SW_IN(3),
-            In0 => B_Data0,
-            In1 => B_Data1,
-            In2 => B_Data2,
-            In3 => B_Data3,
-            In4 => B_Data4,
-            In5 => B_Data5,
-            In6 => B_Data6,
-            In7 => B_Data7,
-            In8 => B_Data8,
-            In9 => B_Data9,
-            In10 => B_Data10,
-            In11 => B_Data11,
-            In12 => B_Data12,
-            In13 => B_Data13,
-            In14 => B_Data14,
-            In15 => B_Data15, 
-            OUTPUT => Mux_Out);
 
     U6: entity MUX2to1
     port map(
-            In1 => Mux_Out,
+            In1 => Mux_IN,
             In0 => instruction,
             SEL => SW_IN(4),
             Output => Mux_Out2);
+				
+	 U7: entity Pipeline_Viewer
+	 port map(
+				CLK_In    => CLK,
+				RST       => RST,
+		      ASCII_IN  => ascii,
+		      Fetch     => Fetch,
+		      Decode    => Decode,
+		      OP        => OP,
+		      Execute   => Execute,
+		      WB        => WB,
+		      Data_Out  => ascii2,
+		      ASCII_Write => ascii_we2,
+				ASCII_RD => ascii_rd2
+				 );
 
 end Structural;
 

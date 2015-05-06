@@ -20,7 +20,13 @@ entity stall_detection_unit is
           INSTR_IN : in  STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
           F_STALL  : out STD_LOGIC;
           D_STALL  : out STD_LOGIC;
-          O_STALL  : out STD_LOGIC);
+          O_STALL  : out STD_LOGIC;
+			 Fetch    : out STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+			 Decode   : out STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+			 OP       : out STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+			 Execute  : out STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+			 WB       : out STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0)
+			 );
 end stall_detection_unit;
 
 architecture Mixed of stall_detection_unit is
@@ -58,6 +64,12 @@ begin
               D   => reg3to4,
               ENB => HIGH,
               Q   => reg4);
+				  
+    Fetch    <= reg0to1;
+	 Decode   <= reg1to2;
+	 OP       <= reg2to3;
+	 Execute  <= reg2to3;
+	 WB       <= reg4;
 
     load <= '1' when reg1to2(15 downto 12) = "1001" else
             '0';

@@ -34,12 +34,18 @@ entity umd_risc is
 end umd_risc;
 
 architecture Structural of umd_risc is
+
 signal inst : STD_LOGIC_VECTOR (15 downto 0);
-signal B_Data0, B_Data1, B_Data2, B_Data3, B_Data4, B_Data5, B_Data6, B_Data7, 
-B_Data8, B_Data9, B_Data10, B_Data11, B_Data12, B_Data13, B_Data14, B_Data15,
-external_din, external_dout, external_raddr, external_waddr : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+
+signal MUX_DATA,
+external_din, external_dout, external_raddr, external_waddr, external_dout2 : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+
 signal external_we, notCLK : STD_LOGIC;
+
 signal zero : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := x"0000";
+
+signal F_Line, D_Line, O_Line, E_Line, W_Line : STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+
 begin
     notCLK <= not CLK;
 
@@ -57,24 +63,14 @@ begin
               DP    => DP,
               SEG   => SEG,
               AN    => AN,
-              SW_In => SW,
-              INSTR_IN => inst,
-              B_Data0  => B_Data0,
-              B_Data1  => B_Data1,
-              B_Data2  => B_Data2,
-              B_Data3  => B_Data3,
-              B_Data4  => B_Data4,
-              B_Data5  => B_Data5,
-              B_Data6  => B_Data6,
-              B_Data7  => B_Data7,
-              B_Data8  => B_Data8,
-              B_Data9  => B_Data9,
-              B_Data10 => B_Data10,
-              B_Data11 => B_Data11,
-              B_Data12 => B_Data12,
-              B_Data13  => B_Data13,
-              B_Data14  => B_Data14,
-              B_Data15  => B_Data15);
+				  SW_In => SW,
+              MUX_IN => MUX_DATA,
+				  Fetch   => F_Line,
+	           Decode  => D_Line,
+	           OP      => O_Line,
+	           Execute => E_Line,
+	           WB      => W_Line
+				  );
             
     RISC: entity work.risc_machine
     port map( CLK  => CLK,
@@ -83,31 +79,24 @@ begin
               EXMEM_RADDR => external_raddr,
               EXMEM_WE    => external_we,
               EXMEM_WADDR => external_waddr,
-              EXMEM_D_OUT => external_dout,
-              B_Data0     => B_Data0,
-              B_Data1     => B_Data1,
-              B_Data2     => B_Data2,
-              B_Data3     => B_Data3,
-              B_Data4     => B_Data4,
-              B_Data5     => B_Data5,
-              B_Data6     => B_Data6,
-              B_Data7     => B_Data7,
-              B_Data8     => B_Data8,
-              B_Data9     => B_Data9,
-              B_Data10    => B_Data10,
-              B_Data11    => B_Data11,
-              B_Data12    => B_Data12,
-              B_Data13    => B_Data13,
-              B_Data14    => B_Data14,
-              B_Data15    => B_Data15);
+              EXMEM_D_OUT => external_dout2,
+				  SW_In => SW,
+              MUX_OUT => MUX_DATA,
+				  Fetch   => F_Line,
+	           Decode  => D_Line,
+	           OP      => O_Line,
+	           Execute => E_Line,
+	           WB      => W_Line
+				  );
 
-    EXTERNAL_MEMORY: entity work.external_mem
+    EXTERNAL_MEMORY: entity work.external_memory
     port map( CLKB  => CLK,
               ADDRB => external_raddr(EX_MEM_USED-1 downto 0),
               CLKA  => notCLK,
               WEA(0)=> external_we,
               ADDRA => external_waddr(EX_MEM_USED-1 downto 0),
               DINA  => external_din,
-              DOUTB => external_dout);
+              DOUTB => external_dout
+				  );
 end Structural;
 

@@ -18,28 +18,21 @@ use work.UMDRISC_PKG.all;
 entity risc_machine is
     Port ( CLK         : in  STD_LOGIC;
            RESET       : in  STD_LOGIC;
+			  SW_IN       : in STD_LOGIC_VECTOR(4 downto 0);
            EXMEM_D_IN  : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
            EXMEM_RADDR : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
            EXMEM_WE    : out STD_LOGIC;
            EXMEM_WADDR : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
            EXMEM_D_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
            CCR_OUT     : out STD_LOGIC_VECTOR(3 downto 0);
-           B_Data0     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data1     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data2     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data3     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data4     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data5     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data6     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data7     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data8     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data9     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data10    : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data11    : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data12    : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data13    : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data14    : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-           B_Data15    : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0));
+           MUX_OUT     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+			  Fetch       : out STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+			  Decode      : out STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+			  OP          : out STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+			  Execute     : out STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+			  WB          : out STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0)
+			  );
+			  
 end risc_machine;
 
 architecture Structural of risc_machine is
@@ -66,6 +59,11 @@ signal DATA_MEM_WE, BANK_RW, RESULT_REG_ENB, F_STALL_OUT, D_STALL_OUT, O_STALL_O
        f_instr_enb, D_NOP_IN, D_NOP_OUT, O_NOP_IN, O_NOP_OUT, E_NOP_IN, E_NOP_OUT, W_NOP_IN,
        stack_enable, stack_op, br_mask_match, SBANK_W_ENABLE
               : STD_LOGIC;
+signal B_Data0, B_Data1, B_Data2, B_Data3, B_Data4, B_Data5, B_Data6, B_Data7, 
+B_Data8, B_Data9, B_Data10, B_Data11, B_Data12, B_Data13, B_Data14, B_Data15 
+				  : STD_LOGIC_VECTOR(DATA_WIDTH-1 DOWNTO 0);
+signal F_Line, D_Line, O_Line, E_Line, W_Line : STD_LOGIC_VECTOR(INSTR_LENGTH-1 downto 0);
+
 begin
       U0: entity work.fetch
       PORT MAP( CLK           => CLK,
@@ -219,7 +217,41 @@ begin
               INSTR_IN => instruction,
               F_STALL  => F_STALL_OUT,
               D_STALL  => D_STALL_OUT,
-              O_STALL  => O_STALL_OUT);
+              O_STALL  => O_STALL_OUT,
+	           Fetch    => F_Line,
+	           Decode   => D_Line,
+	           OP       => O_Line,
+	           Execute  => E_Line,
+	           WB       => W_Line);
+				  
+    U7: entity MUX16to1
+    port map(
+            SEL(0) => SW_IN(0),
+            SEL(1) => SW_IN(1),
+            SEL(2) => SW_IN(2),
+            SEL(3) => SW_IN(3),
+            In0 => B_Data0,
+            In1 => B_Data1,
+            In2 => B_Data2,
+            In3 => B_Data3,
+            In4 => B_Data4,
+            In5 => B_Data5,
+            In6 => B_Data6,
+            In7 => B_Data7,
+            In8 => B_Data8,
+            In9 => B_Data9,
+            In10 => B_Data10,
+            In11 => B_Data11,
+            In12 => B_Data12,
+            In13 => B_Data13,
+            In14 => B_Data14,
+            In15 => B_Data15, 
+            OUTPUT => Mux_Out);
 
+            Fetch   <= F_Line;
+	         Decode  <= D_Line;
+	         OP      <= O_Line;
+	         Execute <= E_Line;
+	         WB      <= W_Line;
 end Structural;
 
