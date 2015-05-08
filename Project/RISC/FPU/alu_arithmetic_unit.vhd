@@ -2,6 +2,7 @@
 -- School: University of Massachusetts Dartmouth
 -- Department: Computer and Electrical Engineering
 -- Engineer: Daniel Noyes
+-- Revised By: Josh Tombs
 -- 
 -- Create Date:    SPRING 2015
 -- Module Name:    ALU_Arithmetic_Unit
@@ -14,6 +15,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.NUMERIC_STD.all;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use work.UMDRISC_PKG.all;
 
@@ -27,18 +29,22 @@ end Arith_Unit;
 
 architecture Combinational of Arith_Unit is
 
-    signal a1, b1  : STD_LOGIC_VECTOR (16 downto 0) := (OTHERS => '0');
-    signal arith : STD_LOGIC_VECTOR (16 downto 0) := (OTHERS => '0');
+    signal a1, b1, b2  : STD_LOGIC_VECTOR (16 downto 0) := (OTHERS => '0');
+    signal arith       : STD_LOGIC_VECTOR (16 downto 0) := (OTHERS => '0');
+    constant zero      : integer := 0;
 
 begin
     -- Give extra bit to accound for carry,overflow,negative
     a1 <= '0' & A;
     b1 <= '0' & B;
+    b2(DATA_WIDTH-1 downto 4) <= std_logic_vector(to_unsigned(zero, DATA_WIDTH-4));
+    b2(3 downto 0) <= B(3 downto 0);
 
     with OP select
         arith <=
             a1 + b1 when "000", -- ADD
             a1 - b1 when "001", -- SUB
+            a1 + b2 when "011", -- LWV Special Add
             a1 + b1 when "101", -- ADDI
             a1 + b1 when OTHERS;
 

@@ -26,7 +26,6 @@ entity operandaccess is
           BANK_RESET   : in  STD_LOGIC;
           BANK_DATA    : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           SBANK_W_ENB  : in  STD_LOGIC;
-          SBANK_DATA   : in  STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           SBANK_W_ADDR : in  STD_LOGIC_VECTOR(1 downto 0);
           OP1_MUX_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
           OP2_MUX_SEL  : in  STD_LOGIC_VECTOR(1 downto 0);
@@ -38,6 +37,7 @@ entity operandaccess is
           MASK_MATCH   : out STD_LOGIC;
           NOP_OUT      : out STD_LOGIC;
           REGA_ADDR    : out STD_LOGIC_VECTOR(3 downto 0);
+          REGS_ADDR    : out STD_LOGIC_VECTOR(1 downto 0);
           JMP_OUT      : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
           BRANCH_OUT   : out STD_LOGIC_VECTOR(INSTR_MEM_WIDTH-1 downto 0);
           ID_OUT       : out STD_LOGIC_VECTOR(1 downto 0);
@@ -71,7 +71,7 @@ architecture Mixed of operandaccess is
     signal LOW : STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0) := x"0000";
     signal HIGH: STD_LOGIC := '1';
     signal write_address, E_FWDADDR_REG, W_FWDADDR_REG, MASK_BITS : STD_LOGIC_VECTOR(3 downto 0);
-    signal DETECT_SEL1, DETECT_SEL2, ID_REG_OUT, DETECT_SEL3 : STD_LOGIC_VECTOR(1 downto 0);
+    signal DETECT_SEL1, DETECT_SEL2, ID_REG_OUT, DETECT_SEL3, sbank_write_address : STD_LOGIC_VECTOR(1 downto 0);
 begin
     BANK: entity work.register_bank
     PORT MAP( CLK     => CLK,
@@ -106,9 +106,9 @@ begin
               RESET  => BANK_RESET,
               ENB    => BANK_ENB,
               S_ADDR => DATA_IN(35 downto 34),
-              W_ADDR => SBANK_W_ADDR,
+              W_ADDR => sbank_write_address,
               W_ENB  => SBANK_W_ENB,
-              W_DATA => SBANK_DATA,
+              W_DATA => BANK_DATA,
               S_DATA => REGS_OUT);
 
     FWD_DETECT1: entity work.fwd_detection_unit
@@ -236,6 +236,18 @@ begin
               ENB  => HIGH,
               D    => REGA_MUX_OUT,
               Q    => RA_VALUE);
+
+    FF0 : entity work.flip_flop2
+    PORT MAP( CLK  => CLK,
+              ENB  => HIGH,
+              D    => DATA_IN(7 downto 6),
+              Q    => REGS_ADDR);
+
+    FF1 : entity work.flip_flop2_re
+    PORT MAP( CLK  => CLK,
+              ENB  => HIGH,
+              D    => SBANK_W_ADDR,
+              Q    => sbank_write_address);
 
     MASK_BITS(0) <= (CCR_IN(0) XNOR DATA_IN(36));
     MASK_BITS(1) <= (CCR_IN(1) XNOR DATA_IN(37));

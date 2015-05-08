@@ -32,6 +32,7 @@ entity control_unit is
           O_NOP_OUT        : out STD_LOGIC;
           O_STALL_IN       : in  STD_LOGIC;
           OPA_OPCODE       : in  STD_LOGIC_VECTOR(3 downto 0);
+          OPA_ID           : in  STD_LOGIC_VECTOR(1 downto 0);
           OP1_MUX_SEL      : out STD_LOGIC_VECTOR(1 downto 0);
           OP2_MUX_SEL      : out STD_LOGIC_VECTOR(1 downto 0);
           -- Execute
@@ -117,7 +118,13 @@ begin
                 when "1000" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "00";
                 when "1001" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "00";
                 when "1010" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "00";
-                when "1011" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "01";
+                when "1011" =>
+                    OP2_MUX_SEL <= "01";
+                    if( OPA_ID = "11") then
+                        OP1_MUX_SEL <= "00";
+                    else
+                        OP1_MUX_SEL <= "01";
+                    end if;
                 when "1100" => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "01";
                 when others => OP2_MUX_SEL <= "01"; OP1_MUX_SEL <= "00";
             end case;
@@ -213,16 +220,23 @@ begin
                     end if;
                     REG_BANK_WE <= '0';
                 when "1011" =>
-                    DATA_MEM_MUX_SEL <= "10";
                     DATA_MEM_WE <= '0';
                     EX_MEM_WE <= '0';
                     SBANK_WE <= '0';
                     if(W_NOP_IN = '0' and RESET = '0') then
                         case WB_ID is
                             when "00" =>
+                                DATA_MEM_MUX_SEL <= "10";
                                 REG_BANK_WE <= '1';
-                            when others =>
+                                SBANK_WE <= '0';
+                            when "11" =>
+                                DATA_MEM_MUX_SEL <= "01";
                                 REG_BANK_WE <= '0';
+                                SBANK_WE <= '1';
+                            when others =>
+                                DATA_MEM_MUX_SEL <= "10";
+                                REG_BANK_WE <= '0';
+                                SBANK_WE <= '0';
                         end case;
                     else
                         REG_BANK_WE <= '0';
