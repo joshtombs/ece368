@@ -107,7 +107,7 @@ begin
               CLKA  => notCLK,
               WEA(0)=> external_we,
               ADDRA => external_waddr(EX_MEM_USED-1 downto 0),
-              DINA  => external_din,
-              DOUTB => external_dout);
+              DINA  => external_dout,
+              DOUTB => external_din);
 end Structural;
 
