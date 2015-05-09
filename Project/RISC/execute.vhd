@@ -15,23 +15,25 @@ use IEEE.STD_LOGIC_1164.ALL;
 use work.UMDRISC_PKG.all;
 
 entity execute is
-    Port( CLK       : in STD_LOGIC;
-          NOP       : in STD_LOGIC;
-          OP1_IN    : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          OP2_IN    : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          OPCODE    : in STD_LOGIC_VECTOR(3 downto 0);
-          ID_IN     : in STD_LOGIC_VECTOR(1 downto 0);
-          REGA_ADDR : in STD_LOGIC_VECTOR(3 downto 0);
-          REGA_VAL  : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          RESULT_E  : in STD_LOGIC;
-          ID_OUT    : out STD_LOGIC_VECTOR(1 downto 0);
-          NOP_OUT   : out STD_LOGIC;
-          OP_OUT    : out STD_LOGIC_VECTOR(3 downto 0);
-          CCR_OUT   : out STD_LOGIC_VECTOR(3 downto 0);
-          REG_A_OUT : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          W_REG_ADDR: out STD_LOGIC_VECTOR(3 downto 0);
-          FWD_OUT   : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
-          D_OUT     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0));
+    Port( CLK         : in STD_LOGIC;
+          NOP         : in STD_LOGIC;
+          OP1_IN      : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          OP2_IN      : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          OPCODE      : in STD_LOGIC_VECTOR(3 downto 0);
+          ID_IN       : in STD_LOGIC_VECTOR(1 downto 0);
+          REGA_ADDR   : in STD_LOGIC_VECTOR(3 downto 0);
+          REGS_ADDR   : in STD_LOGIC_VECTOR(1 downto 0);
+          REGA_VAL    : in STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          RESULT_E    : in STD_LOGIC;
+          ID_OUT      : out STD_LOGIC_VECTOR(1 downto 0);
+          NOP_OUT     : out STD_LOGIC;
+          OP_OUT      : out STD_LOGIC_VECTOR(3 downto 0);
+          CCR_OUT     : out STD_LOGIC_VECTOR(3 downto 0);
+          REG_A_OUT   : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          W_REG_ADDR  : out STD_LOGIC_VECTOR(3 downto 0);
+          W_REGS_ADDR : out STD_LOGIC_VECTOR(1 downto 0);
+          FWD_OUT     : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0);
+          D_OUT       : out STD_LOGIC_VECTOR(DATA_WIDTH-1 downto 0));
 end execute;
 
 architecture Structural of execute is
@@ -111,6 +113,12 @@ begin
               ENB  => HIGH,
               D    => NOP,
               Q    => NOP_OUT);
+
+    FF2 : entity work.flip_flop2
+    PORT MAP( CLK  => CLK,
+              ENB  => HIGH,
+              D    => REGS_ADDR,
+              Q    => W_REGS_ADDR);
             
 end Structural;
 
