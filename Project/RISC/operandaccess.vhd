@@ -215,7 +215,7 @@ begin
     ID_OUT <= ID_REG_OUT;
 
     FWD_DETECT3: entity work.fwd_detection_unit
-    PORT MAP( OPA_REG   => DATA_IN(35 downto 32),
+    PORT MAP( OPA_REG   => DATA_IN(39 downto 36),
               E_FWD_REG => E_FWDADDR_REG,
               W_FWD_REG => W_FWDADDR_REG,
               E_NOP     => E_NOP,
